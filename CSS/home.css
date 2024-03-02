@@ -1,0 +1,181 @@
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #222; /* Dark background */
+  color: #ddd; /* Light text color */
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #333; /* Darker background for header */
+  transition: all 0.3s ease;
+}
+
+.logo {
+  font-size: 24px;
+  text-decoration: none;
+  color: #fff; /* White logo color */
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+nav li {
+  margin-right: 20px;
+}
+
+nav a {
+  text-decoration: none;
+  color: inherit;
+  position: relative; /* Required for effects */
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 5px; /* Slight rounded corners */
+  transition: all 0.3s ease;
+  transform: perspective(100px); /* 3D effect */
+}
+
+nav a::before,
+nav a::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 5px; /* Match link border radius */
+  transition: all 0.3s ease;
+}
+
+nav a::before {
+  background-color: transparent; /* Initially transparent background */
+}
+
+nav a::after {
+  z-index: -1; /* Ensures after element stays behind content */
+  transform: rotateX(90deg); /* Rotates after element for 3D effect */
+}
+
+nav a:hover {
+  transform: translateY(-5px); /* Slight lift on hover */
+}
+
+nav a:hover::before {
+  background-color: rgba(255, 255, 255, 0.2); /* Light white glow */
+}
+
+nav a:hover::after {
+  background-color: var(--link-color); /* Applies unique color for each link */
+  transform: rotateX(0deg); /* Rotates after element back for 3D effect */
+}
+
+/* Define unique colors for each link (replace with your desired colors) */
+nav li:nth-child(1) a {
+  --link-color: #f00;
+} /* Red */
+nav li:nth-child(2) a {
+  --link-color: #ff0;
+} /* Yellow */
+nav li:nth-child(3) a {
+  --link-color: #00f;
+} /* Blue */
+nav li:nth-child(4) a {
+  --link-color: #0f0;
+} /* Green */
+nav li:nth-child(5) a {
+  --link-color: rgb(255, 0, 132);
+} /* pink */
+nav li:nth-child(6) a {
+  --link-color: rgb(255, 196, 0);
+} /* gold */
+nav li:nth-child(7) a {
+  --link-color: rgb(119, 0, 255);
+} /* purple */
+nav li:nth-child(8) a {
+  --link-color: rgb(0, 255, 255);
+} /* aqua */
+
+/* Dynamic response for smaller screens */
+@media (max-width: 768px) {
+  header nav ul {
+    display: none;
+  }
+
+  .menu-toggle {
+    display: block;
+    cursor: pointer;
+  }
+
+  .menu-toggle span {
+    display: block;
+    width: 30px;
+    height: 3px;
+    background-color: #fff;
+    margin-bottom: 5px;
+    transition: all 0.3s ease;
+  }
+
+  .menu-toggle.active span:first-child {
+    transform: rotate(45deg) translateX(10px);
+  }
+
+  .menu-toggle.active span:last-child {
+    transform: rotate(-45deg) translateX(10px);
+  }
+
+  .menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+  }
+
+  header nav ul {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: #333; /* Same darker background */
+    padding: 20px;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.3s ease;
+    transform: translateX(-100%);
+  }
+
+  header nav ul.active {
+    transform: translateX(0);
+  }
+}
+
+/* Active effect */
+nav a.active {
+  transform: translateY(-5px) scale(1.1); /* Slight lift and scale up */
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.3); /* Subtle shadow on active link */
+}
+
+/* Indicator effect (replace with your desired indicator element) */
+.indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px; /* Indicator height */
+  background-color: #fff; /* Indicator color */
+  transition: transform 0.3s ease;
+  transform: translateX(-100%); /* Initially hidden */
+}
+
+nav a:hover + .indicator {
+  transform: translateX(0); /* Shows indicator on hover */
+}
+
+nav a.active + .indicator {
+  transform: translateX(0); /* Keeps indicator visible for active link */
+}
