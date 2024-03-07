@@ -11,7 +11,7 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  background-color: #333; /* Darker background for header */
+  background-color: transparent; /* Darker background for header */
   transition: all 0.3s ease;
 }
 
@@ -38,9 +38,9 @@ nav a {
   position: relative; /* Required for effects */
   display: inline-block;
   padding: 10px 20px;
-  border-radius: 5px; /* Slight rounded corners */
-  transition: all 0.3s ease;
-  transform: perspective(100px); /* 3D effect */
+  border-radius: 7px; /* Slight rounded corners */
+  transition: all 0.4s ease;
+  transform: perspective(150px); /* 3D effect */
 }
 
 nav a::before,
@@ -70,6 +70,7 @@ nav a:hover {
 
 nav a:hover::before {
   background-color: rgba(255, 255, 255, 0.2); /* Light white glow */
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
 }
 
 nav a:hover::after {
@@ -178,4 +179,101 @@ nav a:hover + .indicator {
 
 nav a.active + .indicator {
   transform: translateX(0); /* Keeps indicator visible for active link */
+}
+
+cards-container {
+  display: flex;
+  flex-wrap: wrap; /* Allow cards to wrap on smaller screens */
+  justify-content: space-around; /* Distribute cards evenly */
+  margin: 20px auto;
+  width: 80%; /* Limit container width */
+  position: relative; /* Required for some effects */
+}
+
+.card {
+  position: relative;
+  width: 25%; /* Set card width */
+  margin: 10px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  border-radius: 5px; /* Rounded corners */
+  overflow: hidden; /* Clip overflowing content */
+  transition: all 0.3s ease; /* Smooth animations */
+}
+
+.card img {
+  width: 100%;
+  transition: transform 0.3s ease; /* Smooth image zoom */
+}
+
+.card:hover .card-content {
+  opacity: 1; /* Show card content on hover */
+  transition: opacity 0.3s ease;
+}
+
+.card-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent overlay */
+  color: #fff; /* White text */
+  opacity: 0; /* Initially hidden */
+  transition: opacity 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4); /* Enhanced shadow on hover */
+  transform: scale(1.65); /* Slight zoom on hover */
+}
+
+@keyframes sparkle {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+}
+
+.sparkles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Don't interact with sparkles */
+}
+
+.sparkles:after,
+.sparkles:before {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background-color: #fff; /* White sparkles */
+  opacity: 0.7;
+  animation: twinkle 1s infinite ease-in-out;
+}
+
+.sparkles:after {
+  width: 5px;
+  height: 5px;
+}
+
+.sparkles:before {
+  width: 3px;
+  height: 3px;
+  animation-delay: 0.2s; /* Add a slight delay for variation */
+}
+
+@keyframes twinkle {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
