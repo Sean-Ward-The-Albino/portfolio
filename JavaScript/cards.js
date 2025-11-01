@@ -13,25 +13,23 @@ cards.forEach(card => {
 function addMagic(card) {
   const content = card.querySelector('.card-content');
   const sparkles = document.createElement('div');
-  sparkles.classList.add('sparkles'); // Add a class for styling
+  sparkles.classList.add('sparkles'); 
 
-  // Add sparkles animation (using CSS animations)
+  
   sparkles.style.animation = 'sparkle 2s infinite linear';
 
-  // Append sparkles to card content
+ 
   content.appendChild(sparkles);
 
-  // Remove sparkles on mouseleave
   card.addEventListener('mouseleave', () => {
     content.removeChild(sparkles);
   });
 }
 
-// Add magical effects to each card on mouseenter
 cards.forEach(card => {
   card.addEventListener('mouseenter', () => {
     card.classList.add('active');
-    addMagic(card); // Call the addMagic function for current card
+    addMagic(card); 
   });
 
   card.addEventListener('mouseleave', () => {
