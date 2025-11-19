@@ -2,7 +2,6 @@
 .fade-in {
   opacity: 0;
   transform: translateY(20px);
-  /* Optional: Start with a slight vertical offset */
   transition: opacity 1s, transform 1s;
 }
 .fade-in-animation {

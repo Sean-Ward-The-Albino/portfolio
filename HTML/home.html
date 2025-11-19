@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sean D. Ward - Avlory Tech CEO</title>
+    <link rel="stylesheet" href="/CSS/universal.css" /> 
+    <link rel="stylesheet" href="/CSS/styles.css" />
+    <link rel="stylesheet" href="/CSS/home.css" />
+  </head>
+  <body>
+    
+    <ul class="menu fade-in corner-menu">
+      <div class="menuToggle">
+        <ion-icon name="add-outline"></ion-icon>
+      </div>
+      <li style="--i: 0; --clr: #ff2972">
+        <a href="/HTML/home.html"><ion-icon name="home-outline"></ion-icon></a>
+      </li>
+      <li style="--i: 1; --clr: #fee800">
+        <a href="#"><ion-icon name="person-outline"></ion-icon></a>
+      </li>
+      <li style="--i: 2; --clr: #04fc43">
+        <a href="#"><ion-icon name="code-slash-outline"></ion-icon></a>
+      </li>
+      <li style="--i: 3; --clr: #00b0fe">
+        <a href="#"><ion-icon name="call-outline"></ion-icon></a>
+      </li>
+      <li style="--i: 4; --clr: #fea500">
+        <a href="#"><ion-icon name="bulb-outline"></ion-icon></a>
+      </li>
+      <li style="--i: 5; --clr: #a529ff">
+        <a href="#"><ion-icon name="people-outline"></ion-icon></a>
+      </li>
+      <li style="--i: 6; --clr: #ff2942">
+        <a href="#"><ion-icon name="hardware-chip-outline"></ion-icon></a>
+      </li>
+      <li style="--i: 7; --clr: #01bdab">
+        <a href="#"><ion-icon name="help-outline"></ion-icon></a>
+      </li>
+    </ul>
+
+    <main class="home-content">
+        
+        <div class="content-panel fade-in">
+        
+          <header class="hero-section">
+            <img src="/Images/icons/Avlory Gradient Bottom.png" alt="Avlory Logo" class="avlory-logo">
+            
+            <h1 class="headline">SEAN D. WARD</h1>
+            
+            <p class="tagline">
+              20-Year-Old <strong>Tech CEO, Full-Stack Developer, and Educator.</strong> I build innovative, scalable products that merge deep technical knowledge with genuine educational impact.
+            </p>
+
+            <a href="#" class="primary-cta">
+              Explore My Full-Stack Projects
+            </a>
+
+            <div class="tech-chime">
+                <div class="tech-bar-container fade-in" data-level="95" style="--i: 5.1;">
+                    <span class="tech-name">Java / Spring</span>
+                    <div class="knowledge-bar"></div>
+                </div>
+                <div class="tech-bar-container fade-in" data-level="90" style="--i: 5.2;">
+                    <span class="tech-name">Flutter / Dart</span>
+                    <div class="knowledge-bar"></div>
+                </div>
+                <div class="tech-bar-container fade-in" data-level="90" style="--i: 5.3;">
+                    <span class="tech-name">JavaScript / SASS</span>
+                    <div class="knowledge-bar"></div>
+                </div>
+                <div class="tech-bar-container fade-in" data-level="85" style="--i: 5.4;">
+                    <span class="tech-name">MongoDB / Firebase</span>
+                    <div class="knowledge-bar"></div>
+                </div>
+            </div>
+          </header>
+
+          <section class="metrics-section">
+                <div class="metric-card">
+                  <span class="metric-number" data-final="1">0</span>
+                  <p class="metric-label">CEO of <strong>Avlory</strong></p>
+                </div>
+                <div class="metric-card">
+                  <span class="metric-number" data-final="1">0</span>
+                  <p class="metric-label">Major App Project <strong>(Penny Sphere)</strong></p>
+                </div>
+                <div class="metric-card">
+                  <span class="metric-number" data-final="100">0</span>
+                  <p class="metric-label">Students Taught (AP CSA Java)</p>
+                </div>
+                <div class="metric-card">
+                  <span class="metric-number" data-final="1">0</span>
+                  <p class="metric-label">Full-Stack Development Mastery</p>
+                </div>
+          </section>
+          
+        </div>
+        <footer class="site-footer fade-in">
+            <div class="social-links">
+              <a href="https://github.com/Sean-Ward-The-Albino" target="_blank" rel="noopener noreferrer" title="GitHub Profile">
+                <ion-icon name="logo-github"></ion-icon>
+              </a>
+              <a href="https://www.linkedin.com/in/sean-ward7/" target="_blank" rel="noopener noreferrer" title="LinkedIn Profile">
+                <ion-icon name="logo-linkedin"></ion-icon>
+              </a>
+              <a href="#" class="resume-link" title="Download Resume">Download CV</a>
+            </div>
+            <p class="seo-copy">
+                Copyright &copy; 2025 Sean D. Ward | Tech CEO & Developer. Innovating with <strong>Spring, Java, and Modern Web Architectures.</strong>
+            </p>
+        </footer>
+    </main>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="/JavaScript/fade.js"></script>
+    <script src="/JavaScript/counter.js"></script>
+    <script>
+      let menuToggle = document.querySelector(".menuToggle");
+      let menu = document.querySelector(".corner-menu");
+      menuToggle.onclick = function () {
+        menu.classList.toggle("active");
+      };
+    </script>
+  </body>
+</html>

@@ -1,6 +1,5 @@
-// Function to fade in elements
+
 function fadeInElements() {
-    // Get elements to fade in
     const elementsToFadeIn = document.querySelectorAll('.fade-in');
 
     // Loop through the elements and apply the fade-in class

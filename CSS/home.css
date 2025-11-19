@@ -1,279 +1,274 @@
+
+:root {
+    --avlory-pink: #ff2972; 
+    --avlory-purple: #a529ff;
+    --avlory-blue: #00b0fe; 
+    --dark-bg: rgb(23, 8, 32);
+    --text-light: #f0f0f0;
+}
+
+
 body {
-  font-family: sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #222; /* Dark background */
-  color: #ddd; /* Light text color */
+    display: block; 
+    padding: 0; 
+    min-height: auto; 
 }
 
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  background-color: transparent; /* Darker background for header */
-  transition: all 0.3s ease;
+/* --- CORNER RADIAL MENU --- */
+
+.corner-menu {
+    position: fixed; 
+    top: 50px;       
+    right: 50px;     
+    width: 150px;    
+    height: 150px;   
+    z-index: 9999;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
 }
 
-.logo {
-  font-size: 24px;
-  text-decoration: none;
-  color: #fff; /* White logo color */
-}
-
-nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-}
-
-nav li {
-  margin-right: 20px;
-}
-
-nav a {
-  text-decoration: none;
-  color: inherit;
-  position: relative; /* Required for effects */
-  display: inline-block;
-  padding: 10px 20px;
-  border-radius: 7px; /* Slight rounded corners */
-  transition: all 0.4s ease;
-  transform: perspective(150px); /* 3D effect */
-}
-
-nav a::before,
-nav a::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 5px; /* Match link border radius */
-  transition: all 0.3s ease;
-}
-
-nav a::before {
-  background-color: transparent; /* Initially transparent background */
-}
-
-nav a::after {
-  z-index: -1; /* Ensures after element stays behind content */
-  transform: rotateX(90deg); /* Rotates after element for 3D effect */
-}
-
-nav a:hover {
-  transform: translateY(-5px); /* Slight lift on hover */
-}
-
-nav a:hover::before {
-  background-color: rgba(255, 255, 255, 0.2); /* Light white glow */
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
-}
-
-nav a:hover::after {
-  background-color: var(--link-color); /* Applies unique color for each link */
-  transform: rotateX(0deg); /* Rotates after element back for 3D effect */
-}
-
-/* Define unique colors for each link (replace with your desired colors) */
-nav li:nth-child(1) a {
-  --link-color: #f00;
-} /* Red */
-nav li:nth-child(2) a {
-  --link-color: #ff0;
-} /* Yellow */
-nav li:nth-child(3) a {
-  --link-color: #00f;
-} /* Blue */
-nav li:nth-child(4) a {
-  --link-color: #0f0;
-} /* Green */
-nav li:nth-child(5) a {
-  --link-color: rgb(255, 0, 132);
-} /* pink */
-nav li:nth-child(6) a {
-  --link-color: rgb(255, 196, 0);
-} /* gold */
-nav li:nth-child(7) a {
-  --link-color: rgb(119, 0, 255);
-} /* purple */
-nav li:nth-child(8) a {
-  --link-color: rgb(0, 255, 255);
-} /* aqua */
-
-/* Dynamic response for smaller screens */
-@media (max-width: 768px) {
-  header nav ul {
-    display: none;
-  }
-
-  .menu-toggle {
-    display: block;
-    cursor: pointer;
-  }
-
-  .menu-toggle span {
-    display: block;
-    width: 30px;
-    height: 3px;
-    background-color: #fff;
-    margin-bottom: 5px;
-    transition: all 0.3s ease;
-  }
-
-  .menu-toggle.active span:first-child {
-    transform: rotate(45deg) translateX(10px);
-  }
-
-  .menu-toggle.active span:last-child {
-    transform: rotate(-45deg) translateX(10px);
-  }
-
-  .menu-toggle.active span:nth-child(2) {
-    opacity: 0;
-  }
-
-  header nav ul {
+.corner-menu .menuToggle {
     position: fixed;
+    width: 45px;
+    height: 45px;
+    font-size: 2em;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+}
+
+.corner-menu li {
+    transform-origin: 75px; 
+    transition-delay: calc(0.1s * var(--i));
+    transform: rotate(0deg) translateX(60px); 
+    position: fixed;
+}
+
+.corner-menu li a {
+    width: 25px;
+    height: 25px;
+    font-size: 2em;
+}
+
+.corner-menu.active li {
+    transform: rotate(calc(360deg / 8 * var(--i)));
+}
+
+
+/* --- MAIN CONTENT & AESTHETIC PANEL --- */
+
+.home-content {
+    padding: 0;
+    margin: 0;
+    min-height: 100vh;
+}
+
+/* Translucent Black Panel*/
+.content-panel {
+    max-width: 1200px;
+    margin: 40px auto; 
+    padding: 40px;
+    
+    background: rgba(0, 0, 0, 0.4); 
+    border-radius: 12px;
+    backdrop-filter: blur(5px); 
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    
+    display: flex;
+    flex-direction: column;
+}
+
+/* HERO SECTION */
+.hero-section {
+    max-width: 100%; 
+    margin-bottom: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.avlory-logo {
+    width: 100px; 
+    height: auto;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 8px var(--avlory-purple)); 
+    display: block; 
+}
+
+.headline {
+    font-size: 4em;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--text-light);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 0 var(--avlory-pink);
+}
+
+.tagline {
+    font-size: 1.5em;
+    line-height: 1.6;
+    color: rgba(240, 240, 240, 0.85);
+    margin-bottom: 40px;
+}
+
+.tagline strong {
+    color: var(--avlory-blue);
+}
+
+/* PRIMARY CTA BUTTON */
+.primary-cta {
+    display: inline-block;
+    padding: 15px 35px;
+    font-size: 1.2em;
+    font-weight: 700;
+    text-decoration: none;
+    background: linear-gradient(45deg, var(--avlory-pink), var(--avlory-purple));
+    color: var(--dark-bg); 
+    border-radius: 5px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    text-transform: uppercase;
+}
+
+.primary-cta:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(165, 41, 255, 0.4);
+}
+
+/* --- TECH KNOWLEDGE BARS --- */
+.tech-chime {
+    margin-top: 40px;
+    display: grid; 
+    gap: 15px;
+    max-width: 400px; 
+}
+
+.tech-bar-container {
+    position: relative;
+    padding: 5px 0;
+    cursor: default;
+    transition: box-shadow 0.3s, transform 0.3s;
+    border-radius: 5px;
+}
+
+.tech-bar-container:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 10px rgba(0, 176, 254, 0.4); 
+}
+
+.tech-name {
+    font-size: 1em;
+    font-weight: 500;
+    color: rgba(240, 240, 240, 0.9);
+    display: block;
+    margin-bottom: 5px;
+}
+
+.knowledge-bar {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+}
+
+.knowledge-bar::before {
+    content: '';
+    position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100vh;
-    background-color: #333; /* Same darker background */
+    height: 100%;
+    background: linear-gradient(90deg, var(--avlory-purple), var(--avlory-pink));
+    width: 0; 
+    opacity: 0; 
+    transition: width 1s ease-out, opacity 0.5s ease-in;
+    border-radius: 4px;
+}
+
+/* --- METRICS SECTION  --- */
+.metrics-section {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 20px;
+    padding: 20px 0; 
+}
+
+.metric-card {
+    text-align: center;
     padding: 20px;
-    flex-direction: column;
+    flex-basis: calc(25% - 15px); 
+    border-radius: 8px;
+    transition: box-shadow 0.4s, transform 0.4s, background 0.4s;
+}
+
+.metric-card:hover {
+    background: rgba(165, 41, 255, 0.1); 
+    box-shadow: 0 0 20px rgba(165, 41, 255, 0.6); 
+    transform: translateY(-5px); 
+    cursor: default;
+}
+
+.metric-number {
+    font-size: 3.5em;
+    font-weight: 900;
+    color: var(--avlory-blue);
+    display: block;
+    margin-bottom: 5px;
+    transition: color 0.4s;
+}
+
+.metric-card:hover .metric-number {
+    color: var(--avlory-pink); 
+}
+
+.metric-label {
+    font-size: 1em;
+    color: rgba(240, 240, 240, 0.7);
+    line-height: 1.4;
+}
+
+/* FOOTER  */
+.site-footer {
+    max-width: 1200px;
+    margin: 40px auto; 
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    transition: all 0.3s ease;
-    transform: translateX(-100%);
-  }
-
-  header nav ul.active {
-    transform: translateX(0);
-  }
+    font-size: 0.9em;
 }
 
-/* Active effect */
-nav a.active {
-  transform: translateY(-5px) scale(1.1); /* Slight lift and scale up */
-  box-shadow: 0 0 5px rgba(255, 255, 255, 0.3); /* Subtle shadow on active link */
+.social-links a {
+    color: var(--text-light);
+    font-size: 1.5em;
+    margin-right: 15px;
+    transition: color 0.3s;
 }
 
-/* Indicator effect (replace with your desired indicator element) */
-.indicator {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 2px; /* Indicator height */
-  background-color: #fff; /* Indicator color */
-  transition: transform 0.3s ease;
-  transform: translateX(-100%); /* Initially hidden */
+.social-links a:hover {
+    color: var(--avlory-blue);
 }
 
-nav a:hover + .indicator {
-  transform: translateX(0); /* Shows indicator on hover */
+.resume-link {
+    font-size: 1em;
+    color: var(--avlory-purple);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--avlory-purple);
+    padding-left: 10px;
+    transition: opacity 0.3s;
 }
 
-nav a.active + .indicator {
-  transform: translateX(0); /* Keeps indicator visible for active link */
+.resume-link:hover {
+    opacity: 0.8;
 }
 
-cards-container {
-  display: flex;
-  flex-wrap: wrap; /* Allow cards to wrap on smaller screens */
-  justify-content: space-around; /* Distribute cards evenly */
-  margin: 20px auto;
-  width: 80%; /* Limit container width */
-  position: relative; /* Required for some effects */
+.seo-copy {
+    color: rgba(240, 240, 240, 0.5);
+    text-align: right;
 }
 
-.card {
-  position: relative;
-  width: 25%; /* Set card width */
-  margin: 10px;
-  background-color: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
-  border-radius: 5px; /* Rounded corners */
-  overflow: hidden; /* Clip overflowing content */
-  transition: all 0.3s ease; /* Smooth animations */
-}
-
-.card img {
-  width: 100%;
-  transition: transform 0.3s ease; /* Smooth image zoom */
-}
-
-.card:hover .card-content {
-  opacity: 1; /* Show card content on hover */
-  transition: opacity 0.3s ease;
-}
-
-.card-content {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  padding: 20px;
-  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent overlay */
-  color: #fff; /* White text */
-  opacity: 0; /* Initially hidden */
-  transition: opacity 0.3s ease;
-}
-
-.card:hover {
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4); /* Enhanced shadow on hover */
-  transform: scale(1.65); /* Slight zoom on hover */
-}
-
-@keyframes sparkle {
-  from {
-    opacity: 0;
-    transform: scale(0);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1.5);
-  }
-}
-
-.sparkles {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none; /* Don't interact with sparkles */
-}
-
-.sparkles:after,
-.sparkles:before {
-  content: "";
-  position: absolute;
-  border-radius: 50%;
-  background-color: #fff; /* White sparkles */
-  opacity: 0.7;
-  animation: twinkle 1s infinite ease-in-out;
-}
-
-.sparkles:after {
-  width: 5px;
-  height: 5px;
-}
-
-.sparkles:before {
-  width: 3px;
-  height: 3px;
-  animation-delay: 0.2s; /* Add a slight delay for variation */
-}
-
-@keyframes twinkle {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+.seo-copy strong {
+    color: rgba(240, 240, 240, 0.8);
 }
