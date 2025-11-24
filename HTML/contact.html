@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact | Sean D. Ward</title>
+    <link rel="stylesheet" href="/CSS/universal.css" />
+    <link rel="stylesheet" href="/CSS/styles.css" />
+    <link rel="stylesheet" href="/CSS/contact.css" />
+  </head>
+  <body>
+
+    <ul class="menu fade-in corner-menu">
+      <div class="menuToggle">
+        <ion-icon name="add-outline"></ion-icon>
+      </div>
+      <li style="--i: 0; --clr: #ff2972">
+        <a href="/HTML/home.html"><ion-icon name="home-outline"></ion-icon></a>
+      </li>
+      <li style="--i: 1; --clr: #fee800">
+        <a href="/HTML/about.html"><ion-icon name="person-outline"></ion-icon></a>
+      </li>
+      <li style="--i: 2; --clr: #04fc43">
+        <a href="/HTML/projects.html"><ion-icon name="code-slash-outline"></ion-icon></a>
+      </li>
+      <li style="--i: 3; --clr: #00b0fe">
+        <a href="/HTML/contact.html" class="active"><ion-icon name="call-outline"></ion-icon></a>
+      </li>
+      <li style="--i: 4; --clr: #fea500">
+        <a href="#"><ion-icon name="bulb-outline"></ion-icon></a>
+      </li>
+      <li style="--i: 5; --clr: #a529ff">
+        <a href="#"><ion-icon name="people-outline"></ion-icon></a>
+      </li>
+      <li style="--i: 6; --clr: #ff2942">
+        <a href="#"><ion-icon name="hardware-chip-outline"></ion-icon></a>
+      </li>
+      <li style="--i: 7; --clr: #01bdab">
+        <a href="#"><ion-icon name="help-outline"></ion-icon></a>
+      </li>
+    </ul>
+
+    <main class="contact-content">
+      <div class="content-panel fade-in">
+        <header class="contact-header">
+            <h1 class="headline">Get In <span class="highlight">Touch</span></h1>
+            <p class="tagline">Let's build something amazing together.</p>
+        </header>
+
+        <div class="contact-container">
+            <!-- Contact Info & Social Hub -->
+            <div class="contact-info-section">
+                
+                <div class="info-card" id="email-card">
+                    <div class="icon-box">
+                        <ion-icon name="mail-outline"></ion-icon>
+                    </div>
+                    <div class="info-text">
+                        <h3>Email</h3>
+                        <p>sean.ward.7777@gmail.com</p>
+                    </div>
+                </div>
+
+                <div class="info-card" id="phone-card" title="Click to Copy">
+                    <div class="icon-box">
+                        <ion-icon name="call-outline"></ion-icon>
+                    </div>
+                    <div class="info-text">
+                        <h3>Phone</h3>
+                        <p>+1 (619)-251-0366</p>
+                    </div>
+                </div>
+
+                <div class="social-hub">
+                    <h3>Social Hub</h3>
+                    <div class="social-grid">
+                        <a href="https://www.linkedin.com/in/sean-ward7/" target="_blank" class="social-item linkedin" title="LinkedIn">
+                            <ion-icon name="logo-linkedin"></ion-icon>
+                        </a>
+                        <a href="https://github.com/Sean-Ward-The-Albino" target="_blank" class="social-item github" title="GitHub">
+                            <ion-icon name="logo-github"></ion-icon>
+                        </a>
+                        <a href="https://instagram.com/s.ean.w.ard" target="_blank" class="social-item instagram" title="Instagram: s.ean.w.ard">
+                            <ion-icon name="logo-instagram"></ion-icon>
+                        </a>
+                        <div class="social-item discord" id="discord-card" title="Discord: .mutatio (Click to Copy)">
+                            <ion-icon name="logo-discord"></ion-icon>
+                        </div>
+                        <a href="https://open.spotify.com/user/albino" target="_blank" class="social-item spotify" title="Spotify: albino">
+                            <ion-icon name="musical-notes-outline"></ion-icon> <!-- No spotify logo in ionicons v5 standard set sometimes, using generic music if missing or custom -->
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Contact Form -->
+            <div class="contact-form-section">
+                <form id="contact-form">
+                    <div class="input-group">
+                        <input type="text" id="name" required>
+                        <label for="name">Your Name</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="subject" required>
+                        <label for="subject">Subject</label>
+                    </div>
+                    <div class="input-group">
+                        <textarea id="message" required></textarea>
+                        <label for="message">Message</label>
+                    </div>
+                    <button type="submit" class="submit-btn">
+                        Send Message <ion-icon name="paper-plane-outline"></ion-icon>
+                    </button>
+                </form>
+            </div>
+        </div>
+      </div>
+
+      <!-- New Creative Sections -->
+      <section class="extra-content fade-in">
+        
+        <!-- Availability Widget -->
+        <div class="availability-widget">
+            <div class="status-indicator">
+                <div class="status-dot"></div>
+                <span id="status-text">Checking Status...</span>
+            </div>
+            <p class="time-display">Local Time (PST): <span id="pst-time">--:-- AM</span></p>
+        </div>
+
+        <!-- Services Grid -->
+        <div class="services-grid">
+            <div class="service-card">
+                <ion-icon name="rocket-outline"></ion-icon>
+                <h3>Collaboration</h3>
+                <p>Open to partnering on innovative tech startups and open-source projects.</p>
+            </div>
+            <div class="service-card">
+                <ion-icon name="code-working-outline"></ion-icon>
+                <h3>Freelance</h3>
+                <p>Available for full-stack web and mobile application development contracts.</p>
+            </div>
+            <div class="service-card">
+                <ion-icon name="school-outline"></ion-icon>
+                <h3>Mentorship</h3>
+                <p>Passionate about teaching Java, DSA, and system design to the next generation.</p>
+            </div>
+        </div>
+
+      </section>
+
+      <footer class="site-footer fade-in">
+        <p class="seo-copy">Copyright &copy; 2025 Sean D. Ward</p>
+      </footer>
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast">Copied to Clipboard!</div>
+
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+       (function(){
+          // Initialize EmailJS with your Public Key
+          // TODO: Replace 'YOUR_PUBLIC_KEY' with your actual EmailJS public key
+          emailjs.init("YOUR_PUBLIC_KEY");
+       })();
+    </script>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="/JavaScript/fade.js"></script>
+    <script src="/JavaScript/contact.js"></script>
+    <script>
+      let menuToggle = document.querySelector(".menuToggle");
+      let menu = document.querySelector(".corner-menu");
+      menuToggle.onclick = function () {
+        menu.classList.toggle("active");
+      };
+    </script>
+  </body>
+</html>

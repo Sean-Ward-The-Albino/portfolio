@@ -1,0 +1,164 @@
+
+
+:root {
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --card-border: rgba(255, 255, 255, 0.1);
+    --card-hover-border: var(--avlory-pink); 
+    --avlory-pink: #ff2972; 
+    --avlory-purple: #a529ff;
+    --avlory-blue: #00b0fe; 
+}
+
+.projects-content {
+    min-height: 100vh;
+    padding: 0;
+    margin: 0;
+}
+
+.projects-header {
+    text-align: center;
+    margin-bottom: 40px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 30px;
+}
+
+.highlight {
+    color: var(--avlory-blue);
+    text-shadow: 0 0 10px rgba(0, 176, 254, 0.5);
+}
+
+/* FILTER BUTTONS */
+.filter-container {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    background: transparent;
+    border: 1px solid var(--card-border);
+    color: rgba(255, 255, 255, 0.7);
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.filter-btn:hover, .filter-btn.active {
+    background: var(--avlory-purple);
+    color: white;
+    border-color: var(--avlory-purple);
+    box-shadow: 0 0 15px rgba(165, 41, 255, 0.4);
+}
+
+/* PROJECTS GRID */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    padding: 20px 0;
+    perspective: 1000px; 
+}
+
+.project-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 15px;
+    padding: 30px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.1s ease-out, opacity 0.5s ease, box-shadow 0.3s ease; /* Fast transform for tilt */
+    transform-style: preserve-3d;
+    cursor: pointer;
+    /* Initial state for filter animation */
+    opacity: 1; 
+    transform: scale(1);
+}
+
+.project-card.hidden {
+    display: none; 
+}
+
+/* 3D Tilt Effect Layers */
+.card-content {
+    transform: translateZ(20px); 
+}
+
+.card-icon {
+    font-size: 3em;
+    color: var(--avlory-pink);
+    margin-bottom: 20px;
+    transform: translateZ(30px);
+}
+
+.project-title {
+    font-size: 1.5em;
+    color: white;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.project-desc {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.95em;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.tech-stack {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+}
+
+.tech-stack span {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    color: var(--avlory-blue);
+}
+
+.project-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--avlory-blue);
+    text-decoration: none;
+    font-weight: 600;
+    transition: gap 0.3s ease;
+}
+
+.project-link:hover {
+    gap: 10px;
+    color: var(--avlory-pink);
+}
+
+/* Hover Glow Effect */
+.project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    border-radius: 15px;
+    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.1), transparent 50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.project-card:hover::before {
+    opacity: 1;
+}
+
+.project-card:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}

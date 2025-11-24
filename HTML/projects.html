@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projects | Sean D. Ward</title>
+    <link rel="stylesheet" href="/CSS/universal.css" />
+    <link rel="stylesheet" href="/CSS/styles.css" />
+    <link rel="stylesheet" href="/CSS/projects.css" />
+  </head>
+  <body>
+    
+    <ul class="menu fade-in corner-menu">
+      <div class="menuToggle">
+        <ion-icon name="add-outline"></ion-icon>
+      </div>
+      <li style="--i: 0; --clr: #ff2972">
+        <a href="/HTML/home.html"><ion-icon name="home-outline"></ion-icon></a>
+      </li>
+      <li style="--i: 1; --clr: #fee800">
+        <a href="/HTML/about.html"><ion-icon name="person-outline"></ion-icon></a>
+      </li>
+      <li style="--i: 2; --clr: #04fc43">
+        <a href="/HTML/projects.html" class="active"><ion-icon name="code-slash-outline"></ion-icon></a>
+      </li>
+      <li style="--i: 3; --clr: #00b0fe">
+        <a href="/HTML/contact.html"><ion-icon name="call-outline"></ion-icon></a>
+      </li>
+      <li style="--i: 4; --clr: #fea500">
+        <a href="#"><ion-icon name="bulb-outline"></ion-icon></a>
+      </li>
+      <li style="--i: 5; --clr: #a529ff">
+        <a href="#"><ion-icon name="people-outline"></ion-icon></a>
+      </li>
+      <li style="--i: 6; --clr: #ff2942">
+        <a href="#"><ion-icon name="hardware-chip-outline"></ion-icon></a>
+      </li>
+      <li style="--i: 7; --clr: #01bdab">
+        <a href="#"><ion-icon name="help-outline"></ion-icon></a>
+      </li>
+    </ul>
+
+    <main class="projects-content">
+      <div class="content-panel fade-in">
+        <header class="projects-header">
+            <h1 class="headline">My <span class="highlight">Projects</span></h1>
+            <p class="tagline">A collection of my work in <strong>Full-Stack Development</strong>, <strong>Mobile Apps</strong>, and <strong>Creative Coding</strong>.</p>
+            
+            <div class="filter-container">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="web">Web</button>
+                <button class="filter-btn" data-filter="mobile">Mobile</button>
+                <button class="filter-btn" data-filter="java">Java/Spring</button>
+            </div>
+        </header>
+
+        <!-- Projects -->
+        <section class="projects-grid">
+            <div class="project-card" data-category="mobile">
+                <div class="card-content">
+                    <div class="card-icon">
+                        <ion-icon name="phone-portrait-outline"></ion-icon>
+                    </div>
+                    <h3 class="project-title">Penny Sphere</h3>
+                    <p class="project-desc">A cross-platform mobile application built with Flutter. Helps users track personal finances with gamified elements.</p>
+                    <div class="tech-stack">
+                        <span>Flutter</span>
+                        <span>Dart</span>
+                        <span>Firebase</span>
+                    </div>
+                    <a href="https://github.com/Sean-Ward-The-Albino/Penny-Sphere" target="_blank" class="project-link">View Repository <ion-icon name="logo-github"></ion-icon></a>
+                </div>
+            </div>
+
+            
+            <div class="project-card" data-category="web">
+                <div class="card-content">
+                    <div class="card-icon">
+                        <ion-icon name="globe-outline"></ion-icon>
+                    </div>
+                    <h3 class="project-title">Avlory Tech Site</h3>
+                    <p class="project-desc">The official corporate website for Avlory Tech. Features a custom design system and responsive layout.</p>
+                    <div class="tech-stack">
+                        <span>HTML/CSS</span>
+                        <span>JS</span>
+                        <span>Responsive</span>
+                    </div>
+                    <a href="https://github.com/Sean-Ward-The-Albino/Avlory-Tech-Site" target="_blank" class="project-link">View Repository <ion-icon name="logo-github"></ion-icon></a>
+                </div>
+            </div>
+
+            
+            <div class="project-card" data-category="java">
+                <div class="card-content">
+                    <div class="card-icon">
+                        <ion-icon name="server-outline"></ion-icon>
+                    </div>
+                    <h3 class="project-title">Student Mgmt System</h3>
+                    <p class="project-desc">A robust backend API for managing student records, grades, and attendance. Built with Spring Boot.</p>
+                    <div class="tech-stack">
+                        <span>Java</span>
+                        <span>Spring Boot</span>
+                        <span>PostgreSQL</span>
+                    </div>
+                    <a href="https://github.com/Sean-Ward-The-Albino/Student-Management-System" target="_blank" class="project-link">View Repository <ion-icon name="logo-github"></ion-icon></a>
+                </div>
+            </div>
+
+             
+             <div class="project-card" data-category="web">
+                <div class="card-content">
+                    <div class="card-icon">
+                        <ion-icon name="color-palette-outline"></ion-icon>
+                    </div>
+                    <h3 class="project-title">Portfolio v1</h3>
+                    <p class="project-desc">My first portfolio site. A playground for experimenting with CSS animations and layout techniques.</p>
+                    <div class="tech-stack">
+                        <span>HTML</span>
+                        <span>CSS</span>
+                        <span>jQuery</span>
+                    </div>
+                    <a href="https://github.com/Sean-Ward-The-Albino/Portfolio-v1" target="_blank" class="project-link">View Repository <ion-icon name="logo-github"></ion-icon></a>
+                </div>
+            </div>
+        </section>
+
+        <div class="more-projects" style="text-align: center; margin-top: 40px;">
+            <a href="https://github.com/Sean-Ward-The-Albino?tab=repositories" target="_blank" class="primary-cta">
+                View My Other Repositories <ion-icon name="logo-github"></ion-icon>
+            </a>
+        </div>
+      </div>
+
+      <footer class="site-footer fade-in">
+        <div class="social-links">
+          <a href="https://github.com/Sean-Ward-The-Albino" target="_blank" rel="noopener noreferrer"><ion-icon name="logo-github"></ion-icon></a>
+          <a href="https://www.linkedin.com/in/sean-ward7/" target="_blank" rel="noopener noreferrer"><ion-icon name="logo-linkedin"></ion-icon></a>
+        </div>
+        <p class="seo-copy">Copyright &copy; 2025 Sean D. Ward</p>
+      </footer>
+    </main>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="/JavaScript/fade.js"></script>
+    <script src="/JavaScript/projects.js"></script>
+    <script>
+      let menuToggle = document.querySelector(".menuToggle");
+      let menu = document.querySelector(".corner-menu");
+      menuToggle.onclick = function () {
+        menu.classList.toggle("active");
+      };
+    </script>
+  </body>
+</html>
