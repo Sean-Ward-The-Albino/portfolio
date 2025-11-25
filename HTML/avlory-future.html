@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avlory - The Future</title>
+    <link rel="stylesheet" href="/CSS/universal.css">
+    <link rel="stylesheet" href="/CSS/styles.css">
+    <link rel="stylesheet" href="/CSS/avlory-future.css">
+</head>
+<body>
+
+ 
+    <nav class="future-nav fade-in">
+        <div class="nav-links">
+            <a href="/HTML/home.html">HOME</a>
+            <a href="/HTML/about.html">ABOUT</a>
+            <a href="/HTML/projects.html">PROJECTS</a>
+            <a href="/HTML/contact.html">CONTACT</a>
+            <a href="/HTML/tech-takes.html">TECH TAKES</a>
+        </div>
+    </nav>
+
+    <main class="future-container">
+        <div class="fog-container">
+            <div class="fog-img fog-img-first"></div>
+            <div class="fog-img fog-img-second"></div>
+        </div>
+
+        <div class="content-wrapper">
+            <div id="enter-screen" class="fade-in">
+                <button id="enter-btn" class="cinematic-btn">ENTER THE UNKNOWN</button>
+            </div>
+
+            <div id="main-message" class="hidden">
+                <h1 class="cinematic-title">AVLORY</h1>
+                <p class="cinematic-subtitle">NEXT STEPS COMING SOON</p>
+                <div class="pulsing-orb"></div>
+            </div>
+        </div>
+
+        
+        <audio id="bg-music" loop>
+            <source src="/Audio/avlory-theme.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </main>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="/JavaScript/fade.js"></script>
+    <script>
+        const enterBtn = document.getElementById('enter-btn');
+        const enterScreen = document.getElementById('enter-screen');
+        const mainMessage = document.getElementById('main-message');
+        const audio = document.getElementById('bg-music');
+
+        enterBtn.addEventListener('click', () => {
+            enterScreen.style.opacity = '0';
+            setTimeout(() => {
+                enterScreen.style.display = 'none';
+                
+                mainMessage.classList.remove('hidden');
+                mainMessage.classList.add('reveal');
+                
+                audio.volume = 0.5;
+                audio.play().catch(e => console.log("Audio play failed (user interaction required):", e));
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aspirations - Sean D. Ward</title>
+    <link rel="stylesheet" href="/CSS/universal.css" />
+    <link rel="stylesheet" href="/CSS/styles.css" />
+    <link rel="stylesheet" href="/CSS/aspirations.css" />
+  </head>
+  <body>
+    <ul class="menu fade-in corner-menu">
+      <div class="menuToggle">
+        <ion-icon name="add-outline"></ion-icon>
+      </div>
+      <li style="--i: 0; --clr: #ff2972">
+        <a href="/HTML/home.html"><ion-icon name="home-outline"></ion-icon></a>
+      </li>
+      <li style="--i: 1; --clr: #fee800">
+        <a href="/HTML/about.html"><ion-icon name="person-outline"></ion-icon></a>
+      </li>
+      <li style="--i: 2; --clr: #04fc43">
+        <a href="/HTML/projects.html"><ion-icon name="code-slash-outline"></ion-icon></a>
+      </li>
+      <li style="--i: 3; --clr: #00b0fe">
+        <a href="/HTML/contact.html"><ion-icon name="call-outline"></ion-icon></a>
+      </li>
+      <li style="--i: 4; --clr: #fea500">
+        <a href="/HTML/aspirations.html"><ion-icon name="bulb-outline"></ion-icon></a>
+      </li>
+      <li style="--i: 5; --clr: #a529ff">
+        <a href="/HTML/shoutouts.html"><ion-icon name="people-outline"></ion-icon></a>
+      </li>
+      <li style="--i: 6; --clr: #ff2942">
+        <a href="/HTML/tech-takes.html"><ion-icon name="hardware-chip-outline"></ion-icon></a>
+      </li>
+      <li style="--i: 7; --clr: #01bdab">
+        <a href="/HTML/avlory-future.html"><ion-icon name="planet-outline"></ion-icon></a>
+      </li>
+    </ul>
+
+    <main class="aspirations-content">
+      <div class="content-panel fade-in">
+        <header class="aspirations-header fade-in">
+          <h1 class="headline">Aspirations & Goals</h1>
+          <h2 class="subhead">Building the Future, One Step at a Time</h2>
+          <p class="intro-text">
+            "The future belongs to those who believe in the beauty of their dreams." - Eleanor Roosevelt.
+            Here is where I map out my journey towards making a significant impact in technology and society.
+          </p>
+        </header>
+
+        <section class="section-split">
+          <div class="split-column text-column fade-in">
+            <h3>Professional Ambitions</h3>
+            <p>
+              My primary professional goal is to lead <strong>Avlory</strong> to become a beacon of innovation, creating a diverse suite of products that empower users.
+              While <strong>Penny Sphere</strong> remains a key focus, it is part of a larger vision to revolutionize digital interactions.
+            </p>
+            <ul class="aspirations-list">
+              <li>Create innovative products through Avlory.</li>
+              <li>Develop sustainable technology solutions.</li>
+              <li>Contribute to open-source AI safety research.</li>
+              <li>Mentor the next generation of engineers.</li>
+            </ul>
+          </div>
+          <div class="split-column visual-column fade-in">
+            <!-- Placeholder -->
+            <div class="placeholder-visual">
+                <ion-icon name="rocket-outline"></ion-icon>
+            </div>
+          </div>
+        </section>
+
+        <hr class="section-divider" />
+
+        <section class="section-split reverse-split">
+            <div class="split-column visual-column fade-in">
+                 <div class="placeholder-visual">
+                    <ion-icon name="earth-outline"></ion-icon>
+                </div>
+            </div>
+          <div class="split-column text-column fade-in">
+            <h3>Community & Impact</h3>
+            <p>
+              Technology should serve humanity. I aspire to bridge the digital divide and ensure that
+              <strong>information and tools are accessible to everyone</strong>, regardless of their background.
+            </p>
+            <ul class="aspirations-list">
+              <li>Create open-source educational resources.</li>
+              <li>Support initiatives for digital literacy.</li>
+              <li>Foster a diverse and inclusive tech community.</li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <footer class="site-footer fade-in">
+        <div class="social-links">
+          <a href="https://github.com/Sean-Ward-The-Albino" target="_blank" rel="noopener noreferrer" title="GitHub Profile">
+            <ion-icon name="logo-github"></ion-icon>
+          </a>
+          <a href="https://www.linkedin.com/in/sean-ward7/" target="_blank" rel="noopener noreferrer" title="LinkedIn Profile">
+            <ion-icon name="logo-linkedin"></ion-icon>
+          </a>
+          <a href="#" class="resume-link" title="Download Resume">Download CV</a>
+        </div>
+        <p class="seo-copy">
+          Copyright &copy; 2025 Sean D. Ward | Tech CEO & Developer.
+        </p>
+      </footer>
+    </main>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="/JavaScript/fade.js"></script>
+    <script>
+      let menuToggle = document.querySelector(".menuToggle");
+      let menu = document.querySelector(".corner-menu");
+      menuToggle.onclick = function () {
+        menu.classList.toggle("active");
+      };
+    </script>
+  </body>
+</html>

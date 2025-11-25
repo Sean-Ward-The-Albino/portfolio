@@ -1,0 +1,249 @@
+:root {
+    --avlory-pink: #ff2972;
+    --avlory-purple: #a529ff;
+    --avlory-blue: #00b0fe;
+    --avlory-orange: #fea500;
+    --dark-bg: rgb(23, 8, 32);
+    --text-light: #f0f0f0;
+    --opac-dark: rgba(0, 0, 0, 0.4);
+}
+
+body {
+    display: block;
+    padding: 0;
+    min-height: auto;
+}
+
+/* Reusing corner menu styles from about.css or styles.css if they were global, 
+   but since they were in about.css, I'll include them here for now or we should refactor later.
+   For now, I will copy the necessary parts to ensure it works standalone. 
+*/
+
+.corner-menu {
+    position: fixed;
+    top: 50px;
+    right: 50px;
+    width: 150px;
+    height: 150px;
+    z-index: 9999;
+    display: flex;
+}
+
+.corner-menu .menuToggle {
+    width: 45px;
+    height: 45px;
+    font-size: 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.corner-menu li {
+    transform-origin: 75px;
+    transition-delay: calc(0.1s * var(--i));
+    transform: rotate(0deg) translateX(50px);
+}
+
+.corner-menu li a {
+    width: 45px;
+    height: 45px;
+    font-size: 2em;
+}
+
+.corner-menu.active li {
+    transform: rotate(calc(360deg / 8 * var(--i)));
+}
+
+/* Main Content */
+
+.aspirations-content {
+    padding: 0;
+    margin: 0;
+    min-height: 100vh;
+}
+
+.content-panel {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 40px;
+    background: var(--opac-dark);
+    border-radius: 12px;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Subtle background animation for the panel */
+.content-panel::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 41, 114, 0.05) 0%, rgba(0,0,0,0) 70%);
+    animation: rotateBg 20s linear infinite;
+    z-index: -1;
+    pointer-events: none;
+}
+
+@keyframes rotateBg {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.aspirations-header {
+    text-align: center;
+    padding-bottom: 40px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 40px;
+}
+
+.aspirations-header .headline {
+    font-size: 3em;
+    text-transform: uppercase;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    color: var(--text-light);
+    text-shadow: 2px 2px 0 var(--avlory-orange);
+    animation: glowText 3s ease-in-out infinite alternate;
+}
+
+@keyframes glowText {
+    from { text-shadow: 2px 2px 0 var(--avlory-orange); }
+    to { text-shadow: 2px 2px 10px var(--avlory-orange); }
+}
+
+.aspirations-header .subhead {
+    font-size: 1.5em;
+    font-weight: 500;
+    color: var(--avlory-blue);
+    margin-bottom: 20px;
+}
+
+.intro-text {
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.8;
+    color: rgba(240, 240, 240, 0.8);
+    font-style: italic;
+}
+
+.section-split {
+    display: flex;
+    gap: 60px;
+    padding: 40px 0;
+}
+
+.section-split:not(:last-child) {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.split-column {
+    flex: 1;
+    padding: 20px;
+    background: var(--opac-dark);
+    border-radius: 8px;
+    transition: box-shadow 0.3s, transform 0.3s;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.split-column:hover {
+    box-shadow: 0 0 20px rgba(254, 165, 0, 0.4);
+    transform: translateY(-5px);
+}
+
+.reverse-split {
+    flex-direction: row-reverse;
+}
+
+.text-column h3 {
+    font-size: 2em;
+    color: var(--avlory-orange);
+    margin-bottom: 20px;
+}
+
+.text-column p {
+    line-height: 1.7;
+    margin-bottom: 15px;
+}
+
+.aspirations-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.aspirations-list li {
+    line-height: 1.6;
+    margin-bottom: 10px;
+    padding-left: 1.5em;
+    position: relative;
+    transition: transform 0.2s, color 0.2s;
+}
+
+.aspirations-list li:hover {
+    transform: translateX(5px);
+    color: var(--avlory-pink);
+}
+
+.aspirations-list li::before {
+    content: '➤';
+    color: var(--avlory-blue);
+    position: absolute;
+    left: 0;
+    font-size: 1em;
+}
+
+.placeholder-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    position: relative;
+}
+
+.placeholder-visual ion-icon {
+    font-size: 5em;
+    color: var(--avlory-orange);
+    animation: floatIcon 4s ease-in-out infinite;
+}
+
+@keyframes floatIcon {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+.site-footer {
+    max-width: 1200px;
+    margin: 40px auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9em;
+}
+
+@media (max-width: 900px) {
+    .section-split {
+        flex-direction: column;
+        gap: 30px;
+    }
+    
+    .aspirations-header .headline {
+        font-size: 2.5em;
+    }
+    
+    .content-panel {
+        margin: 20px;
+        padding: 30px 15px;
+    }
+}

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shoutouts & Team - Sean D. Ward</title>
+    <link rel="stylesheet" href="/CSS/universal.css" />
+    <link rel="stylesheet" href="/CSS/styles.css" />
+    <link rel="stylesheet" href="/CSS/shoutouts.css" />
+  </head>
+  <body>
+    <ul class="menu fade-in corner-menu">
+      <div class="menuToggle">
+        <ion-icon name="add-outline"></ion-icon>
+      </div>
+      <li style="--i: 0; --clr: #ff2972">
+        <a href="/HTML/home.html"><ion-icon name="home-outline"></ion-icon></a>
+      </li>
+      <li style="--i: 1; --clr: #fee800">
+        <a href="/HTML/about.html"><ion-icon name="person-outline"></ion-icon></a>
+      </li>
+      <li style="--i: 2; --clr: #04fc43">
+        <a href="/HTML/projects.html"><ion-icon name="code-slash-outline"></ion-icon></a>
+      </li>
+      <li style="--i: 3; --clr: #00b0fe">
+        <a href="/HTML/contact.html"><ion-icon name="call-outline"></ion-icon></a>
+      </li>
+      <li style="--i: 4; --clr: #fea500">
+        <a href="/HTML/aspirations.html"><ion-icon name="bulb-outline"></ion-icon></a>
+      </li>
+      <li style="--i: 5; --clr: #a529ff">
+        <a href="/HTML/shoutouts.html"><ion-icon name="people-outline"></ion-icon></a>
+      </li>
+      <li style="--i: 6; --clr: #ff2942">
+        <a href="/HTML/tech-takes.html"><ion-icon name="hardware-chip-outline"></ion-icon></a>
+      </li>
+      <li style="--i: 7; --clr: #01bdab">
+        <a href="/HTML/avlory-future.html"><ion-icon name="planet-outline"></ion-icon></a>
+      </li>
+    </ul>
+
+    <main class="shoutouts-content">
+      <div class="content-panel fade-in">
+        <header class="page-header">
+          <h1 class="headline">Shoutouts & Appreciation</h1>
+          <p class="intro-text">
+            "Great things in business are never done by one person. They're done by a team of people."
+            <br>
+            Celebrating the incredible individuals who make <strong>Avlory</strong> possible and the supporters who have stood by me.
+          </p>
+        </header>
+
+        <section class="team-section">
+          <h2 class="section-title">The Avlory Team</h2>
+          <div class="team-grid">
+            <div class="team-card tilt-card fade-in">
+              <div class="card-icon">
+                <ion-icon name="flash-outline"></ion-icon>
+              </div>
+              <h3>Victor Mercado</h3>
+              <span class="role">Chief Software Development Officer (CSDO)</span>
+              <p>
+                A vital part of Avlory since day one. From being my student in high school to becoming a powerhouse developer, Victor's journey is one of excellence.
+              </p>
+              <div class="card-links">
+                <a href="https://thunderboltweb.com/" target="_blank" title="Website"><ion-icon name="globe-outline"></ion-icon></a>
+                <a href="https://www.linkedin.com/in/victor-mercado-74aa74264/" target="_blank" title="LinkedIn"><ion-icon name="logo-linkedin"></ion-icon></a>
+              </div>
+            </div>
+
+            <div class="team-card tilt-card fade-in" style="animation-delay: 0.2s;">
+              <div class="card-icon">
+                <ion-icon name="code-working-outline"></ion-icon>
+              </div>
+              <h3>Miriam Valenzuela</h3>
+              <span class="role">Chief Technology Officer (CTO)</span>
+              <p>
+                We met at a Meta bootcamp and lifted each other up. Her diverse experience and technical prowess drive Avlory's innovation.
+              </p>
+              <div class="card-links">
+                <a href="https://www.linkedin.com/in/miriam-valenzuela-2b48a322a/" target="_blank" title="LinkedIn"><ion-icon name="logo-linkedin"></ion-icon></a>
+                <a href="https://github.com/miriamvalenzuela" target="_blank" title="GitHub"><ion-icon name="logo-github"></ion-icon></a>
+              </div>
+            </div>
+
+
+            <div class="team-card tilt-card fade-in" style="animation-delay: 0.4s;">
+              <div class="card-icon">
+                <ion-icon name="scale-outline"></ion-icon>
+              </div>
+              <h3>Annalise Gutkowski</h3>
+              <span class="role">Legal Advisor</span>
+              <p>
+                With us nearly from the beginning, Annalise has been a pillar of support, leveraging her efforts at UCSC to guide our legal framework.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <hr class="section-divider" />
+
+        <section class="supporters-section fade-in">
+          <h2 class="section-title">My Pillars of Strength</h2>
+          <div class="supporter-message">
+            <ion-icon name="heart" class="heart-icon"></ion-icon>
+            <p>
+              To my family, friends, and everyone who stood by me through <strong>three battles with cancer</strong>.
+              Your unwavering support gave me the strength to fight and the courage to dream.
+            </p>
+            <p class="special-mention">
+              A special thank you to my <strong>sisters</strong> for being my rock.
+            </p>
+          </div>
+        </section>
+
+        <footer class="page-footer">
+          <div class="footer-values">
+            <span>Transparency</span>
+            <span class="separator">•</span>
+            <span>Loyalty</span>
+            <span class="separator">•</span>
+            <span>Growth</span>
+          </div>
+          <p class="copyright">
+            Copyright &copy; 2025 Sean D. Ward | Tech CEO & Developer.
+          </p>
+        </footer>
+      </div>
+    </main>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="/JavaScript/fade.js"></script>
+    <script src="/JavaScript/tilt.js"></script>
+    <script>
+      let menuToggle = document.querySelector(".menuToggle");
+      let menu = document.querySelector(".corner-menu");
+      menuToggle.onclick = function () {
+        menu.classList.toggle("active");
+      };
+    </script>
+  </body>
+</html>

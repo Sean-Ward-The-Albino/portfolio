@@ -37,6 +37,7 @@ body {
   display: flex; 
   justify-content: center;
   align-items: center;
+  z-index: 10000; /* Ensure menu is above all content */
 }
 
 .menu li {
