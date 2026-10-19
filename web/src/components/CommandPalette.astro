@@ -1,0 +1,163 @@
+---
+// Cmd/Ctrl+K (or "/"): jump to any page or post, flip reading mode or theme, or search every word on the site.
+// Titles are in the page; full-text search loads Pagefind's index only when someone types.
+import Icon from './Icon.astro';
+import { getPosts, postUrl, KIND_LABEL } from '../lib/posts';
+import { products } from '../lib/data';
+
+const posts = await getPosts();
+const entries = [
+  { title: 'Home', url: '/', group: 'Pages' },
+  { title: 'Avlory', url: '/avlory', group: 'Pages', hint: 'The company and its products' },
+  { title: 'Writing', url: '/writing', group: 'Pages' },
+  { title: 'About', url: '/about', group: 'Pages' },
+  { title: 'Now', url: '/now', group: 'Pages', hint: 'What I’m on right now' },
+  ...products.map((p) => ({ title: p.name, url: `/avlory#${p.slug}`, group: 'Avlory', hint: p.summary })),
+  ...posts.map((p) => ({ title: p.data.title, url: postUrl(p), group: KIND_LABEL[p.data.kind], hint: p.data.summary })),
+  { title: 'Turn reading mode on or off', action: 'reading', group: 'Actions', hint: 'Larger, high-contrast text' },
+  { title: 'Switch light or dark theme', action: 'theme', group: 'Actions' },
+];
+---
+<dialog class="palette" aria-label="Search and jump">
+  <div class="box">
+    <div class="field">
+      <Icon name="search" size={20} />
+      <input type="search" placeholder="Search posts, pages and Avlory…" aria-label="Search" autocomplete="off" spellcheck="false"
+        role="combobox" aria-expanded="true" aria-controls="palette-results" aria-autocomplete="list" />
+      <kbd class="ui">Esc</kbd>
+    </div>
+    <ul id="palette-results" role="listbox" aria-label="Results"></ul>
+    <p class="foot ui mute" aria-live="polite"></p>
+  </div>
+  <script type="application/json" id="palette-entries" set:html={JSON.stringify(entries)} />
+</dialog>
+
+<style>
+  .palette {
+    width: min(640px, 100% - 2rem); margin: 12vh auto auto; padding: 0; border: 1px solid var(--line);
+    border-radius: 18px; background: var(--ink-2); color: var(--paper); box-shadow: 0 30px 80px rgb(0 0 0 / 0.55);
+  }
+  .palette::backdrop { background: rgb(0 0 0 / 0.55); backdrop-filter: blur(6px); }
+  .palette[open] { animation: drop 240ms var(--ease); }
+  @keyframes drop { from { opacity: 0; translate: 0 -12px; scale: 0.98; } }
+  .field { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-4) var(--space-5); border-bottom: 1px solid var(--line); color: var(--mute); }
+  input { flex: 1; background: none; border: 0; outline: none; font-family: var(--font-ui); font-size: 1.1rem; color: var(--paper); min-height: 32px; }
+  input::-webkit-search-cancel-button { display: none; }
+  kbd { font-size: 0.75rem; border: 1px solid var(--line); border-radius: 6px; padding: 0.1em 0.45em; }
+  ul { list-style: none; padding: var(--space-2); max-height: min(55vh, 460px); overflow-y: auto; }
+  ul :global(.group) { font-family: var(--font-ui); font-size: 0.74rem; color: var(--mute); padding: var(--space-3) var(--space-3) var(--space-1); }
+  ul :global([role='option']) {
+    display: grid; gap: 0.1em; padding: var(--space-3); border-radius: 10px; cursor: pointer; font-family: var(--font-ui);
+  }
+  ul :global([role='option'] .t) { font-weight: 600; }
+  ul :global([role='option'] .h) { font-size: 0.85rem; color: var(--mute); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  ul :global([role='option'] mark) { background: none; color: var(--magenta-text); font-weight: 700; }
+  ul :global([aria-selected='true']) { background: var(--ink-3); box-shadow: inset 3px 0 0 var(--magenta); }
+  .foot { font-size: 0.78rem; padding: var(--space-3) var(--space-5); border-top: 1px solid var(--line); }
+</style>
+
+<script>
+  type Entry = { title: string; url?: string; action?: string; group: string; hint?: string; excerpt?: string };
+  const dialog = document.querySelector<HTMLDialogElement>('dialog.palette')!;
+  const input = dialog.querySelector('input')!;
+  const list = dialog.querySelector('ul')!;
+  const foot = dialog.querySelector<HTMLElement>('.foot')!;
+  const entries: Entry[] = JSON.parse(document.getElementById('palette-entries')!.textContent!);
+  let results: Entry[] = [];
+  let active = 0;
+  let opener: Element | null = null;
+  let pagefind: { search: (q: string) => Promise<{ results: { data: () => Promise<{ url: string; excerpt: string; meta: { title: string } }> }[] }> } | null = null;
+
+  const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
+
+  // Ranks titles by how well the typed letters match, in order, favoring word starts.
+  function score(q: string, text: string) {
+    const t = text.toLowerCase();
+    if (t.includes(q)) return 100 - t.indexOf(q);
+    let i = 0, s = 0;
+    for (const ch of q) {
+      const j = t.indexOf(ch, i);
+      if (j < 0) return 0;
+      s += j === 0 || t[j - 1] === ' ' ? 3 : 1;
+      i = j + 1;
+    }
+    return s;
+  }
+
+  function paint() {
+    let html = '', group = '';
+    results.forEach((r, i) => {
+      if (r.group !== group) { group = r.group; html += `<li class="group" role="presentation">${esc(group)}</li>`; }
+      const hint = r.excerpt ?? (r.hint ? esc(r.hint) : '');
+      html += `<li id="opt-${i}" role="option" aria-selected="${i === active}" data-i="${i}"><span class="t">${esc(r.title)}</span>${hint ? `<span class="h">${hint}</span>` : ''}</li>`;
+    });
+    list.innerHTML = html || `<li class="group" role="presentation">Nothing matches. Try fewer words.</li>`;
+    input.setAttribute('aria-activedescendant', results.length ? `opt-${active}` : '');
+    list.querySelector('[aria-selected="true"]')?.scrollIntoView({ block: 'nearest' });
+  }
+
+  let searchId = 0;
+  async function update() {
+    const q = input.value.trim().toLowerCase();
+    const id = ++searchId;
+    active = 0;
+    results = q ? entries.map((e) => ({ e, s: score(q, e.title) + (e.hint ? score(q, e.hint) / 4 : 0) })).filter((x) => x.s > 0).sort((a, b) => b.s - a.s).map((x) => x.e) : entries.filter((e) => e.group !== 'Avlory');
+    paint();
+    foot.textContent = q ? '' : 'Tip: g then w opens Writing, g then a opens Avlory.';
+    if (q.length < 2) return;
+    try {
+      const pagefindUrl = '/pagefind/pagefind.js';
+      pagefind ??= await import(/* @vite-ignore */ pagefindUrl);
+      const found = await pagefind!.search(q);
+      const top = await Promise.all(found.results.slice(0, 6).map((r) => r.data()));
+      if (id !== searchId) return;
+      const known = new Set(results.map((r) => r.url));
+      const extra = top.filter((d) => !known.has(d.url.replace(/\.html$/, ''))).map((d) => ({
+        title: d.meta.title, url: d.url.replace(/\.html$/, ''), group: 'In the text', excerpt: d.excerpt,
+      }));
+      results = [...results, ...extra];
+      paint();
+      foot.textContent = `${results.length} result${results.length === 1 ? '' : 's'}`;
+    } catch {
+      foot.textContent = navigator.onLine ? '' : 'Full-text search needs a connection. Titles still work.';
+    }
+  }
+
+  function go(r: Entry | undefined) {
+    if (!r) return;
+    if (r.action) {
+      document.dispatchEvent(new CustomEvent(`toggle-${r.action}`));
+      dialog.close();
+      return;
+    }
+    location.href = r.url!;
+  }
+
+  function open() {
+    if (dialog.open) return;
+    opener = document.activeElement;
+    input.value = '';
+    dialog.showModal();
+    update();
+  }
+
+  document.querySelectorAll('[data-open-palette]').forEach((b) => b.addEventListener('click', open));
+  addEventListener('keydown', (e) => {
+    const typing = (e.target as HTMLElement).closest('input, textarea, [contenteditable]');
+    if ((e.key === 'k' && (e.metaKey || e.ctrlKey)) || (e.key === '/' && !typing)) { e.preventDefault(); open(); }
+  });
+  dialog.addEventListener('close', () => (opener as HTMLElement | null)?.focus?.());
+  dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
+  input.addEventListener('input', update);
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      active = (active + (e.key === 'ArrowDown' ? 1 : -1) + results.length) % Math.max(results.length, 1);
+      paint();
+    } else if (e.key === 'Enter') { e.preventDefault(); go(results[active]); }
+  });
+  list.addEventListener('click', (e) => {
+    const li = (e.target as HTMLElement).closest<HTMLElement>('[role="option"]');
+    if (li) go(results[Number(li.dataset.i)]);
+  });
+</script>

@@ -1,0 +1,162 @@
+{
+  "$comment": "Written by scripts/sync-avlory.mjs. Do not edit; change content/avlory/products.yaml or re-run the sync.",
+  "syncedAt": "2026-10-19T05:17:31.999Z",
+  "avloryCommit": "c7846b7d",
+  "company": {
+    "tagline": "Software Done Right.",
+    "description": "Building quality apps across music, finance, and social, designed to work together."
+  },
+  "products": {
+    "waverate": {
+      "version": "3.5.0",
+      "build": 137,
+      "status": "live",
+      "latest": "Waverate V3",
+      "next": {
+        "name": "Waverate V4",
+        "when": "January 2027"
+      },
+      "androidBeta": true
+    },
+    "avlory-id": {
+      "status": "live"
+    },
+    "avlory-next": {
+      "status": "soon",
+      "next": {
+        "name": "Avlory Next",
+        "when": "Q1 2027"
+      }
+    },
+    "pennysphere": {
+      "version": "1.0.0",
+      "build": 1,
+      "status": "building",
+      "next": {
+        "name": "PennySphere V1",
+        "when": "December 2026"
+      }
+    },
+    "upnext": {
+      "status": "soon",
+      "next": {
+        "name": "UpNext",
+        "when": "Coming soon"
+      }
+    }
+  },
+  "roadmap": [
+    {
+      "name": "Waverate V1",
+      "state": "done",
+      "when": "April 1, 2026",
+      "theme": "Foundation",
+      "detail": "The foundation. Real-time song ratings, artist and album tracking, and catalog management. Launched April 1st, 2026.",
+      "product": "waverate"
+    },
+    {
+      "name": "Waverate V2",
+      "state": "done",
+      "when": "April 19, 2026",
+      "theme": "Catalogs & Customization",
+      "detail": "Custom music catalogs, theme color customization, and the avatar creator. Launched April 19, 2026.",
+      "product": "waverate"
+    },
+    {
+      "name": "Waverate V3",
+      "state": "done",
+      "when": "",
+      "theme": "Streaming Integration",
+      "detail": "Spotify and Apple Music integration. Import your listening data and keep your catalogs synced automatically.",
+      "product": "waverate"
+    },
+    {
+      "name": "PennySphere V1",
+      "state": "now",
+      "when": "December 2026",
+      "theme": "Budget Tracking",
+      "detail": "Bank-connected budget tracking with Plaid. Zero-knowledge local ledger and automated spending insights.",
+      "product": "pennysphere"
+    },
+    {
+      "name": "Avlory Next",
+      "state": "next",
+      "when": "Q1 2027",
+      "theme": "Eleven Spaces, One Place",
+      "detail": "Calendar, Projects, Messages, Mail, Connect, Quill, Tables, Stage, Survey, Canvas and Cloud in one app. Local-first, encrypted, free to start. See every space under Explore.",
+      "product": "avlory-next"
+    },
+    {
+      "name": "Waverate V4",
+      "state": "next",
+      "when": "January 2027",
+      "theme": "Music Intelligence",
+      "detail": "Advanced taste matching, collaborative vinyl lists, and seamless cross-ecosystem synchronization.",
+      "product": "waverate"
+    },
+    {
+      "name": "PennySphere V2",
+      "state": "next",
+      "when": "June 2027",
+      "theme": "Financial Intelligence",
+      "detail": "Cash flow forecasting, multi-bank analytics, automated savings vaults, and shared financial circles.",
+      "product": "pennysphere"
+    },
+    {
+      "name": "UpNext",
+      "state": "next",
+      "when": "Coming soon",
+      "theme": "In the works",
+      "detail": "Something new for the people who shape culture. Follow the Dev Notes; it will show up there first.",
+      "product": "upnext"
+    }
+  ],
+  "stats": {
+    "files": 5450,
+    "languages": {
+      "Dart": {
+        "files": 1812,
+        "lines": 426463
+      },
+      "Java": {
+        "files": 1276,
+        "lines": 188185
+      },
+      "JavaScript": {
+        "files": 325,
+        "lines": 63072
+      },
+      "HTML": {
+        "files": 68,
+        "lines": 20057
+      },
+      "CSS": {
+        "files": 48,
+        "lines": 9963
+      },
+      "Python": {
+        "files": 65,
+        "lines": 7243
+      },
+      "TypeScript": {
+        "files": 31,
+        "lines": 3959
+      },
+      "Swift": {
+        "files": 34,
+        "lines": 1484
+      },
+      "Kotlin": {
+        "files": 5,
+        "lines": 232
+      }
+    },
+    "apps": 15,
+    "flutterApps": 4,
+    "springServices": 5,
+    "packages": 6,
+    "springBoot": "3.5.16",
+    "java": "21"
+  },
+  "formatsVersion": "1.2.0"
+}

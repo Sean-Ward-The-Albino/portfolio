@@ -1,0 +1,16 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Not found">
+  <section class="page lost">
+    <h1>This page isn't here.</h1>
+    <p class="mute">It may have moved when the site was rebuilt. Search for it, or start from one of these.</p>
+    <p class="links"><button class="button" type="button" data-open-palette>Search the site</button><a class="button button--quiet" href="/">Home</a><a class="button button--quiet" href="/writing">Writing</a></p>
+  </section>
+</Base>
+<style>
+  .lost { padding-block: var(--space-9); }
+  h1 { font-size: var(--step-4); max-width: 14ch; }
+  p { margin-top: var(--space-4); }
+  .links { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+</style>

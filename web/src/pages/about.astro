@@ -1,0 +1,111 @@
+---
+import Base from '../layouts/Base.astro';
+import { about, profile } from '../lib/data';
+---
+<Base title="About" section="about" description={`About ${profile.name}: albinism, resilience, teaching, philosophy and building Avlory.`}>
+  <section class="page head">
+    <h1 class="title">About</h1>
+    <p class="intro">{about.intro}</p>
+  </section>
+
+  <section class="page story" aria-label="My story">
+    {about.story.map((s) => (
+      <div class="chapter">
+        <h2>{s.heading}</h2>
+        <p>{s.body}</p>
+      </div>
+    ))}
+  </section>
+
+  {about.milestones.length > 0 && (
+    <section class="page band" aria-labelledby="milestones-title">
+      <h2 id="milestones-title" class="section-title">Always learning</h2>
+      <ol class="timeline" role="list">
+        {about.milestones.map((m) => (
+          <li><span class="when ui">{m.when}</span><span class="what">{m.what}</span></li>
+        ))}
+      </ol>
+    </section>
+  )}
+
+  <section class="page band split">
+    {about.aspirations.length > 0 && (
+      <div>
+        <h2 class="section-title">Working toward</h2>
+        <ul class="plain" role="list">{about.aspirations.map((a) => <li>{a}</li>)}</ul>
+      </div>
+    )}
+    {about.interests.length > 0 && (
+      <div>
+        <h2 class="section-title">Off the clock</h2>
+        <dl class="interests">
+          {about.interests.map((i) => <div><dt class="ui">{i.name}</dt><dd>{i.detail}</dd></div>)}
+        </dl>
+      </div>
+    )}
+  </section>
+
+  {about.people.length > 0 && (
+    <section class="page band" aria-labelledby="people-title">
+      <h2 id="people-title" class="section-title">The people who make it possible</h2>
+      <ul class="people" role="list">
+        {about.people.map((p) => (
+          <li>
+            <h3>{p.name}</h3>
+            <p class="role ui">{p.role}</p>
+            <p class="note">{p.note}</p>
+            {p.links.length > 0 && <p class="links ui">{p.links.map((l) => <a href={l.url} rel="noopener">{l.label}</a>)}</p>}
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {about.thanks && (
+    <section class="page band thanks">
+      <p>{about.thanks}</p>
+      {about.values.length > 0 && <p class="values ui">{about.values.join(', ')}.</p>}
+    </section>
+  )}
+</Base>
+
+<style>
+  .head { padding-top: var(--space-8); }
+  .title { font-size: var(--step-5); font-weight: 800; letter-spacing: -0.055em; line-height: 0.9; }
+  .intro { font-size: var(--step-2); line-height: 1.35; max-width: 32ch; margin-top: var(--space-6); font-variation-settings: 'opsz' 60; }
+  .story { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: var(--space-7); margin-top: var(--space-8); }
+  .chapter h2 { font-size: var(--step-2); margin-bottom: var(--space-3); }
+  .chapter p { max-width: var(--measure); }
+  .band { margin-top: var(--space-9); }
+  .section-title { font-size: var(--step-3); margin-bottom: var(--space-5); }
+
+  /* Milestones: each one lights up as it crosses the middle of the screen, in CSS alone where supported. */
+  .timeline { list-style: none; padding: 0; display: grid; gap: 0; border-left: 2px solid var(--line); margin-left: 6px; }
+  .timeline li { display: grid; grid-template-columns: 10rem 1fr; gap: var(--space-5); padding: var(--space-4) 0 var(--space-4) var(--space-6); position: relative; }
+  .timeline li::before { content: ''; position: absolute; left: -8px; top: 1.45em; width: 14px; height: 14px; border-radius: 50%; background: var(--ink); border: 2px solid var(--magenta); }
+  .when { font-weight: 700; color: var(--magenta-text); padding-top: 0.15em; }
+  .what { font-size: var(--step-1); line-height: 1.4; }
+  @supports (animation-timeline: view()) {
+    .timeline li { animation: light linear both; animation-timeline: view(); animation-range: cover 20% cover 50%; }
+    .timeline li::before { animation: dot linear both; animation-timeline: view(); animation-range: cover 20% cover 50%; }
+  }
+  @keyframes light { from { opacity: 0.3; } to { opacity: 1; } }
+  @keyframes dot { to { background: var(--magenta); box-shadow: 0 0 0 6px color-mix(in oklab, var(--magenta) 22%, transparent); } }
+  @media (max-width: 640px) { .timeline li { grid-template-columns: 1fr; gap: var(--space-1); } }
+
+  .split { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); gap: var(--space-8); }
+  .plain { padding-left: 1.2em; display: grid; gap: var(--space-2); }
+  .plain li::marker { color: var(--magenta-text); }
+  .interests { display: grid; gap: var(--space-3); }
+  .interests dt { font-weight: 700; }
+  .interests dd { color: var(--mute); }
+
+  .people { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: var(--space-4); }
+  .people li { border: 1px solid var(--line); border-radius: calc(var(--radius) + 6px); padding: var(--space-6); display: grid; gap: var(--space-2); align-content: start; }
+  .people h3 { font-size: var(--step-1); }
+  .role { color: var(--magenta-text); font-weight: 600; font-size: var(--step--1); }
+  .note { color: var(--mute); }
+  .links { display: flex; gap: var(--space-4); font-size: var(--step--1); font-weight: 600; }
+  .thanks p:first-child { font-size: var(--step-1); line-height: 1.5; max-width: 50ch; font-style: italic; }
+  .values { margin-top: var(--space-4); color: var(--magenta-text); font-weight: 700; }
+</style>

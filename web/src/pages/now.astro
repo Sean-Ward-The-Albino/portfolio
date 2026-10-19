@@ -1,0 +1,49 @@
+---
+import Base from '../layouts/Base.astro';
+import NowRating from '../components/NowRating.astro';
+import { now, products, formatDate, STATUS_LABEL } from '../lib/data';
+const building = products.filter((p) => p.status !== 'live' || p.next);
+---
+<Base title="Now" section="now" description="What Sean D. Ward is focused on right now.">
+  <section class="page head">
+    <h1 class="title">Now</h1>
+    <p class="updated ui mute">Updated {formatDate(now.updated)}. This is a <a href="https://nownownow.com/about">now page</a>.</p>
+    <p class="building">{now.building}</p>
+  </section>
+
+  <section class="page band split">
+    <div>
+      <h2 class="section-title">Focus</h2>
+      <ul class="focus" role="list">{now.focus.map((f) => <li>{f}</li>)}</ul>
+    </div>
+    <div>
+      <h2 class="section-title">Next at Avlory</h2>
+      <ul class="next ui" role="list">
+        {building.map((p) => (
+          <li><a href={`/avlory#${p.slug}`}>{p.next?.name ?? p.name}</a><span class="status" data-status={p.status}>{p.next?.when ?? STATUS_LABEL[p.status]}</span></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  {now.show_waverate && (
+    <section class="page band">
+      <NowRating count={6} />
+    </section>
+  )}
+</Base>
+
+<style>
+  .head { padding-top: var(--space-8); }
+  .title { font-size: var(--step-5); font-weight: 800; letter-spacing: -0.055em; line-height: 0.9; }
+  .updated { font-size: var(--step--1); margin-top: var(--space-4); }
+  .building { font-size: var(--step-2); line-height: 1.35; max-width: 30ch; margin-top: var(--space-6); }
+  .band { margin-top: var(--space-9); }
+  .section-title { font-size: var(--step-2); margin-bottom: var(--space-4); }
+  .split { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); gap: var(--space-8); }
+  .focus { padding-left: 1.2em; display: grid; gap: var(--space-2); font-size: var(--step-1); }
+  .focus li::marker { color: var(--magenta-text); }
+  .next { list-style: none; padding: 0; border-top: 1px solid var(--line); }
+  .next li { display: flex; justify-content: space-between; gap: var(--space-4); padding: var(--space-3) 0; border-bottom: 1px solid var(--line); }
+  .next a { font-weight: 600; text-decoration: none; }
+</style>

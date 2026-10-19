@@ -1,0 +1,62 @@
+# The products on the Avlory page and in the orbit.
+# Versions, statuses from the roadmap, store links and engineering stats are filled in by
+#   node scripts/sync-avlory.mjs ../avlory
+# into generated.json. Only write here what the sync can't know: the order, the words, the colors.
+#
+# pubspec: the app's pubspec.yaml inside the Avlory repo, used to read its current version.
+# roadmap: the names used for this product on avlory.com's roadmap (ecosystem.html).
+
+- slug: waverate
+  name: Waverate
+  color: "#B46CFF"
+  logo: waverate.svg
+  summary: >-
+    Rate songs and albums from 0.00 to 10.00, build catalogues, see your listening analytics and get a Fused
+    Catalogue with every friend.
+  platforms: [iOS, Android beta]
+  link: { label: Waverate on the App Store, url: "https://apps.apple.com/us/app/waverate/id6760079525" }
+  site: "https://avlory.com/waverate/"
+  pubspec: avlory/apps/waverate_mobile/pubspec.yaml
+  roadmap: [Waverate V1, Waverate V2, Waverate V3, Waverate V4]
+
+- slug: avlory-id
+  name: Avlory ID
+  color: "#C700FF"
+  logo: avlory.svg
+  summary: >-
+    One account for every Avlory app. Export your data, delete one app's data, or delete everything, whenever
+    you want.
+  platforms: [Web, every Avlory app]
+  status: live
+  site: "https://avlory.com/ecosystem"
+
+- slug: avlory-next
+  name: Avlory Next
+  color: "#2A65E5"
+  logo: avlory.svg
+  summary: >-
+    Eleven spaces in one place: Calendar, Projects, Messages, Mail, Connect, Quill, Tables, Stage, Survey, Canvas
+    and Cloud. Local-first and encrypted.
+  platforms: [Desktop, Mobile, Web]
+  site: "https://avlory.com/explore"
+  roadmap: [Avlory Next]
+
+- slug: pennysphere
+  name: PennySphere
+  color: "#E07A2E"
+  logo: pennysphere.svg
+  summary: >-
+    Zero-knowledge personal finance and budget planning, connected with Plaid, so you always see what's left.
+  platforms: [iOS, Android]
+  site: "https://avlory.com/ecosystem"
+  pubspec: avlory/apps/pennysphere_mobile/pubspec.yaml
+  roadmap: [PennySphere V1, PennySphere V2]
+
+- slug: upnext
+  name: UpNext
+  color: "#8F8AF5"
+  summary: A social app connecting people and events through shared taste and culture.
+  roadmap: [UpNext]
+  platforms: [iOS, Android]
+  status: soon
+  site: "https://avlory.com/ecosystem"

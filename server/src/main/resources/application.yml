@@ -1,0 +1,41 @@
+server:
+  port: ${PORT:8080}
+  compression:
+    enabled: true
+    mime-types: text/html,text/css,application/javascript,application/json,image/svg+xml,application/xml,application/rss+xml,text/plain
+  forward-headers-strategy: native
+  error:
+    whitelabel:
+      enabled: false
+  servlet:
+    encoding:
+      force: true
+spring:
+  application:
+    name: seanward-site
+  main:
+    banner-mode: off
+  threads:
+    virtual:
+      enabled: true
+  web:
+    resources:
+      add-mappings: false
+
+site:
+  # memory (default, for local runs) or firestore (production, on Cloud Run)
+  store: ${SITE_STORE:memory}
+  firestore:
+    project: ${GOOGLE_CLOUD_PROJECT:}
+  waverate:
+    base-url: ${WAVERATE_API_BASE:https://identity-gateway-262264240934.us-central1.run.app}
+    # Both are secrets set on Cloud Run, never in this file. Without them the "Now rating" card stays hidden.
+    api-key: ${WAVERATE_API_KEY:}
+    user-id: ${WAVERATE_UID:}
+  turnstile:
+    # When set, feedback must pass Cloudflare Turnstile. Pair it with PUBLIC_TURNSTILE_SITE_KEY at web build time.
+    secret: ${TURNSTILE_SECRET:}
+
+logging:
+  level:
+    root: info

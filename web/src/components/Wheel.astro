@@ -1,0 +1,133 @@
+---
+// The navigation wheel: the circle menu from the first version of this site, now labeled, keyboard-driven
+// and built on <dialog> so focus, Escape and screen readers work without extra code.
+import Icon from './Icon.astro';
+import VennMark from './VennMark.astro';
+interface Props { current?: string }
+const { current } = Astro.props;
+const items = [
+  { id: 'home', href: '/', label: 'Home', icon: 'home', note: 'Start here' },
+  { id: 'avlory', href: '/avlory', label: 'Avlory', icon: 'avlory', note: 'The company and its products' },
+  { id: 'writing', href: '/writing', label: 'Writing', icon: 'writing', note: 'On Avlory, life and takes' },
+  { id: 'about', href: '/about', label: 'About', icon: 'about', note: 'My story' },
+  { id: 'now', href: '/now', label: 'Now', icon: 'now', note: 'What I’m on right now' },
+];
+---
+<dialog class="wheel" aria-label="Site menu">
+  <nav class="ring" aria-label="Main">
+    <ul role="list">
+      {items.map((item, i) => (
+        <li class={`slot-${i}`}>
+          <a href={item.href} aria-current={item.id === current ? 'page' : undefined} data-wheel-item>
+            <span class="icon"><Icon name={item.icon} size={22} /></span>
+            <span class="text"><span class="label">{item.label}</span><span class="note">{item.note}</span></span>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <button class="hub" type="button" data-close-wheel aria-label="Close menu">
+      <VennMark size={46} />
+      <Icon name="close" size={18} class="x" />
+    </button>
+  </nav>
+  <p class="hint ui mute">Arrow keys to turn the wheel, Enter to go, Esc to close.</p>
+</dialog>
+
+<style>
+  .wheel {
+    --r: min(38vmin, 230px);
+    width: 100%; height: 100%; max-width: none; max-height: none; inset: 0; margin: 0; padding: 0; border: 0;
+    background: transparent; color: var(--paper); display: grid; place-items: center; overflow: hidden;
+  }
+  .wheel:not([open]) { display: none; }
+  .wheel::backdrop { background: color-mix(in oklab, var(--ink) 78%, transparent); backdrop-filter: blur(18px); }
+  .ring { position: relative; width: calc(var(--r) * 2 + 140px); aspect-ratio: 1; display: grid; place-items: center; }
+  .ring::before {
+    content: ''; position: absolute; inset: 70px; border-radius: 50%;
+    border: 1px dashed var(--line); animation: spin 60s linear infinite;
+  }
+  ul { list-style: none; padding: 0; position: absolute; inset: 0; }
+  .slot-0 { --i: 0; } .slot-1 { --i: 1; } .slot-2 { --i: 2; } .slot-3 { --i: 3; } .slot-4 { --i: 4; }
+  li {
+    --angle: calc(-90deg + var(--i) * 72deg);
+    position: absolute; left: 50%; top: 50%;
+    transform: rotate(var(--angle)) translate(var(--r)) rotate(calc(-1 * var(--angle)));
+    translate: -50% -50%;
+  }
+  a {
+    display: flex; align-items: center; gap: 0.7em; text-decoration: none; white-space: nowrap;
+    padding: 0.55em 1.1em 0.55em 0.55em; border-radius: 100px; min-height: 48px;
+    background: var(--ink-2); border: 1px solid var(--line); font-family: var(--font-ui);
+    transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease), scale var(--dur) var(--ease);
+  }
+  a:hover, a:focus-visible { background: var(--ink-3); border-color: var(--magenta); color: var(--paper); scale: 1.06; }
+  a[aria-current='page'] { border-color: var(--magenta); }
+  .icon { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--magenta); color: #fff; }
+  .text { display: grid; line-height: 1.15; }
+  .label { font-weight: 650; font-size: 1.02rem; }
+  .note { font-size: 0.78rem; color: var(--mute); }
+  .hub {
+    position: relative; width: 96px; height: 96px; border-radius: 50%; border: 1px solid var(--line);
+    background: var(--ink-2); display: grid; place-items: center; cursor: pointer;
+    transition: rotate 600ms var(--ease);
+  }
+  .hub:hover { rotate: 90deg; }
+  .hub :global(.x) { position: absolute; bottom: 12px; color: var(--mute); }
+  .hint { position: absolute; bottom: var(--space-6); font-size: var(--step--1); text-align: center; padding-inline: var(--space-4); }
+
+  /* Opening: the items fly out from the hub, one after another. */
+  .wheel[open] li { animation: fly 520ms var(--ease) backwards; animation-delay: calc(var(--i) * 45ms); }
+  .wheel[open] .hub { animation: pop 420ms var(--ease); }
+  @keyframes fly { from { transform: rotate(var(--angle)) translate(0) rotate(calc(-1 * var(--angle))) scale(0.4); opacity: 0; } }
+  @keyframes pop { from { scale: 0.6; opacity: 0; } }
+  @keyframes spin { to { rotate: 360deg; } }
+
+  @media (max-width: 560px) {
+    .wheel { --r: 0px; }
+    .ring { width: 100%; aspect-ratio: auto; display: flex; flex-direction: column-reverse; align-items: center; gap: var(--space-5); padding: var(--space-5); }
+    .ring::before { display: none; }
+    ul { position: static; display: grid; gap: var(--space-3); width: min(340px, 100%); }
+    li { position: static; transform: none; translate: none; }
+    a { width: 100%; }
+    .wheel[open] li { animation-name: rise; }
+    @keyframes rise { from { opacity: 0; transform: translateY(16px); } }
+    .hint { display: none; }
+  }
+</style>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('dialog.wheel')!;
+  const items = [...dialog.querySelectorAll<HTMLAnchorElement>('[data-wheel-item]')];
+  let opener: HTMLElement | null = null;
+
+  function open(from?: HTMLElement) {
+    opener = from ?? null;
+    dialog.showModal();
+    (items.find((a) => a.getAttribute('aria-current') === 'page') ?? items[0]).focus();
+  }
+  document.querySelectorAll<HTMLElement>('[data-open-wheel]').forEach((b) => b.addEventListener('click', () => open(b)));
+  dialog.querySelector('[data-close-wheel]')!.addEventListener('click', () => dialog.close());
+  dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
+  dialog.addEventListener('close', () => opener?.focus());
+
+  dialog.addEventListener('keydown', (e) => {
+    const i = items.indexOf(document.activeElement as HTMLAnchorElement);
+    const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+    if (step === undefined) return;
+    e.preventDefault();
+    items[(Math.max(i, 0) + step + items.length) % items.length].focus();
+  });
+
+  // "g" then a letter jumps straight there, like a terminal: g h, g a, g w, g b (about), g n.
+  let pendingG = 0;
+  addEventListener('keydown', (e) => {
+    const t = e.target as HTMLElement;
+    if (e.metaKey || e.ctrlKey || e.altKey || t.closest('input, textarea, [contenteditable], dialog[open]')) return;
+    if (e.key === 'g') { pendingG = Date.now(); return; }
+    if (Date.now() - pendingG < 900) {
+      const to = { h: '/', a: '/avlory', w: '/writing', b: '/about', n: '/now' }[e.key];
+      if (to) location.href = to;
+      pendingG = 0;
+    }
+  });
+</script>

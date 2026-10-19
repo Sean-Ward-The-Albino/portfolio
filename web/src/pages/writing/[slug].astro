@@ -1,0 +1,67 @@
+---
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import Reactions from '../../components/Reactions.astro';
+import Feedback from '../../components/Feedback.astro';
+import EmbedStyles from '../../components/EmbedStyles.astro';
+import AvloryEmbed from '../../components/AvloryEmbed.astro';
+import { getPosts, renderPost, postUrl, readingTime, KIND_LABEL, type Post } from '../../lib/posts';
+import { formatDate } from '../../lib/data';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post, i) => ({ params: { slug: post.id }, props: { post, newer: posts[i - 1], older: posts[i + 1] } }));
+}
+interface Props { post: Post; newer?: Post; older?: Post }
+const { post, newer, older } = Astro.props;
+const { Content } = await renderPost(post);
+const { title, summary, kind, verdict, date, updated, source } = post.data;
+const hasEmbeds = (post.rendered?.html ?? '').includes('<avlory-embed') || ('body' in post && post.body?.includes('<AvloryEmbed'));
+---
+<Base title={title} description={summary} type="article" published={date} section="writing">
+  {hasEmbeds && <EmbedStyles slot="head" />}
+  <article class="page post" data-pagefind-body>
+    <header class="post-head">
+      <p class="meta ui">
+        <a href={`/writing?kind=${kind}`} class="kind">{KIND_LABEL[kind]}{verdict ? `: ${verdict}` : ''}</a>
+        <time datetime={date.toISOString()}>{formatDate(date)}</time>
+        <span>{readingTime(post)} min read</span>
+        {source === 'quill' && <span>Written in Quill</span>}
+      </p>
+      <h1 class="title" data-vt={`post-${post.id}`}>{title}</h1>
+      <p class="summary">{summary}</p>
+    </header>
+    <div class="prose">
+      <Content components={{ AvloryEmbed }} />
+    </div>
+    {updated && updated.valueOf() - date.valueOf() > 86400000 && <p class="ui mute updated">Updated {formatDate(updated)}.</p>}
+  </article>
+
+  <section class="page after" data-pagefind-ignore>
+    <Reactions slug={post.id} />
+    <Feedback slug={post.id} />
+    <nav class="pager ui" aria-label="More writing">
+      {older ? <a href={postUrl(older)} rel="prev"><span class="mute">Older</span><span>{older.data.title}</span></a> : <span></span>}
+      {newer && <a href={postUrl(newer)} rel="next" class="right"><span class="mute">Newer</span><span>{newer.data.title}</span></a>}
+    </nav>
+    <a class="back ui" href="/writing"><Icon name="back" size={16} /> All writing</a>
+  </section>
+</Base>
+
+<style>
+  .post { padding-top: var(--space-8); }
+  .post-head { max-width: 66ch; margin-bottom: var(--space-7); }
+  .meta { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-4); font-size: var(--step--1); color: var(--mute); }
+  .kind { color: var(--magenta-text); font-weight: 600; text-decoration: none; }
+  .title { font-size: var(--step-4); font-weight: 800; letter-spacing: -0.045em; line-height: 0.98; margin-top: var(--space-4); max-width: 18ch; }
+  .summary { font-size: var(--step-1); font-style: italic; color: var(--mute); margin-top: var(--space-4); max-width: 44ch; line-height: 1.45; }
+  .prose { font-size: calc(var(--step-0) * 1.04); }
+  .updated { font-size: var(--step--1); margin-top: var(--space-6); }
+  .after { display: grid; gap: var(--space-7); margin-top: var(--space-8); }
+  .after > * { width: 100%; max-width: calc(var(--measure) + 2rem); }
+  .pager { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); border-top: 1px solid var(--line); padding-top: var(--space-5); }
+  .pager a { display: grid; gap: 0.2em; text-decoration: none; font-weight: 600; }
+  .pager .right { text-align: right; }
+  .pager .mute { font-size: var(--step--1); font-weight: 500; }
+  .back { display: inline-flex; align-items: center; gap: 0.4em; font-size: var(--step--1); font-weight: 600; color: var(--magenta-text); text-decoration: none; }
+</style>

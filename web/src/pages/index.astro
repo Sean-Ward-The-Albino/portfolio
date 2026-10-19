@@ -1,0 +1,118 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import NowRating from '../components/NowRating.astro';
+import PostList from '../components/PostList.astro';
+import { profile, products, now, STATUS_LABEL } from '../lib/data';
+import { getPosts } from '../lib/posts';
+
+const posts = await getPosts();
+const [first, ...last] = profile.name.split(' ');
+---
+<Base section="home">
+  <section class="hero">
+    <canvas class="aurora" aria-hidden="true"></canvas>
+    <div class="page hero-inner">
+      <h1 class="name" data-vt="name">
+        <span>{first}</span>
+        <span>{last.join(' ')}</span>
+      </h1>
+      <p class="role ui"><span>{profile.role}</span><span class="mute">{profile.location}</span></p>
+      <p class="tagline">{profile.tagline}</p>
+      <div class="cta">
+        <a class="button" href="/writing">Read my writing <Icon name="arrow" size={16} /></a>
+        <a class="button button--quiet" href="/avlory">See what Avlory is building</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="page band now" aria-labelledby="now-title">
+    <div class="now-text">
+      <h2 id="now-title" class="section-title">Right now</h2>
+      <p class="building">{now.building}</p>
+      <a class="more ui" href="/now">More on what I'm doing now <Icon name="arrow" size={14} /></a>
+    </div>
+    {now.show_waverate && <NowRating count={3} />}
+  </section>
+
+  {posts.length > 0 && (
+    <section class="page band" aria-labelledby="writing-title">
+      <div class="section-head">
+        <h2 id="writing-title" class="section-title">Latest writing</h2>
+        <a class="more ui" href="/writing">All writing <Icon name="arrow" size={14} /></a>
+      </div>
+      <PostList posts={posts.slice(0, 4)} />
+    </section>
+  )}
+
+  <section class="page band" aria-labelledby="avlory-title">
+    <div class="section-head">
+      <h2 id="avlory-title" class="section-title">Avlory</h2>
+      <a class="more ui" href="/avlory">The company, the products and the roadmap <Icon name="arrow" size={14} /></a>
+    </div>
+    <ul class="products" role="list">
+      {products.map((p) => (
+        <li>
+          <a href={`/avlory#${p.slug}`} class="product">
+            {p.logo ? <img src={`/brand/${p.logo}`} alt="" width="44" height="44" loading="lazy" decoding="async" /> : <span class="dot" data-slug={p.slug}></span>}
+            <span class="p-name">{p.name}</span>
+            <span class="status" data-status={p.status}>{STATUS_LABEL[p.status]}{p.version && p.status === 'live' ? `, v${p.version}` : p.next ? `, ${p.next.when}` : ''}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    position: relative; min-height: min(92svh, 980px); display: grid; align-items: end; overflow: clip;
+    margin-top: -64px; padding-top: 64px;
+    background:
+      radial-gradient(60% 50% at 75% 30%, rgb(253 0 222 / 0.28), transparent 70%),
+      radial-gradient(50% 45% at 30% 20%, rgb(131 0 167 / 0.35), transparent 70%),
+      radial-gradient(45% 40% at 90% 70%, rgb(47 113 253 / 0.18), transparent 70%),
+      var(--ink);
+  }
+  .aurora { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 1.6s var(--ease); }
+  .aurora:global(.is-live) { opacity: 1; }
+  .hero-inner { position: relative; padding-block: var(--space-9) var(--space-8); }
+  .name {
+    font-size: var(--step-5); font-weight: 800; letter-spacing: -0.055em; line-height: 0.86;
+    display: grid; margin-left: -0.04em;
+  }
+  .name span:last-child { padding-left: 0.42em; }
+  .role { display: flex; flex-wrap: wrap; gap: 0 var(--space-4); margin-top: var(--space-6); font-size: var(--step-0); font-weight: 600; }
+  .tagline { max-width: 38ch; margin-top: var(--space-3); font-size: var(--step-1); font-style: italic; line-height: 1.45; font-variation-settings: 'opsz' 48; }
+  .cta { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-6); }
+
+  .band { margin-top: var(--space-9); }
+  .section-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--space-3); margin-bottom: var(--space-5); }
+  .section-title { font-size: var(--step-3); }
+  .more { display: inline-flex; align-items: center; gap: 0.35em; font-size: var(--step--1); font-weight: 600; color: var(--magenta-text); text-decoration: none; }
+  .more:hover { text-decoration: underline; }
+
+  .now { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: var(--space-8); align-items: center; }
+  .building { font-size: var(--step-1); line-height: 1.5; margin-block: var(--space-4); max-width: 36ch; }
+  @media (max-width: 900px) { .now { grid-template-columns: 1fr; gap: var(--space-6); } }
+
+  .products { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); gap: var(--space-3); }
+  .product {
+    display: grid; grid-template-columns: 44px 1fr; column-gap: var(--space-3); align-items: center; text-decoration: none;
+    padding: var(--space-4); border: 1px solid var(--line); border-radius: var(--radius); min-height: 84px;
+    transition: border-color var(--dur) var(--ease), background-color var(--dur) var(--ease);
+  }
+  .product:hover { border-color: var(--magenta); background: var(--ink-2); color: inherit; }
+  .product img, .dot { grid-row: span 2; width: 44px; height: 44px; border-radius: 50%; }
+  .dot { background: radial-gradient(circle at 35% 35%, #c4c0ff, #8f8af5 60%, #4a43c9); }
+  .p-name { font-family: var(--font-display); font-weight: 650; font-size: var(--step-0); }
+  .product .status { font-size: 0.8rem; }
+</style>
+
+<script>
+  import { startAurora } from '../scripts/aurora';
+  const canvas = document.querySelector<HTMLCanvasElement>('.aurora');
+  // Start after the page has painted and the browser is idle, so the aurora never delays the content.
+  const begin = () => canvas && startAurora(canvas);
+  if ('requestIdleCallback' in window) requestIdleCallback(begin, { timeout: 1500 }); else setTimeout(begin, 300);
+</script>

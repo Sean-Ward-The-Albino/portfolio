@@ -1,0 +1,71 @@
+# The About page. Every section is optional: delete one and it disappears from the page.
+
+intro: >-
+  Growing up in San Diego, my pursuit of growth has always been driven by the belief that knowledge and wisdom
+  are boundless. All forms of intelligence are valuable, and the beauty of exploring past the edge of what we
+  currently know is what makes learning infinitely possible. I find guidance in Stoicism, Existentialism and
+  Epicureanism.
+
+story:
+  - heading: Resilience
+    body: >-
+      My interest in technology started early: taking phones apart, building computers, and teaching myself to
+      code from age 10. I live with albinism. It limits my vision, hides my Dominican heritage, and has led to
+      three bouts of skin cancer. I adapt and overcome every obstacle to the best of my ability, and I treat
+      challenges as the thing that makes me stronger.
+  - heading: The vision
+    body: >-
+      My goal is to empower people, built on the conviction that information is a human right. Avlory builds
+      software that elevates technology as a tool for the person using it: transparent, privacy-focused, and
+      in the user's control. Division of people is the greatest opponent humanity faces, and good tools can
+      bring us together.
+
+# The scroll-drawn timeline. Newest last. "when" is free text.
+milestones:
+  - { when: "Age 10", what: "Wrote my first lines of code, self-taught." }
+  - { when: "High school", what: "Taught Java, data structures and app development to other students." }
+  - { when: "UCSD / Meta", what: "Completed the Meta front-end and back-end program (Django, Next.js)." }
+  - { when: "College", what: "Went low-level: Assembly, C++ and Pascal." }
+  - { when: "2025", what: "Launched Avlory." }
+  - { when: "April 2026", what: "Launched Waverate on the App Store." }
+
+# Short facts shown as a list.
+interests:
+  - { name: Chess, detail: "Playing and teaching it." }
+  - { name: Music, detail: "Rap writing and production." }
+  - { name: Community, detail: "Leading students who help special needs students perform music and raise money for their medical care." }
+  - { name: Outdoors, detail: "Hiking, camping, road trips and cultural immersion." }
+  - { name: Health, detail: "Physical, mental and spiritual." }
+
+# What I'm working toward.
+aspirations:
+  - Lead Avlory to a diverse suite of products that empower the people who use them.
+  - Build sustainable technology.
+  - Contribute to open-source AI safety research.
+  - Mentor the next generation of engineers.
+  - Make information and tools accessible to everyone, whatever their background.
+
+# The people who make it possible.
+people:
+  - name: Victor Mercado
+    role: Chief Software Development Officer, Avlory
+    note: "With Avlory since day one. He went from being my student in high school to a powerhouse developer."
+    links:
+      - { label: Website, url: "https://thunderboltweb.com/" }
+      - { label: LinkedIn, url: "https://www.linkedin.com/in/victor-mercado-74aa74264/" }
+  - name: Miriam Valenzuela
+    role: Chief Technology Officer, Avlory
+    note: "We met at the Meta program and lifted each other up. Her range and technical skill push Avlory forward."
+    links:
+      - { label: LinkedIn, url: "https://www.linkedin.com/in/miriam-valenzuela-2b48a322a/" }
+      - { label: GitHub, url: "https://github.com/miriamvalenzuela" }
+  - name: Annalise Gutkowski
+    role: Legal advisor
+    note: "With us nearly from the beginning, guiding our legal framework from UCSC."
+    links: []
+
+thanks: >-
+  To my family, my friends, and everyone who stood by me through three battles with cancer: your support gave me
+  the strength to fight and the courage to dream. A special thank you to my sisters for being my rock.
+
+values: [Transparency, Loyalty, Growth]

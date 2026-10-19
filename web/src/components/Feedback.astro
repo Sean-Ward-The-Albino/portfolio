@@ -1,0 +1,72 @@
+---
+// "Tell me what you think": feedback goes to Sean privately, never shown on the site.
+// Bots are stopped by Cloudflare Turnstile when PUBLIC_TURNSTILE_SITE_KEY is set at build time, and by the
+// server's rate limit either way.
+interface Props { slug: string }
+const { slug } = Astro.props;
+const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined;
+---
+<form class="feedback" data-feedback={slug} novalidate>
+  <h2 class="f-title">Tell me what you think</h2>
+  <p class="mute f-note">Goes straight to me, never shown on the site. Leave a name or don't.</p>
+  <label class="ui" for={`fb-msg-${slug}`}>Your thoughts</label>
+  <textarea id={`fb-msg-${slug}`} name="message" rows="4" maxlength="2000" required></textarea>
+  <label class="ui" for={`fb-name-${slug}`}>Name <span class="mute">(optional)</span></label>
+  <input id={`fb-name-${slug}`} name="name" maxlength="80" autocomplete="name" />
+  <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+  {siteKey && <div class="cf-turnstile" data-sitekey={siteKey} data-theme="dark" data-size="flexible"></div>}
+  <div class="f-row">
+    <button class="button" type="submit">Send to Sean</button>
+    <p class="f-status ui" role="status" aria-live="polite"></p>
+  </div>
+</form>
+{siteKey && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
+
+<style>
+  .feedback { display: grid; gap: var(--space-2); max-width: var(--measure); border: 1px solid var(--line); border-radius: calc(var(--radius) + 6px); padding: var(--space-6); background: var(--ink-2); }
+  .f-title { font-size: var(--step-1); }
+  .f-note { font-size: var(--step--1); margin-bottom: var(--space-3); }
+  label { font-size: var(--step--1); font-weight: 600; margin-top: var(--space-2); }
+  textarea, input { width: 100%; background: var(--ink); border: 1px solid var(--line); border-radius: 10px; padding: 0.7em 0.9em; font-family: var(--font-body); font-size: var(--step-0); line-height: 1.5; }
+  textarea { resize: vertical; min-height: 7em; }
+  textarea:focus, input:focus { border-color: var(--magenta); outline: none; box-shadow: 0 0 0 3px color-mix(in oklab, var(--magenta) 30%, transparent); }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; }
+  .f-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4); margin-top: var(--space-3); }
+  .f-status { font-size: var(--step--1); }
+  .f-status[data-tone='error'] { color: #ff8f9e; }
+  .f-status[data-tone='ok'] { color: var(--live); }
+</style>
+
+<script>
+  for (const form of document.querySelectorAll<HTMLFormElement>('[data-feedback]')) {
+    const status = form.querySelector<HTMLElement>('.f-status')!;
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    const say = (text: string, tone: 'ok' | 'error' | '') => { status.textContent = text; status.dataset.tone = tone; };
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      const message = String(data.get('message') ?? '').trim();
+      if (message.length < 2) { say('Write a few words first.', 'error'); form.querySelector('textarea')!.focus(); return; }
+      button.disabled = true;
+      say('Sending…', '');
+      try {
+        const res = await fetch('/api/feedback', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({
+            slug: form.dataset.feedback, message, name: String(data.get('name') ?? '').trim(),
+            website: data.get('website'), token: data.get('cf-turnstile-response') ?? '',
+          }),
+        });
+        if (res.ok) { form.reset(); say('Sent. Thanks for telling me.', 'ok'); }
+        else if (res.status === 429) say('That’s a lot of messages at once. Try again in a few minutes.', 'error');
+        else if (res.status === 403) say('The bot check didn’t pass. Reload the page and try again.', 'error');
+        else say('It didn’t send. Check your connection and try again.', 'error');
+      } catch {
+        say('You look offline. Your words are still here; send them when you’re back.', 'error');
+      } finally {
+        button.disabled = false;
+      }
+    });
+  }
+</script>

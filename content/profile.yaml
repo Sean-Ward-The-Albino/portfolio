@@ -1,0 +1,27 @@
+# Who you are, everywhere on the site.
+# Edit this file, save, and the whole site picks it up on the next build.
+
+name: Sean D. Ward
+short_name: Sean
+role: CEO of Avlory
+location: San Diego, California
+
+# The line under your name on the home page.
+tagline: >-
+  I build Avlory, a company making software that works for you, not the other way around.
+  This is where I say what I think about it, and about the rest of my life.
+
+# Shown in search results and link previews.
+description: >-
+  Sean D. Ward, founder and CEO of Avlory. Writing on building Avlory, engineering, and life.
+
+# Social links. Remove a line to hide it. Supported: github, linkedin, instagram, x, spotify, discord, avlory
+socials:
+  - { kind: avlory, label: Avlory, url: "https://avlory.com" }
+  - { kind: github, label: GitHub, url: "https://github.com/Sean-Ward-The-Albino" }
+  - { kind: linkedin, label: LinkedIn, url: "https://www.linkedin.com/in/sean-ward7/" }
+  - { kind: instagram, label: Instagram, url: "https://instagram.com/s.ean.w.ard" }
+  - { kind: spotify, label: Spotify, url: "https://open.spotify.com/user/albino" }
+
+# Optional: put a PDF in web/public/ and set its path here, e.g. /sean-ward-cv.pdf. Leave empty to hide the link.
+cv: ""

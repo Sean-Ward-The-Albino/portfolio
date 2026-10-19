@@ -1,0 +1,63 @@
+---
+// Quick reactions: no account, no cookies. Counts live on the server; this device remembers what it picked.
+import Icon from './Icon.astro';
+interface Props { slug: string }
+const { slug } = Astro.props;
+const kinds = [
+  { id: 'resonates', label: 'This resonates', icon: 'heart' },
+  { id: 'think', label: 'Made me think', icon: 'think' },
+  { id: 'disagree', label: 'I see it differently', icon: 'disagree' },
+];
+---
+<div class="reactions ui" data-reactions={slug} role="group" aria-label="React to this post">
+  {kinds.map((k) => (
+    <button type="button" data-kind={k.id} aria-pressed="false">
+      <Icon name={k.icon} size={18} />
+      <span>{k.label}</span>
+      <span class="count" data-count aria-label="reactions"></span>
+    </button>
+  ))}
+</div>
+
+<style>
+  .reactions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  button {
+    display: inline-flex; align-items: center; gap: 0.5em; min-height: 44px; padding: 0 1em; border-radius: 100px;
+    border: 1px solid var(--line); background: transparent; cursor: pointer; font-size: var(--step--1); font-weight: 500;
+    transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease), scale 160ms var(--ease);
+  }
+  button:hover { background: var(--ink-3); }
+  button:active { scale: 0.96; }
+  button[aria-pressed='true'] { border-color: var(--magenta); background: color-mix(in oklab, var(--magenta) 16%, transparent); }
+  button[aria-pressed='true'] :global(svg) { color: var(--magenta-text); }
+  .count { color: var(--mute); font-variant-numeric: tabular-nums; }
+  .count:empty { display: none; }
+</style>
+
+<script>
+  for (const group of document.querySelectorAll<HTMLElement>('[data-reactions]')) {
+    const slug = group.dataset.reactions!;
+    const key = `reacted:${slug}`;
+    let mine: string[] = [];
+    try { mine = JSON.parse(localStorage.getItem(key) ?? '[]'); } catch { /* private mode */ }
+    const buttons = [...group.querySelectorAll<HTMLButtonElement>('button')];
+    const paint = (counts: Record<string, number>) => buttons.forEach((b) => {
+      // A shared cache may lag a few seconds behind; never show fewer than this device's own reaction.
+      const n = Math.max(counts[b.dataset.kind!] ?? 0, mine.includes(b.dataset.kind!) ? 1 : 0);
+      b.querySelector('[data-count]')!.textContent = n ? String(n) : '';
+      b.setAttribute('aria-pressed', String(mine.includes(b.dataset.kind!)));
+    });
+    paint({});
+    fetch(`/api/reactions/${encodeURIComponent(slug)}`).then((r) => (r.ok ? r.json() : {})).then(paint).catch(() => {});
+    buttons.forEach((b) => b.addEventListener('click', async () => {
+      const kind = b.dataset.kind!;
+      if (mine.includes(kind)) return;
+      mine.push(kind);
+      try { localStorage.setItem(key, JSON.stringify(mine)); } catch { /* private mode */ }
+      b.setAttribute('aria-pressed', 'true');
+      const c = b.querySelector('[data-count]')!;
+      c.textContent = String((Number(c.textContent) || 0) + 1);
+      fetch(`/api/reactions/${encodeURIComponent(slug)}/${kind}`, { method: 'POST' }).then((r) => (r.ok ? r.json() : null)).then((counts) => counts && paint(counts)).catch(() => {});
+    }));
+  }
+</script>

@@ -1,0 +1,106 @@
+---
+import '@fontsource-variable/outfit';
+import '@fontsource-variable/fraunces/opsz.css';
+import '@fontsource-variable/fraunces/opsz-italic.css';
+import '../styles/global.css';
+import outfitLatin from '@fontsource-variable/outfit/files/outfit-latin-wght-normal.woff2?url';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Wheel from '../components/Wheel.astro';
+import CommandPalette from '../components/CommandPalette.astro';
+import { profile } from '../lib/data';
+import { PREFS, VIEW_TRANSITION_NAMES } from '../inline-scripts.mjs';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: 'website' | 'article';
+  published?: Date;
+  /** Which wheel item is current. */
+  section?: 'home' | 'avlory' | 'writing' | 'about' | 'now';
+}
+const { title, description = profile.description, image = '/og/default.png', type = 'website', published, section } = Astro.props;
+const fullTitle = title ? `${title} · ${profile.name}` : `${profile.name}, ${profile.role}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL(image, Astro.site);
+const personLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: profile.name,
+  jobTitle: profile.role,
+  worksFor: { '@type': 'Organization', name: 'Avlory', url: 'https://avlory.com' },
+  url: Astro.site?.toString(),
+  sameAs: profile.socials.map((s) => s.url),
+};
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#0c0410" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#fbf4f8" media="(prefers-color-scheme: light)" />
+    <meta name="color-scheme" content="dark light" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="alternate" type="application/rss+xml" title={`${profile.name}: writing`} href="/rss.xml" />
+    <link rel="preload" href={outfitLatin} as="font" type="font/woff2" crossorigin />
+
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={title ?? profile.name} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:site_name" content={profile.name} />
+    <meta name="twitter:card" content="summary_large_image" />
+    {published && <meta property="article:published_time" content={published.toISOString()} />}
+    <script type="application/ld+json" set:html={JSON.stringify(personLd)} />
+
+    <script is:inline set:html={PREFS} />
+    <slot name="head" />
+  </head>
+  <body data-section={section}>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Header section={section} />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <Footer />
+    <Wheel current={section} />
+    <CommandPalette />
+    <div class="reading-guide" aria-hidden="true"></div>
+    <script is:inline set:html={VIEW_TRANSITION_NAMES} />
+    <div class="offline-note ui" role="status" aria-live="polite" hidden>You're offline. Pages you've opened still work.</div>
+    <script>
+      import '../scripts/reading';
+      // Offline reading: the service worker keeps the pages you open.
+      if ('serviceWorker' in navigator && import.meta.env.PROD) {
+        addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+      }
+      const note = document.querySelector<HTMLElement>('.offline-note')!;
+      const showOffline = () => { note.hidden = navigator.onLine; };
+      addEventListener('online', showOffline);
+      addEventListener('offline', showOffline);
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  main:focus { outline: none; }
+  .reading-guide {
+    position: fixed; inset-inline: 0; top: 0; height: 2.6em; pointer-events: none; z-index: 40;
+    background: rgb(255 229 0 / 0.14); border-block: 2px solid rgb(255 229 0 / 0.65);
+    transform: translateY(var(--guide-y, -100px)); display: none;
+  }
+  [data-reading='on'] .reading-guide { display: block; }
+  .offline-note {
+    position: fixed; left: 50%; bottom: var(--space-5); translate: -50% 0; z-index: 60;
+    background: var(--paper); color: var(--ink); padding: var(--space-3) var(--space-5); border-radius: 100px;
+    font-size: var(--step--1); font-weight: 600; box-shadow: 0 8px 30px rgb(0 0 0 / 0.4);
+  }
+</style>

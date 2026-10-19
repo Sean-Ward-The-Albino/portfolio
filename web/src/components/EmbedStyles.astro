@@ -1,0 +1,9 @@
+---
+// Loads Avlory's embed component once, for posts that show live Avlory items.
+---
+<script is:inline type="module" src="https://embed.avlory.com/v1/embed.js"></script>
+<style is:global>
+  .embed { margin-block: 2em; }
+  .embed avlory-embed { display: block; min-height: 220px; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--ink-2); }
+  .embed figcaption { font-family: var(--font-ui); font-size: var(--step--1); color: var(--mute); margin-top: 0.6em; }
+</style>

@@ -1,0 +1,48 @@
+---
+import Base from '../../layouts/Base.astro';
+import PostList from '../../components/PostList.astro';
+import { getPosts, KIND_LABEL } from '../../lib/posts';
+
+const posts = await getPosts();
+const kinds = (Object.keys(KIND_LABEL) as (keyof typeof KIND_LABEL)[]).filter((k) => posts.some((p) => p.data.kind === k));
+const plural = { avlory: 'On Avlory', life: 'Life', take: 'Takes' };
+---
+<Base title="Writing" section="writing" description="Sean D. Ward on building Avlory, on engineering, and on life.">
+  <section class="page head">
+    <h1 class="title">Writing</h1>
+    <p class="lede">On building Avlory, on the tools I'd bet on and the ones I wouldn't, and on the rest of my life.</p>
+    {kinds.length > 1 && (
+      <div class="filters ui" role="group" aria-label="Show">
+        <button type="button" data-filter="all" aria-pressed="true">All <span class="mute">{posts.length}</span></button>
+        {kinds.map((k) => <button type="button" data-filter={k} aria-pressed="false">{plural[k]} <span class="mute">{posts.filter((p) => p.data.kind === k).length}</span></button>)}
+      </div>
+    )}
+  </section>
+  <section class="page list" aria-label="Posts">
+    {posts.length ? <PostList posts={posts} headingLevel="h2" /> : <p class="mute">The first post is on its way.</p>}
+  </section>
+</Base>
+
+<style>
+  .head { padding-top: var(--space-8); }
+  .title { font-size: var(--step-5); font-weight: 800; letter-spacing: -0.055em; line-height: 0.9; }
+  .lede { font-size: var(--step-1); max-width: 40ch; margin-top: var(--space-4); line-height: 1.45; }
+  .filters { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-6); }
+  .filters button { min-height: 44px; padding: 0 1.1em; border-radius: 100px; border: 1px solid var(--line); background: transparent; cursor: pointer; font-size: var(--step--1); font-weight: 600; }
+  .filters button[aria-pressed='true'] { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+  .filters button[aria-pressed='true'] .mute { color: var(--ink); opacity: 0.6; }
+  .list { margin-top: var(--space-6); }
+</style>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  const items = document.querySelectorAll<HTMLElement>('.posts > li');
+  const apply = (kind: string) => {
+    buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === kind)));
+    items.forEach((li) => (li.hidden = kind !== 'all' && li.dataset.kind !== kind));
+    history.replaceState(null, '', kind === 'all' ? location.pathname : `?kind=${kind}`);
+  };
+  buttons.forEach((b) => b.addEventListener('click', () => apply(b.dataset.filter!)));
+  const initial = new URLSearchParams(location.search).get('kind');
+  if (initial && [...buttons].some((b) => b.dataset.filter === initial)) apply(initial);
+</script>
