@@ -1,22 +1,17 @@
 package dev.seanward.site.store;
 
 import dev.seanward.site.SiteProperties;
+import java.nio.file.Path;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.RestClient;
+import tools.jackson.databind.json.JsonMapper;
 
 @Configuration
 public class StoreConfig {
 
     @Bean
-    SiteStore siteStore(SiteProperties props, RestClient.Builder builder) {
-        if ("firestore".equalsIgnoreCase(props.store())) {
-            String project = props.firestore() == null ? null : props.firestore().project();
-            if (project == null || project.isBlank()) {
-                throw new IllegalStateException("SITE_STORE=firestore needs GOOGLE_CLOUD_PROJECT");
-            }
-            return new FirestoreSiteStore(builder, project);
-        }
-        return new InMemorySiteStore();
+    SiteStore siteStore(SiteProperties props, JsonMapper json) {
+        String dir = props.dataDir() == null || props.dataDir().isBlank() ? "data" : props.dataDir();
+        return new FileSiteStore(Path.of(dir), json);
     }
 }

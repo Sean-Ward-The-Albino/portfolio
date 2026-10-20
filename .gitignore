@@ -1,5 +1,6 @@
 node_modules/
 web/dist/
-web/.astro/
 server/target/
+data/
+server/data/
 .DS_Store

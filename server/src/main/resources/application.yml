@@ -2,7 +2,7 @@ server:
   port: ${PORT:8080}
   compression:
     enabled: true
-    mime-types: text/html,text/css,application/javascript,application/json,image/svg+xml,application/xml,application/rss+xml,text/plain
+    mime-types: text/html,text/css,application/javascript,application/json,image/svg+xml,text/plain
   forward-headers-strategy: native
   error:
     whitelabel:
@@ -21,19 +21,26 @@ spring:
   web:
     resources:
       add-mappings: false
+  mvc:
+    async:
+      # The Game planet's live updates are long-lived; this is the most any one may last.
+      request-timeout: 30m
 
 site:
-  # memory (default, for local runs) or firestore (production, on Cloud Run)
-  store: ${SITE_STORE:memory}
-  firestore:
-    project: ${GOOGLE_CLOUD_PROJECT:}
+  # Where feedback, ratings, lanterns and content edits are saved.
+  data-dir: ${SITE_DATA_DIR:data}
+  # Starting content. When this file exists it's read at startup, so edits to it show after a restart.
+  content-file: ${SITE_CONTENT_FILE:../content/site.json}
+  admin:
+    # Set this in production. Locally, leave it empty and a token is printed to the log at startup.
+    token: ${ADMIN_TOKEN:}
   waverate:
     base-url: ${WAVERATE_API_BASE:https://identity-gateway-262264240934.us-central1.run.app}
-    # Both are secrets set on Cloud Run, never in this file. Without them the "Now rating" card stays hidden.
+    # Both are secrets. Without them the "just rated" shelf stays hidden.
     api-key: ${WAVERATE_API_KEY:}
     user-id: ${WAVERATE_UID:}
   turnstile:
-    # When set, feedback must pass Cloudflare Turnstile. Pair it with PUBLIC_TURNSTILE_SITE_KEY at web build time.
+    # When set, feedback must pass Cloudflare Turnstile.
     secret: ${TURNSTILE_SECRET:}
 
 logging:

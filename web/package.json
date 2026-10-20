@@ -1,30 +1,17 @@
 {
-  "name": "seanward-web",
+  "name": "seanward-worlds",
   "private": true,
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro check && astro build && pagefind --site dist --glob \"writing/**/*.html\"",
-    "preview": "astro preview",
-    "check": "astro check"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "@astrojs/mdx": "8.0.2",
-    "@astrojs/sitemap": "3.7.4",
-    "@fontsource-variable/atkinson-hyperlegible-next": "5.3.0",
-    "@fontsource-variable/fraunces": "5.3.0",
-    "@fontsource-variable/outfit": "5.3.0",
-    "astro": "7.3.5",
-    "js-yaml": "5.4.2",
     "three": "0.186.1"
   },
   "devDependencies": {
-    "@astrojs/check": "0.9.10",
-    "@types/js-yaml": "4.0.9",
-    "@types/three": "0.186.0",
-    "lucide-static": "1.52.0",
-    "pagefind": "1.5.2",
-    "simple-icons": "16.34.0",
-    "typescript": "6.0.3"
+    "vite": "8.3.0"
   }
 }

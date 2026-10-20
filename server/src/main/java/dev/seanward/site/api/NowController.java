@@ -18,9 +18,9 @@ public class NowController {
         this.ratings = ratings;
     }
 
-    /** 204 when Waverate isn't configured or has nothing yet; the page hides the card. */
-    @GetMapping("/api/now/rating")
-    public ResponseEntity<Map<String, List<NowRatingService.Rating>>> rating() {
+    /** Sean's latest Waverate ratings. 204 when Waverate isn't configured or has nothing yet; the site hides the shelf. */
+    @GetMapping("/api/now/ratings")
+    public ResponseEntity<Map<String, List<NowRatingService.Rating>>> ratings() {
         return ratings.latest()
                 .filter(list -> !list.isEmpty())
                 .map(list -> ResponseEntity.ok()

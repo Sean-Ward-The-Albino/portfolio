@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Site admin</title>
+  <link rel="icon" href="/img/avlory.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="/src/admin.css">
+</head>
+<body>
+  <header class="hd"><img src="/img/avlory.svg" alt="" width="24" height="24"><h1>Site admin</h1><a href="/" class="view">View the site ↗</a></header>
+  <section id="signin" class="card narrow">
+    <h2>Sign in</h2>
+    <p>Paste the admin token. Running locally, it's printed in the server log when Spring Boot starts.</p>
+    <form id="tokForm"><label for="tok">Admin token</label><input id="tok" type="password" autocomplete="current-password" required><button type="submit">Sign in</button><p id="tokMsg" role="status"></p></form>
+  </section>
+  <main id="app" hidden>
+    <nav class="tabs" role="tablist">
+      <button role="tab" aria-selected="true" data-tab="words">Words</button>
+      <button role="tab" aria-selected="false" data-tab="inbox">Feedback</button>
+      <button role="tab" aria-selected="false" data-tab="lanterns">Lanterns</button>
+    </nav>
+    <section data-panel="words">
+      <div class="bar"><label for="worldSel">World</label><select id="worldSel"></select><span class="grow"></span><button id="save" type="button">Publish</button><button id="reset" type="button" class="ghost">Reset to the starting words</button></div>
+      <p id="saveMsg" role="status" class="msg"></p>
+      <div class="card"><label for="working">What you're working on (shown on Home)</label><input id="working" type="text" maxlength="160"></div>
+      <div id="stops"></div>
+    </section>
+    <section data-panel="inbox" hidden><div id="inbox"></div></section>
+    <section data-panel="lanterns" hidden><div id="lanterns"></div></section>
+  </main>
+  <script type="module" src="/src/admin.js"></script>
+</body>
+</html>

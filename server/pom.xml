@@ -14,7 +14,7 @@
     <artifactId>site</artifactId>
     <version>1.0.0</version>
     <name>seanward-site</name>
-    <description>Serves Sean D. Ward's site (built by Astro in ../web) and its small API.</description>
+    <description>Serves Sean D. Ward's site (built by Vite in ../web) and the API that powers it.</description>
 
     <properties>
         <java.version>21</java.version>
@@ -45,15 +45,15 @@
             <resource>
                 <directory>src/main/resources</directory>
             </resource>
-            <!-- The built site. Run `npm run build` in ../web first (the Dockerfile does). -->
+            <!-- The built site. Run `npm run build` in ../web first (dev.sh and the Dockerfile do). -->
             <resource>
                 <directory>../web/dist</directory>
                 <targetPath>static</targetPath>
             </resource>
             <resource>
-                <directory>../content/avlory</directory>
+                <directory>../content</directory>
                 <targetPath>content</targetPath>
-                <includes><include>generated.json</include></includes>
+                <includes><include>site.json</include></includes>
             </resource>
         </resources>
         <plugins>

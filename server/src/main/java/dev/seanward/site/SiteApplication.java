@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
-/** Serves the Astro-built site from the classpath and the small API under /api. */
+/** Serves the worlds (built by Vite in ../web) and the API under /api that makes them work. */
 @SpringBootApplication
 @ConfigurationPropertiesScan
 public class SiteApplication {

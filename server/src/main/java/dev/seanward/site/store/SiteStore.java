@@ -1,18 +1,39 @@
 package dev.seanward.site.store;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
-/** Where reactions and feedback are kept: in memory for local runs, Firestore in production. */
+/** Everything the site saves: the editable content, private feedback, album ratings and the shared Game planet. */
 public interface SiteStore {
 
-    /** Reaction counts for a post, by kind. Kinds with no reactions may be missing. */
-    Map<String, Long> reactions(String slug);
+    /** The site's words, as edited in the admin panel. Empty until the first edit; the starting content is used then. */
+    Optional<Map<String, Object>> content();
 
-    /** Adds one reaction and returns the new counts. */
-    Map<String, Long> addReaction(String slug, String kind);
+    void saveContent(Map<String, Object> content);
 
     void saveFeedback(Feedback feedback);
 
-    record Feedback(String slug, String message, String name, Instant at) {}
+    List<Feedback> feedback();
+
+    boolean deleteFeedback(String id);
+
+    /** Records one visitor's score for an album and returns the album's totals. */
+    AlbumStats rate(String albumId, double score);
+
+    AlbumStats albumStats(String albumId);
+
+    List<Mark> marks();
+
+    void addMark(Mark mark);
+
+    boolean deleteMark(String id);
+
+    record Feedback(String id, String message, String name, Instant at) {}
+
+    record AlbumStats(String albumId, long count, double average) {}
+
+    /** A lantern a visitor left on the Game planet: where it stands (latitude, longitude in degrees) and its note. */
+    record Mark(String id, double lat, double lon, String note, String color, Instant at) {}
 }

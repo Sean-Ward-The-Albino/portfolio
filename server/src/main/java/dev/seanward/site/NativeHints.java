@@ -5,7 +5,7 @@ import org.springframework.aot.hint.RuntimeHintsRegistrar;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportRuntimeHints;
 
-/** Files the native image must carry besides the static site, which Spring Boot already includes. */
+/** Files the native image must carry: the built site and the starting content. */
 @Configuration
 @ImportRuntimeHints(NativeHints.Registrar.class)
 public class NativeHints {
