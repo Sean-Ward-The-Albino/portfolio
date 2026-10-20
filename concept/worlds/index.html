@@ -1,0 +1,1168 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sean's Worlds</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Outfit:wght@400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+/* Scrolling is the journey. Each piece of content stands somewhere on the planet; scrolling carries you to it, past it, and on.
+   Scroll past a world's last piece and you lift off and fly to the next world. Text always sits on solid cards, never on the 3D. */
+:root {
+  --line: rgb(240 238 245 / 0.12);
+  --bg: #120c10; --surface: #1d141a; --text: #f3e9ee; --mute: #b9a6b1; --accent: #e6a6c8; --accent-ink: #1b0f15;
+  --display: 'Outfit', system-ui, sans-serif; --body: 'Source Serif 4', Georgia, serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: #030306; color: #f0eef5; font-family: var(--display); margin: 0; }
+h1, h2, h3 { margin: 0; letter-spacing: -0.03em; line-height: 1.04; text-wrap: balance; }
+p { margin: 0; }
+:focus-visible { outline: 3px solid #fff; outline-offset: 3px; border-radius: 8px; }
+.stage { position: fixed; inset: 0; overflow: hidden; touch-action: pan-y; background: #030306; user-select: none; }
+.stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.brand { position: absolute; left: max(16px, env(safe-area-inset-left, 0px)); top: 16px; display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 16px; z-index: 3; background: rgb(3 3 6 / 0.55); padding: 6px 12px 6px 8px; border-radius: 100px; }
+.brand svg { width: 24px; height: 24px; }
+.tod { position: absolute; right: 16px; top: 16px; z-index: 3; background: rgb(3 3 6 / 0.72); border: 1px solid var(--line); border-radius: 14px; padding: 9px 14px 11px; display: grid; gap: 5px; width: 240px; }
+.aa { position: absolute; right: 16px; top: 112px; z-index: 3; min-height: 36px; padding: 0 14px; border-radius: 100px; border: 1px solid var(--line); background: rgb(3 3 6 / 0.72); color: #f0eef5; font: 600 13px var(--display); cursor: pointer; }
+.aa[aria-pressed="true"] { background: #f0eef5; color: #0b0a10; }
+.tod label { font-size: 12px; font-weight: 600; color: #b5afc2; }
+.tod input { width: 100%; accent-color: var(--accent); }
+.tod output { font-size: 14px; font-weight: 600; }
+.tod .uv { font-size: 13px; color: #d9d3e3; }
+.dock { position: absolute; left: 50%; bottom: max(14px, env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 3; display: flex; gap: 4px; padding: 5px; border-radius: 100px; background: rgb(3 3 6 / 0.75); border: 1px solid var(--line); max-width: calc(100% - 24px); overflow-x: auto; }
+.dock button { min-height: 38px; padding: 0 14px; border-radius: 100px; border: 0; background: transparent; color: #cfc9da; font: 600 14px var(--display); cursor: pointer; white-space: nowrap; }
+.dock button:hover { color: #fff; }
+.dock button[aria-current="true"] { background: #f0eef5; color: #0b0a10; }
+#labels { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+.lbl { position: absolute; left: 0; top: 0; pointer-events: auto; font: 600 13px var(--display); color: #f0eef5; background: rgb(3 3 6 / 0.62); border: 1px solid var(--line); border-radius: 100px; padding: 0 12px; min-height: 32px; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; white-space: nowrap; transition: opacity 300ms ease, border-color 200ms ease; text-decoration: none; }
+.lbl::after { content: ''; position: absolute; inset: -8px; }
+.lbl:hover, .lbl:focus-visible { border-color: rgb(240 238 245 / 0.7); background: rgb(3 3 6 / 0.88); }
+.lbl .s { color: #b0aabd; font-weight: 500; }
+.lbl.cap { cursor: default; font-weight: 500; font-size: 12px; pointer-events: none; }
+.lbl.cap::after { display: none; }
+.lbl.dim { color: #cbc6d4; background: rgb(3 3 6 / 0.45); }
+#veil { position: absolute; inset: 0; z-index: 4; opacity: 0; pointer-events: none; transition: opacity 500ms ease; background: #000; }
+#veil.on { opacity: 1; }
+.skip { position: absolute; left: 50%; bottom: 76px; transform: translateX(-50%); z-index: 5; min-height: 40px; padding: 0 16px; border-radius: 100px; border: 1px solid rgb(240 238 245 / 0.3); background: rgb(3 3 6 / 0.7); color: #f0eef5; font: 600 14px var(--display); cursor: pointer; }
+.arrivalNote { position: absolute; left: 50%; top: 40%; transform: translate(-50%, -50%); z-index: 5; text-align: center; pointer-events: none; transition: opacity 700ms ease; }
+.arrivalNote b { display: block; font-size: clamp(28px, 4vw, 44px); font-weight: 800; letter-spacing: -0.04em; text-shadow: 0 2px 30px #000; }
+.arrivalNote span { font-size: 15px; color: #d6d0df; text-shadow: 0 1px 12px #000; }
+[hidden] { display: none !important; }
+
+#track { position: relative; z-index: 0; pointer-events: none; }
+/* One line at a time, like film subtitles. Details live in a sheet you open from the line or from the thing in the world. */
+.sub { position: fixed; left: 50%; bottom: 74px; transform: translateX(-50%); z-index: 3; width: min(760px, calc(100vw - 24px)); display: flex; align-items: center; gap: 14px; background: rgb(8 8 12 / 0.86); border: 1px solid var(--line); border-radius: 16px; padding: 12px 14px 12px 20px; transition: opacity 260ms ease; }
+.sub p { flex: 1; font-family: var(--body); font-size: 20px; line-height: 1.4; color: #f6f3fa; text-wrap: balance; }
+.sub .more { flex: none; min-height: 40px; padding: 0 16px; border-radius: 100px; border: 0; background: var(--accent); color: var(--accent-ink); font: 600 14px var(--display); cursor: pointer; white-space: nowrap; }
+.sheet { position: fixed; z-index: 6; top: 12px; right: 12px; bottom: 12px; width: min(460px, calc(100vw - 24px)); background: var(--bg); color: var(--text); border: 1px solid var(--line); border-radius: 20px; box-shadow: 0 30px 80px rgb(0 0 0 / 0.5); transform: translateX(calc(100% + 24px)); transition: transform 420ms cubic-bezier(.16,1,.3,1), visibility 0s linear 420ms; visibility: hidden; display: flex; flex-direction: column; }
+.sheet.open { transform: none; visibility: visible; transition: transform 420ms cubic-bezier(.16,1,.3,1); }
+.sheet .bar { display: flex; justify-content: flex-end; padding: 10px 10px 0; }
+.sheet .x { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); color: var(--text); font: 600 20px var(--display); cursor: pointer; }
+.sheet .in { overflow: auto; overscroll-behavior: contain; padding: 0 26px 28px; display: flex; flex-direction: column; gap: 14px; }
+.sheet img.shot { width: 100%; border-radius: 14px; border: 1px solid var(--line); display: block; }
+.lbl.spot { background: rgb(8 8 12 / 0.8); border-color: rgb(255 255 255 / 0.35); }
+.lbl.spot::before { content: ''; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 0 var(--accent); animation: ping 2.4s ease-out infinite; }
+@keyframes ping { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 70%, transparent); } 70%, 100% { box-shadow: 0 0 0 10px transparent; } }
+.allread { position: absolute; right: 16px; top: 156px; z-index: 3; min-height: 36px; padding: 0 14px; border-radius: 100px; border: 1px solid var(--line); background: rgb(3 3 6 / 0.72); color: #f0eef5; font: 600 13px var(--display); cursor: pointer; }
+.cardx { position: absolute; left: 0; top: 0; width: min(440px, calc(100vw - 32px)); max-height: 78vh; overflow: auto; background: var(--bg); color: var(--text); border: 1px solid var(--line); border-radius: 20px; padding: 24px 26px; box-shadow: 0 24px 60px rgb(0 0 0 / 0.45); transform-origin: 50% 50%; opacity: 0; will-change: transform, opacity; overscroll-behavior: contain; }
+.crumbs { position: fixed; left: max(16px, env(safe-area-inset-left, 0px)); top: 64px; z-index: 3; display: flex; flex-wrap: wrap; align-items: center; gap: 4px; font-size: 13px; color: #d6d0df; background: rgb(3 3 6 / 0.55); border-radius: 100px; padding: 2px 10px; }
+.crumbs button { font: 500 13px var(--display); color: #c8c2d2; background: none; border: 0; padding: 6px 4px; cursor: pointer; }
+.crumbs button:hover { color: #fff; }
+.crumbs .here { color: #fff; font-weight: 600; }
+.onward { position: fixed; left: 50%; bottom: 76px; transform: translateX(-50%); z-index: 3; background: var(--bg); color: var(--text); border: 1px solid var(--line); border-radius: 100px; padding: 10px 18px; font-size: 15px; display: grid; gap: 6px; text-align: center; opacity: 0; transition: opacity 300ms ease; pointer-events: none; }
+.onward i { display: block; height: 3px; border-radius: 3px; background: var(--accent); transform-origin: 0 50%; transform: scaleX(0); }
+.progress { position: fixed; right: 10px; top: 50%; transform: translateY(-50%); z-index: 3; display: grid; gap: 8px; }
+.progress button { width: 10px; height: 10px; border-radius: 50%; border: 1px solid rgb(255 255 255 / 0.6); background: transparent; padding: 0; cursor: pointer; position: relative; }
+.progress button::after { content: ''; position: absolute; inset: -10px; }
+.progress button[aria-current="true"] { background: #fff; }
+.sec { display: flex; flex-direction: column; gap: 14px; }
+/* Content arrives in order once you get there: heading first, then the rest */
+.sec > * { opacity: 0; transform: translateY(18px); transition: opacity 600ms ease, transform 800ms cubic-bezier(.16,1,.3,1); }
+.sec.in > * { opacity: 1; transform: none; }
+.sec.in > *:nth-child(2) { transition-delay: 90ms; } .sec.in > *:nth-child(3) { transition-delay: 180ms; } .sec.in > *:nth-child(4) { transition-delay: 270ms; }
+.sec.in > *:nth-child(5) { transition-delay: 360ms; } .sec.in > *:nth-child(n+6) { transition-delay: 450ms; }
+.k { font-size: 14px; font-weight: 600; color: var(--accent); }
+.sheet h2 { font-size: 40px; font-weight: 800; letter-spacing: -0.045em; }
+.sheet h3 { font-size: 28px; font-weight: 750; letter-spacing: -0.03em; }
+.lede { font-family: var(--body); font-size: 21px; line-height: 1.55; }
+.body { font-family: var(--body); font-size: 18px; line-height: 1.7; opacity: 0.94; }
+.ph { color: var(--mute); font-style: italic; }
+.cards { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.cards li > * { width: 100%; text-align: left; font: inherit; color: inherit; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; display: grid; gap: 3px; cursor: pointer; text-decoration: none; transition: border-color 200ms ease; }
+.cards li > *:hover { border-color: var(--accent); }
+.cards .t { font-weight: 650; font-size: 17px; display: flex; justify-content: space-between; gap: 12px; }
+.cards .d { font-family: var(--body); font-size: 16px; color: var(--mute); line-height: 1.5; }
+.st { font-size: 13px; font-weight: 600; white-space: nowrap; color: var(--accent); }
+.st.live { color: #3ccf91; } .st.soon { color: #f2b84b; }
+.why { border-left: 2px solid var(--accent); padding: 2px 0 2px 14px; display: grid; gap: 6px; }
+.why h4 { margin: 0; font-size: 13px; font-weight: 600; color: var(--mute); }
+.why p { font-family: var(--body); font-size: 16px; line-height: 1.6; color: var(--mute); }
+.log { list-style: none; margin: 0; padding: 0; display: grid; }
+.log li { display: grid; grid-template-columns: 64px 1fr; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); font-size: 15px; line-height: 1.45; }
+.log time { color: var(--mute); font-size: 13px; padding-top: 2px; }
+.log b { font-weight: 650; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
+.stat { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; display: grid; gap: 2px; }
+.stat b { font-size: 26px; font-weight: 750; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.stat span { font-size: 13px; color: var(--mute); }
+.pulse { display: grid; gap: 8px; }
+.pulse svg { width: 100%; height: auto; display: block; }
+.pulse .cap { font-size: 13px; color: var(--mute); }
+.photo { aspect-ratio: 4 / 3; border-radius: 14px; border: 1px dashed var(--line); background: var(--surface); display: grid; place-items: center; color: var(--mute); font-size: 14px; text-align: center; padding: 16px; }
+.photos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.photos .photo { aspect-ratio: 1; font-size: 11px; padding: 6px; }
+.scrollcue { font-size: 14px; color: var(--mute); }
+.draft { display: inline-block; margin-left: 8px; font-size: 11px; font-weight: 600; color: var(--accent-ink); background: var(--accent); border-radius: 100px; padding: 2px 8px; vertical-align: 1px; }
+.hl { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.hl li { font-family: var(--body); font-size: 18px; line-height: 1.5; padding-left: 22px; position: relative; }
+.hl li::before { content: ''; position: absolute; left: 2px; top: 0.6em; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+form { display: grid; gap: 10px; }
+label { font-size: 14px; font-weight: 600; }
+textarea, input[type=text] { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; color: var(--text); font: 18px var(--body); }
+.btn { justify-self: start; min-height: 46px; padding: 0 22px; border-radius: 100px; border: 0; background: var(--accent); color: var(--accent-ink); font: 600 15px var(--display); cursor: pointer; }
+.btn.ghost { background: transparent; color: var(--text); border: 1px solid var(--line); }
+body.reading { --mute: var(--text); }
+body.reading .lede, body.reading .body, body.reading .why p, body.reading .cards .d, body.reading .log li { font-family: 'Atkinson Hyperlegible', system-ui, sans-serif; font-size: 21px; line-height: 1.7; opacity: 1; font-style: normal; }
+
+@media (pointer: coarse) { .lbl { min-height: 40px; padding: 0 14px; font-size: 14px; } }
+@media (max-width: 900px) {
+  .aa { top: 92px; right: 12px; min-height: 32px; padding: 0 12px; font-size: 12px; }
+  .crumbs { max-width: calc(100vw - 230px); flex-wrap: nowrap; white-space: nowrap; overflow: hidden; font-size: 12px; }
+  .crumbs button { font-size: 12px; padding: 6px 2px; }
+  .tod { width: 180px; padding: 7px 11px 9px; }
+  .sheet { top: auto; left: 0; right: 0; bottom: 0; width: 100%; max-height: 82vh; border-radius: 20px 20px 0 0; transform: translateY(105%); }
+  .sub { bottom: 70px; padding: 10px 10px 10px 14px; gap: 10px; }
+  .sub p { font-size: 17px; }
+  .allread { top: auto; bottom: 74px; right: 112px; display: none; }
+  .progress { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .sheet, .sheet.open { transition: none; } .lbl.spot::before { animation: none; } .sec > * { transform: none; transition: opacity 200ms ease; } #veil { transition: none; } }
+</style>
+
+<section class="stage" id="stage" aria-label="The landscape. Worlds in the sky can be selected to travel there.">
+    <div class="brand">
+      <svg viewBox="0 0 161 161" aria-hidden="true"><defs><linearGradient id="dg1" x1="80.5" y1="0" x2="80.5" y2="161" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fd00de"/><stop offset="1" stop-color="#8300a7"/></linearGradient><linearGradient id="dg2" x1="80.5" y1="80.5" x2="80.5" y2="161" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#1c4295"/><stop offset="1" stop-color="#2f71fd"/></linearGradient></defs><path d="M80.5 161 0 80.5 80.5 0 161 80.5z" fill="url(#dg1)"/><path d="M80.5 161 0 80.5h161z" fill="url(#dg2)"/><path d="M80.5 161V0l80.5 80.5z" fill="#000" fill-opacity=".25"/><path d="M80.5 100.6 60.4 80.5l20.1-20.1 20.1 20.1z" fill="#000"/></svg>
+      Sean D. Ward
+    </div>
+    <button class="allread" id="btnAll" type="button">Read it all</button>
+    <button class="aa" id="btnRead" type="button" aria-pressed="false">Reading mode</button>
+    <div class="tod" id="tod" hidden>
+      <label for="todIn">Time of day</label>
+      <input id="todIn" type="range" min="0" max="24" step="0.25">
+      <output id="todOut" for="todIn"></output>
+    </div>
+    <div id="labels"></div>
+    <nav class="dock" id="dock" aria-label="Go to"></nav>
+    <div class="arrivalNote" id="arrivalNote" hidden><b>Sean D. Ward</b><span>Arriving in San Diego</span></div>
+    <button class="skip" id="btnSkip" type="button" hidden>Skip the flight</button>
+    <div id="veil"></div>
+</section>
+<nav class="crumbs" id="crumbs" aria-label="Where you are"></nav>
+<div class="sub" id="sub" style="opacity:0;pointer-events:none"><p id="subText" aria-live="polite"></p><button class="more" id="subMore" type="button" hidden></button></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"><div class="bar"><button class="x" id="sheetX" type="button" aria-label="Close">×</button></div><div class="in" id="sheetBody"></div></div>
+<nav class="progress" id="progress" aria-label="Places on this world"></nav>
+<div class="onward" id="onward" aria-live="polite"><span></span><i></i></div>
+<div id="track" aria-hidden="true"></div>
+
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/" } }
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { Sky } from 'three/addons/objects/Sky.js';
+
+// ================= Content =================
+// Product facts, change logs and counts are real: read from the Avlory repo on October 19, 2026 (its history in this copy starts October 10).
+// [Brackets] are Sean's to write. On the real site, a sync script refreshes the numbers and logs.
+const THEMES = {
+  sean:     { bg: '#120c10', surface: '#1d141a', text: '#f3e9ee', mute: '#b9a6b1', accent: '#e6a6c8', ink: '#1b0f15' },
+  avlory:   { bg: '#111113', surface: '#1c1c22', text: '#f2f0f7', mute: '#aaa6b8', accent: '#e39bff', ink: '#1a0722' },
+  waverate: { bg: '#1c1c1f', surface: '#262629', text: '#fdfbf7', mute: '#b8b2a6', accent: '#d4af37', ink: '#1c1607' },
+  penny:    { bg: '#090a0d', surface: '#171b23', text: '#f8fafc', mute: '#94a3b8', accent: '#e8cb68', ink: '#1c1607' },
+  next:     { bg: '#0b1120', surface: '#152039', text: '#eef3ff', mute: '#9fb0d0', accent: '#6b9bff', ink: '#06122b' },
+  upnext:   { bg: '#110f1f', surface: '#1c1932', text: '#f1f0ff', mute: '#aaa7cc', accent: '#8f8af5', ink: '#0f0c2b' },
+  notes:    { bg: '#0d1015', surface: '#171b22', text: '#eef1f5', mute: '#a3adbb', accent: '#a9c1de', ink: '#0c1520' },
+  life:     { bg: '#0a1311', surface: '#13201d', text: '#eef5f1', mute: '#9fb6ad', accent: '#3cc9aa', ink: '#04201a' },
+  feedback: { bg: '#0c0e16', surface: '#171a26', text: '#f2f2f5', mute: '#a5a8b8', accent: '#f2b544', ink: '#241a04' },
+};
+const NAMES = { sean: 'Home', waverate: 'Waverate', penny: 'PennySphere', next: 'Avlory Next', upnext: 'UpNext', notes: 'Notes', life: 'Life', feedback: 'Feedback' };
+const PRODUCTS = ['waverate', 'penny', 'next', 'upnext'];
+const SPACES = [
+  ['Calendar', '#6b9bff'], ['Projects', '#3cc9aa'], ['Messages', '#b98cff'], ['Mail', '#ff8a8a'], ['Connect', '#9b93ff'], ['Quill', '#f2b544'],
+  ['Tables', '#3cc9aa'], ['Stage', '#ff8a8a'], ['Survey', '#b98cff'], ['Canvas', '#f2b544'], ['Cloud', '#6b9bff'],
+];
+// Changes merged per day across the Avlory repo (October 18 is a partial day)
+const PULSE = [['Oct 10', 3], ['Oct 11', 81], ['Oct 12', 118], ['Oct 13', 92], ['Oct 14', 122], ['Oct 15', 45], ['Oct 16', 125], ['Oct 17', 186], ['Oct 18', 12]];
+// Changes per product, October 10 to 18. The planet's glow in the sky follows this.
+const WORK = { next: 429, penny: 39, upnext: 10, waverate: 3, id: 168, web: 51 };
+
+const why = (h, p) => `<div class="why"><h4>${h}</h4><p>${p}</p></div>`;
+const goBtn = (id, t, d, st = '') => `<li><button type="button" data-go="${id}"><span class="t">${t}${st}</span><span class="d">${d}</span></button></li>`;
+const log = (rows) => `<ul class="log">${rows.map(([d, t]) => `<li><time>${d}</time><span>${t}</span></li>`).join('')}</ul>`;
+const stats = (rows) => `<div class="stats">${rows.map(([b, s]) => `<div class="stat"><b>${b}</b><span>${s}</span></div>`).join('')}</div>`;
+function pulseChart() {
+  const max = Math.max(...PULSE.map((p) => p[1])), w = 420, h = 120, bw = w / PULSE.length;
+  const bars = PULSE.map(([d, n], i) => { const bh = Math.max(2, (n / max) * (h - 26)); return `<rect x="${i * bw + 5}" y="${h - 18 - bh}" width="${bw - 10}" height="${bh}" rx="3" fill="currentColor" opacity="${i === PULSE.length - 1 ? 0.45 : 0.85}"><title>${d}: ${n} changes</title></rect><text x="${i * bw + bw / 2}" y="${h - 4}" text-anchor="middle" font-size="11" fill="currentColor" opacity="0.6">${d.slice(4)}</text>`; }).join('');
+  return `<div class="pulse" style="color: var(--accent)"><svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Changes merged per day, October 10 to 18: ${PULSE.map((p) => p[1]).join(', ')}">${bars}</svg><span class="cap">Changes merged per day in October. The 18th was still going.</span></div>`;
+}
+
+// Each world is a walk. Every stop has one line, shown like a subtitle, and sometimes more to open.
+// Sean's own words from our conversation are used as he told them. [Brackets] are still his to fill in.
+const photo = (t) => `<div class="photo">[${t}]</div>`;
+const STORY = {
+  sean: [
+    { sub: 'I’m Sean. I build software done right.', more: { label: 'About me', html: `<p class="k">Founder and CEO of Avlory · San Diego</p><h2 id="sheetTitle">Sean D. Ward</h2><p class="lede">I build software done right: apps that work properly and work together.</p><p class="body">Self-taught since I was ten. Everything in the sky here is something I’m building, or somewhere you can go.</p>` } },
+    { sub: 'That’s Avlory up there: four products on one account. Tap a planet to visit.', more: { label: 'What I’m building', html: `<p class="k">Avlory</p><h3 id="sheetTitle">What I’m building</h3><ul class="cards">
+       ${goBtn('waverate', 'Waverate', 'Rate the music you love, to two decimal places.', ' <span class="st live">On iPhone</span>')}
+       ${goBtn('penny', 'PennySphere', 'Know what you can safely spend.', ' <span class="st">December 2026</span>')}
+       ${goBtn('next', 'Avlory Next', 'Your docs, calendar, calls and more, linked.', ' <span class="st soon">Early 2027</span>')}
+       ${goBtn('upnext', 'UpNext', 'Social media as an asset, not a liability.', ' <span class="st soon">Coming soon</span>')}</ul>
+       <p class="body">One Avlory account signs you in to all of them. I built that too.</p>` } },
+    { sub: 'Right now I’m working on [one line you update from the admin panel].', more: { label: 'Right now', html: `<p class="k">Right now</p><h3 id="sheetTitle">What I’m up to</h3><ul class="cards">
+       <li><a href="#"><span class="t">Just rated on Waverate <span class="st live">Live</span></span><span class="d ph">[Your latest ratings, as you make them.]</span></a></li>
+       <li><a href="#"><span class="t">Working on</span><span class="d ph">[One line from the admin panel.]</span></a></li>
+       <li><a href="#"><span class="t">Latest note</span><span class="d ph">[Your newest note.]</span></a></li></ul>` } },
+    { sub: '2am food means Loretto’s. Get the horchata.', pin: { label: 'Loretto’s', at: [165, -140] }, more: { label: 'Loretto’s', html: `<p class="k">San Diego</p><h3 id="sheetTitle">Loretto’s</h3><p class="body">My 2am taco shop, and the horchata is fire.</p>${photo('Photo from Loretto’s')}` } },
+    { sub: 'Most of my work gets done at Living Room Cafe.', pin: { label: 'Living Room Cafe', at: [200, -205] }, more: { label: 'Living Room Cafe', html: `<p class="k">San Diego</p><h3 id="sheetTitle">Living Room Cafe</h3><p class="body">Where a lot of Avlory gets built.</p>${photo('Photo of your usual table')}` } },
+    { sub: 'Some nights: a power bank, a record player and friends, listening to vinyl.', more: { label: 'Vinyl nights', html: `<p class="k">San Diego, after dark</p><h3 id="sheetTitle">Vinyl nights</h3><p class="body">Sometimes I take a power bank and a record player out at night and we listen to records with friends. Move the time of day to night to see it how it is.</p>${photo('Photo from a vinyl night')}` } },
+    { sub: 'Balboa Park: the San Diego Chess Club, and a big part of my childhood.', pin: { label: 'Balboa Park', at: [240, -265] }, more: { label: 'Chess and teaching', html: `<p class="k">Balboa Park</p><h3 id="sheetTitle">Chess and teaching</h3><p class="body">Balboa Park is home to the San Diego Chess Club, and it was a great spot growing up. I play and teach chess.</p><p class="body">In high school I was the TA for AP Computer Science A. When the teacher had to go on leave, I taught the class.</p>${photo('Photo at Balboa Park')}` } },
+    { sub: 'The rest of me is up there too: Notes, Life and Feedback.', more: { label: 'Go there', html: `<p class="k">Look up</p><h3 id="sheetTitle">The rest of me</h3><ul class="cards">${goBtn('notes', 'Notes', 'What I think, written down.')}${goBtn('life', 'Life', 'Music, cooking, and the things I do.')}${goBtn('feedback', 'Feedback', 'Tell me what you think.')}</ul>` } },
+  ],
+  waverate: [
+    { sub: 'Waverate: rate music from 0.00 to 10.00.' },
+    { sub: 'It started in my notes app, rating albums with my girlfriend.', more: { label: 'Why I built it', html: `<p class="k">Waverate</p><h3 id="sheetTitle">Why I built it</h3><p class="lede">My girlfriend and I used to rate music in my notes app.</p><p class="body">I wanted a better way to do it, and I wanted to give her a fire Valentine’s Day gift. Everything else out there was either too basic or trying to do too much. So I built Waverate.</p>` } },
+    { sub: 'Other apps were too basic, or tried to do too much. So I made it her Valentine’s Day gift.' },
+    { sub: 'These are real screens from the app. Tap one to look closer.' },
+    { sub: 'On iPhone now, with Android in beta. Version 4 lands in January.', more: { label: 'Get Waverate', html: `<p class="k">On iPhone · Android in beta</p><h3 id="sheetTitle">Get Waverate</h3><ul class="cards"><li><a href="https://apps.apple.com/us/app/waverate/id6760079525" target="_blank" rel="noopener"><span class="t">Waverate on the App Store</span><span class="d">apps.apple.com</span></a></li></ul>` } },
+  ],
+  penny: [
+    { sub: 'PennySphere: know what you can safely spend.' },
+    { sub: 'Budget apps failed me. They were confusing, nosy, or both.', more: { label: 'Why I built it', html: `<p class="k">PennySphere</p><h3 id="sheetTitle">Why I built it</h3><p class="body">Budget apps failed me. I didn’t want a company reading my finances, and I just wanted to know what was left.</p><p class="body">I also wanted it to work for my friends with roommates, and to help people who have no idea what a credit score is learn, and be empowered with control over the thing people say controls them.</p>` } },
+    { sub: 'It’s built for real life, like friends splitting rent with roommates. Tap a screen to look closer.' },
+    { sub: 'And for anyone nobody ever explained a credit score to. It shouldn’t control you.' },
+    { sub: 'Your numbers are encrypted, so even PennySphere can’t read them.' },
+    { sub: 'Version 1 arrives in December. Version 2 follows in June 2027.' },
+  ],
+  next: [
+    { sub: 'Avlory Next: your docs, calendar, calls and more, linked together.' },
+    { sub: 'I love ecosystems: everything links, and it stays personal and private to you.', more: { label: 'Why I built it', html: `<p class="k">Avlory Next</p><h3 id="sheetTitle">Why I’m building it</h3><p class="body">I like ecosystems: platforms where everything can link, and stay personal and private to you.</p><p class="body">It’s the same idea as everything at Avlory: empowerment through control and ownership. Your work lives on your device, encrypted. It starts with you, then expands to schools and businesses.</p>` } },
+    { sub: 'Your work lives on your device, encrypted. You own it.' },
+    { sub: 'For you first, then schools and businesses. Tap a screen to see the real designs.' },
+    { sub: 'Eleven spaces, one per moon. Tap a moon to read about it.', more: { label: 'All eleven', html: `<p class="k">Avlory Next</p><h3 id="sheetTitle">Eleven spaces</h3><ul class="cards" data-spaces></ul>` } },
+  ],
+  upnext: [
+    { sub: 'UpNext. Coming soon.' },
+    { sub: 'The idea: turn social media from an attention liability into an asset.' },
+    { sub: 'Messages are end-to-end encrypted, like the rest of Avlory. More at launch.' },
+  ],
+  notes: [
+    { sub: 'Notes: what I think, written down.' },
+    { sub: '[Your first essay, in one line.]', more: { label: 'Read it', html: `<p class="k">Essay</p><h3 id="sheetTitle">[Essay title]</h3><p class="body ph">[The essay opens here, in reading mode, written from the admin panel.]</p>` } },
+    { sub: '[A take, in one line.]' },
+    { sub: 'Old takes stay up, marked with what I think now.' },
+  ],
+  life: [
+    { sub: 'Life: the rest of me.' },
+    { sub: 'Music: I write and produce rap.', more: { label: 'Listen', html: `<p class="k">A moon of Life</p><h3 id="sheetTitle">Music</h3>${photo('Audio player: tracks you upload')}` } },
+    { sub: 'Cooking: [what you cook].', more: { label: 'Photos', html: `<p class="k">A moon of Life</p><h3 id="sheetTitle">Cooking</h3><div class="photos">${photo('Photo')}${photo('Photo')}</div>` } },
+    { sub: 'Hiking, camping, road trips and chess.' },
+  ],
+  feedback: [
+    { sub: 'Feedback: tell me what you think. It comes straight to me.' },
+    { sub: 'Tap the beacon to send a message.', pin: { label: 'Send feedback', at: [2, -54], h: 14 }, more: { label: 'Send feedback', html: `<p class="k">Feedback</p><h3 id="sheetTitle">Tell me what you think</h3><form data-fb><label for="fbMsg">Your message</label><textarea id="fbMsg" rows="4"></textarea><label for="fbName">Name (optional)</label><input id="fbName" type="text"><button class="btn" type="submit">Send to Sean</button><p class="body" role="status" data-fbnote></p></form>` } },
+  ],
+};
+const PAGES = Object.fromEntries(Object.entries(STORY).map(([k, v]) => [k, v.map((x) => x.sub)]));
+
+// ================= Renderer =================
+const stage = document.getElementById('stage');
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const narrow = () => matchMedia('(max-width: 900px)').matches;
+const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+// Performance: phones and modest devices get a lighter build, and a governor trims resolution if frames run long
+const LOW = matchMedia('(max-width: 900px)').matches || (navigator.deviceMemory || 8) <= 4 || (navigator.hardwareConcurrency || 8) <= 4;
+const DPR_MAX = Math.min(devicePixelRatio, LOW ? 1.25 : 1.5);
+let dpr = DPR_MAX;
+renderer.setPixelRatio(dpr);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+stage.prepend(renderer.domElement);
+const camera = new THREE.PerspectiveCamera(46, 1, 0.1, 3000);
+const tmp = new THREE.Vector3(), tmp2 = new THREE.Vector3(), tmp3 = new THREE.Vector3();
+const sph = new THREE.Spherical();
+const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const col = (h) => new THREE.Color(h);
+const sstep = (a, b, x) => { const t = clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
+const skyDir = (az, el) => { const a = (az * Math.PI) / 180, e = (el * Math.PI) / 180; return new THREE.Vector3(Math.sin(a) * Math.cos(e), Math.sin(e), -Math.cos(a) * Math.cos(e)); };
+
+const NOISE = `
+float h3(vec3 p){ p = fract(p * 0.3183099 + 0.1); p *= 17.0; return fract(p.x * p.y * p.z * (p.x + p.y + p.z)); }
+float n3(vec3 x){ vec3 i = floor(x), f = fract(x); f = f * f * (3.0 - 2.0 * f);
+  return mix(mix(mix(h3(i), h3(i+vec3(1,0,0)), f.x), mix(h3(i+vec3(0,1,0)), h3(i+vec3(1,1,0)), f.x), f.y),
+             mix(mix(h3(i+vec3(0,0,1)), h3(i+vec3(1,0,1)), f.x), mix(h3(i+vec3(0,1,1)), h3(i+vec3(1,1,1)), f.x), f.y), f.z); }
+float fbm(vec3 p){ float v = 0.0, a = 0.5; for (int i = 0; i < 6; i++) { v += a * n3(p); p = p * 2.07 + 1.3; a *= 0.5; } return v; }
+float fbm4(vec3 p){ float v = 0.0, a = 0.5; for (int i = 0; i < 4; i++) { v += a * n3(p); p = p * 2.07 + 1.3; a *= 0.5; } return v; }`;
+const OUT = `#include <tonemapping_fragment>
+#include <colorspace_fragment>`;
+
+function glowTexture() {
+  const c = document.createElement('canvas'); c.width = c.height = 128;
+  const g = c.getContext('2d'); const r = g.createRadialGradient(64, 64, 0, 64, 64, 64);
+  r.addColorStop(0, 'rgba(255,255,255,1)'); r.addColorStop(0.08, 'rgba(255,255,255,0.8)'); r.addColorStop(0.25, 'rgba(255,255,255,0.18)'); r.addColorStop(1, 'rgba(255,255,255,0)');
+  g.fillStyle = r; g.fillRect(0, 0, 128, 128);
+  return new THREE.CanvasTexture(c);
+}
+const GLOW = glowTexture();
+const glow = (color, size, opacity = 1) => { const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: GLOW, color, transparent: true, opacity, blending: THREE.AdditiveBlending, depthWrite: false, fog: false })); s.scale.setScalar(size); return s; };
+
+// ---------- Planet surfaces: one shader for every world, in space and in each other's skies ----------
+const KIND = { terran: 0, gas: 1, rocky: 2, ice: 3, ocean: 4, haze: 5 };
+const sunWorld = new THREE.Vector3(-0.55, 0.35, 0.75).normalize();
+function planet({ r, kind, a, b, c, atmo = '#8fb4ff', atmoStrength = 0.6, seed = 0, light = false, segments = 96, inSky = false }) {
+  const mat = new THREE.ShaderMaterial({
+    uniforms: {
+      uA: { value: col(a) }, uB: { value: col(b) }, uC: { value: col(c) }, uAtmo: { value: col(atmo) }, uAtmoK: { value: atmoStrength },
+      uKind: { value: KIND[kind] }, uSeed: { value: seed }, uSunDir: { value: sunWorld.clone() }, uLightPos: { value: new THREE.Vector3() }, uPoint: { value: light ? 1 : 0 },
+      uTime: { value: 0 }, uFade: { value: 1 }, uDay: { value: 0 },
+    },
+    transparent: inSky, fog: false,
+    vertexShader: `varying vec3 vN; varying vec3 vP; varying vec3 vW;
+      void main(){ vP = position; vN = normalize(mat3(modelMatrix) * normal); vec4 w = modelMatrix * vec4(position, 1.0); vW = w.xyz; gl_Position = projectionMatrix * viewMatrix * w; }`,
+    fragmentShader: `uniform vec3 uA, uB, uC, uAtmo, uSunDir, uLightPos; uniform float uAtmoK, uKind, uSeed, uPoint, uTime, uFade, uDay;
+      varying vec3 vN; varying vec3 vP; varying vec3 vW;
+      ${NOISE}
+      void main(){
+        vec3 p = normalize(vP) * 1.6 + uSeed; vec3 n = normalize(vN);
+        vec3 L = uPoint > 0.5 ? normalize(uLightPos - vW) : normalize(uSunDir);
+        vec3 V = normalize(cameraPosition - vW); float ndl = dot(n, L);
+        vec3 col; float spec = 0.0; float clouds = 0.0;
+        if (uKind < 0.5) { float h = fbm(p * 1.4); float land = smoothstep(0.5, 0.56, h);
+          col = mix(uC, mix(uA, uB, smoothstep(0.55, 0.75, fbm(p * 3.0))), land); spec = (1.0 - land) * 0.25;
+          clouds = smoothstep(0.55, 0.78, fbm(p * 2.2 + vec3(uTime * 0.004, 0.0, 0.0)));
+        } else if (uKind < 1.5) { float lat = normalize(vP).y; float t = fbm(p * vec3(1.0, 4.0, 1.0) + vec3(uTime * 0.003, 0.0, 0.0));
+          float bands = sin(lat * 18.0 + t * 5.0) * 0.5 + 0.5; col = mix(uA, uB, bands); col = mix(col, uC, smoothstep(0.6, 0.9, sin(lat * 7.0 + t * 3.0) * 0.5 + 0.5) * 0.6);
+        } else if (uKind < 2.5) { float h = fbm(p * 2.0); float veins = 1.0 - smoothstep(0.0, 0.035, abs(fbm(p * 3.5) - 0.5));
+          col = mix(uA, uB, smoothstep(0.35, 0.75, h)); col = mix(col, uC, veins * 0.9); spec = veins * 0.5;
+        } else if (uKind < 3.5) { float h = fbm(p * 2.0);
+          float lines = smoothstep(0.92, 1.0, sin((normalize(vP).y + fbm(p * 1.5) * 0.15) * 140.0) * 0.5 + 0.5);
+          col = mix(uB, uA, smoothstep(0.35, 0.7, h)); col = mix(col, uC, lines * 0.22); spec = 0.25;
+        } else if (uKind < 4.5) { float h = fbm(p * 1.8); col = mix(uA, uB, smoothstep(0.4, 0.6, fbm(p * 3.0))); col = mix(col, uC, smoothstep(0.62, 0.66, h)); spec = 0.8;
+          clouds = smoothstep(0.5, 0.75, fbm(p * 2.6 + vec3(0.0, uTime * 0.004, 0.0)));
+        } else { col = mix(uA, uB, fbm(p * 2.0 + vec3(uTime * 0.01))); clouds = 0.5 + 0.5 * fbm(p * 3.0 - uTime * 0.01); }
+        col = mix(col, vec3(0.92), clouds * 0.75);
+        float day = smoothstep(-0.08, 0.35, ndl); vec3 H = normalize(L + V);
+        float sp = pow(max(dot(n, H), 0.0), 60.0) * spec * day; float rim = pow(1.0 - max(dot(n, V), 0.0), 2.5);
+        vec3 lit = col * (0.012 + day * 1.05) + vec3(sp) * 0.6; lit += uAtmo * rim * uAtmoK * smoothstep(-0.25, 0.4, ndl);
+        // Seen from a landscape in daylight, the dark side disappears into the sky, like the moon at noon
+        float lum = dot(lit, vec3(0.3, 0.59, 0.11));
+        gl_FragColor = vec4(lit, uFade * mix(1.0, clamp(lum * 5.0, 0.0, 1.0), uDay));
+      }`,
+  });
+  const mesh = new THREE.Mesh(new THREE.SphereGeometry(r, segments, Math.round(segments / 2)), mat);
+  const halo = new THREE.Mesh(new THREE.SphereGeometry(r * 1.035, 48, 24), new THREE.ShaderMaterial({
+    uniforms: { uColor: { value: col(atmo) }, uK: { value: atmoStrength }, uSunDir: mat.uniforms.uSunDir, uLightPos: mat.uniforms.uLightPos, uPoint: mat.uniforms.uPoint, uFade: mat.uniforms.uFade },
+    vertexShader: `varying vec3 vN; varying vec3 vW; void main(){ vN = normalize(mat3(modelMatrix) * normal); vec4 w = modelMatrix * vec4(position, 1.0); vW = w.xyz; gl_Position = projectionMatrix * viewMatrix * w; }`,
+    fragmentShader: `uniform vec3 uColor, uSunDir, uLightPos; uniform float uK, uPoint, uFade; varying vec3 vN; varying vec3 vW;
+      void main(){ vec3 V = normalize(cameraPosition - vW); vec3 L = uPoint > 0.5 ? normalize(uLightPos - vW) : normalize(uSunDir);
+        float f = pow(1.0 - abs(dot(V, vN)), 5.0); float d = smoothstep(-0.3, 0.5, dot(vN, L)); gl_FragColor = vec4(uColor * f * d * uK * 1.4 * uFade, f * d * uK * uFade); }`,
+    transparent: true, blending: THREE.AdditiveBlending, side: THREE.BackSide, depthWrite: false, fog: false,
+  }));
+  mesh.add(halo);
+  return mesh;
+}
+function recordTexture(dark = false) {
+  const c = document.createElement('canvas'); c.width = 512; c.height = 8; const x = c.getContext('2d');
+  for (let k = 0; k < 512; k++) { const v = (dark ? 0 : 40) + Math.sin(k * 0.9) * 18 + Math.random() * 20; x.fillStyle = `rgba(${v + 60},${v + 45},${v + 20},${k % 7 < 2 ? 0.15 : dark ? 0.9 : 0.75})`; x.fillRect(k, 0, 1, 8); }
+  return new THREE.CanvasTexture(c);
+}
+function ringMesh(r0, r1, segs, opacity = 1, dark = false) {
+  const geo = new THREE.RingGeometry(r0, r1, segs, 1); const pos = geo.attributes.position, uv = geo.attributes.uv;
+  for (let k = 0; k < pos.count; k++) uv.setXY(k, (Math.hypot(pos.getX(k), pos.getY(k)) - r0) / (r1 - r0), 0.5);
+  return new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ map: recordTexture(dark), transparent: true, opacity, side: THREE.DoubleSide, depthWrite: false, fog: false }));
+}
+// The worlds, defined once. Used for the space crossing and for every sky.
+const WORLD = {
+  sean:     { r: 2, kind: 'terran', a: '#9a7480', b: '#d0b0ab', c: '#2c2638', atmo: '#e3a6c9', atmoK: 0.55, seed: 4.3, veil: '#d4b7c4' },
+  waverate: { r: 0.7, kind: 'gas', a: '#5b4636', b: '#e6dac4', c: '#b08d57', atmo: '#e8d9b8', atmoK: 0.45, seed: 0, ring: true, orbit: 5, speed: 0.05, veil: '#e3d6bf' },
+  penny:    { r: 0.48, kind: 'rocky', a: '#0f0f0d', b: '#2a2722', c: '#d4af37', atmo: '#d4af37', atmoK: 0.45, seed: 3.1, orbit: 7.4, speed: 0.038, veil: '#1a1812' },
+  next:     { r: 0.75, kind: 'ocean', a: '#0d2246', b: '#1f4f8f', c: '#8aa36b', atmo: '#7fb0ff', atmoK: 0.45, seed: 6.2, orbit: 10, speed: 0.028, veil: '#a9c6ef' },
+  upnext:   { r: 0.5, kind: 'haze', a: '#4a4770', b: '#8f8af5', c: '#8f8af5', atmo: '#a9a4ff', atmoK: 0.9, seed: 9.3, orbit: 12.6, speed: 0.022, veil: '#a6a1ea' },
+  notes:    { r: 1.5, kind: 'ice', a: '#d7dde6', b: '#8d99ab', c: '#2f3746', atmo: '#bcd3f0', atmoK: 0.45, seed: 5.2, veil: '#e3e8ef' },
+  life:     { r: 2.3, kind: 'terran', a: '#4f6e45', b: '#a39470', c: '#123a4a', atmo: '#8cc4ff', atmoK: 0.7, seed: 9.4, veil: '#cfe3f0' },
+  feedback: { r: 0.9, kind: 'rocky', a: '#3a3d47', b: '#6d707b', c: '#9aa0ad', atmo: '#f2b544', atmoK: 0.15, seed: 21, veil: '#8d8a86' },
+};
+const mkPlanet = (id, opts = {}) => { const w = WORLD[id]; return planet({ r: w.r, kind: w.kind, a: w.a, b: w.b, c: w.c, atmo: w.atmo, atmoStrength: w.atmoK, seed: w.seed, ...opts }); };
+
+// ================= Labels =================
+const labels = [];
+const labelsEl = document.getElementById('labels');
+function addLabel({ obj, text, sub = '', scene, go: dest = null, section = 0, onClick = null, link = null, offset = 0, cap = false, when = null, dim = false, spot = false }) {
+  const el = document.createElement(cap ? 'span' : link ? 'a' : 'button');
+  el.className = 'lbl' + (cap ? ' cap' : '') + (dim ? ' dim' : '') + (spot ? ' spot' : '');
+  if (cap) el.setAttribute('aria-hidden', 'true');
+  else if (link) { el.href = link; el.target = '_blank'; el.rel = 'noopener'; el.setAttribute('aria-label', `${text}, opens on avlory.com`); }
+  else { el.type = 'button'; el.addEventListener('click', onClick || (() => go(dest, section))); el.setAttribute('aria-label', onClick ? text : dest === 'sean' ? 'Go home' : `Travel to ${text}`); }
+  el.innerHTML = `${text}${sub ? ` <span class="s">${sub}</span>` : ''}`;
+  labelsEl.append(el);
+  labels.push({ el, obj, scene, offset, when, cap });
+}
+
+// ================= Space (only crossed in flight) =================
+const spaceScene = new THREE.Scene();
+function starPoints(n, radius, size) {
+  const pos = new Float32Array(n * 3), c = new Float32Array(n * 3);
+  const band = new THREE.Vector3(0.3, 1, 0.15).normalize();
+  for (let i = 0; i < n; i++) {
+    const v = new THREE.Vector3().randomDirection();
+    if (i < n * 0.55) v.addScaledVector(band, -v.dot(band) * (0.85 + Math.random() * 0.15)).normalize();
+    v.multiplyScalar(radius); pos.set([v.x, v.y, v.z], i * 3);
+    const temp = Math.random(), b = 0.35 + Math.pow(Math.random(), 3) * 0.9;
+    const cc = temp < 0.15 ? [0.75, 0.82, 1] : temp > 0.9 ? [1, 0.85, 0.7] : [1, 0.97, 0.95];
+    c.set([cc[0] * b, cc[1] * b, cc[2] * b], i * 3);
+  }
+  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(pos, 3)); g.setAttribute('color', new THREE.BufferAttribute(c, 3));
+  return new THREE.Points(g, new THREE.PointsMaterial({ size, sizeAttenuation: false, vertexColors: true, depthWrite: false, transparent: true, fog: false }));
+}
+spaceScene.add(starPoints(LOW ? 5000 : 9000, 1400, 1.4));
+const spaceUpdaters = [];
+const SPOS = {}; // world id -> Object3D in space
+const placeTop = (id, x, y, z) => { const g = new THREE.Group(); g.position.set(x, y, z); spaceScene.add(g); const p = mkPlanet(id, { segments: 96 }); g.add(p); spaceUpdaters.push((t) => { p.rotation.y = t * 0.02; p.material.uniforms.uTime.value = t; }); SPOS[id] = g; };
+placeTop('sean', 0, 0, 0); placeTop('notes', -40, -5, -30); placeTop('life', 16, -12, -78); placeTop('feedback', -18, 9, -64);
+const avG = new THREE.Group(); avG.position.set(52, 6, -40); spaceScene.add(avG);
+avG.add(new THREE.Mesh(new THREE.SphereGeometry(1.1, 48, 24), new THREE.MeshBasicMaterial({ color: '#fff4ff' })), glow('#d9b8ff', 9, 0.9), glow('#c700ff', 22, 0.28));
+PRODUCTS.forEach((id, i) => {
+  const w = WORLD[id], holder = new THREE.Group(); avG.add(holder);
+  const m = mkPlanet(id, { light: true, segments: 64 }); holder.add(m);
+  if (w.ring) { const ring = ringMesh(w.r * 1.4, w.r * 2.3, 128); ring.rotation.x = Math.PI / 2.3; holder.add(ring); }
+  const orbit = new THREE.Mesh(new THREE.TorusGeometry(w.orbit, 0.006, 4, 256), new THREE.MeshBasicMaterial({ color: '#c9a8ff', transparent: true, opacity: 0.1 })); orbit.rotation.x = Math.PI / 2; avG.add(orbit);
+  spaceUpdaters.push((t) => { const a = i * 1.9 + t * w.speed; holder.position.set(Math.cos(a) * w.orbit, 0, Math.sin(a) * w.orbit); m.rotation.y = t * 0.15; m.material.uniforms.uTime.value = t; m.material.uniforms.uLightPos.value.copy(avG.position); });
+  SPOS[id] = holder;
+});
+spaceScene.add(new THREE.AmbientLight('#ffffff', 0.04));
+function orbitPose(id, outPos, outLook, dist) {
+  SPOS[id].getWorldPosition(outLook);
+  const w = WORLD[id];
+  if (PRODUCTS.includes(id)) { outPos.copy(avG.position).sub(outLook).normalize(); tmp3.set(-outPos.z, 0, outPos.x).normalize(); outPos.multiplyScalar(0.8).addScaledVector(tmp3, 0.55); outPos.y += 0.3; }
+  else outPos.set(-0.35, 0.22, 1);
+  outPos.normalize().multiplyScalar(dist ?? w.r * 4).add(outLook);
+}
+
+// ================= Landscapes =================
+function hash2(x, z) { const n = Math.sin(x * 127.1 + z * 311.7) * 43758.5453; return n - Math.floor(n); }
+function noise2(x, z) {
+  const xi = Math.floor(x), zi = Math.floor(z), xf = x - xi, zf = z - zi, u = xf * xf * (3 - 2 * xf), v = zf * zf * (3 - 2 * zf);
+  const a = hash2(xi, zi), b = hash2(xi + 1, zi), c = hash2(xi, zi + 1), d = hash2(xi + 1, zi + 1);
+  return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
+}
+function fbm2(x, z, o = 5) { let s = 0, a = 0.5; for (let i = 0; i < o; i++) { s += a * noise2(x, z); x = x * 2.03 + 17.1; z = z * 2.03 + 9.7; a *= 0.5; } return s; }
+// Ridged noise makes believable mountain ridgelines
+function ridge2(x, z, o = 5) { let s = 0, a = 0.5; for (let i = 0; i < o; i++) { s += a * (1 - Math.abs(noise2(x, z) * 2 - 1)) ** 2; x = x * 2.03 + 17.1; z = z * 2.03 + 9.7; a *= 0.5; } return s; }
+
+// Where the other worlds hang in the sky (azimuth, elevation in degrees). The walk always heads north (-z).
+const SKYPOS = { system: [24, 27], life: [-10, 33], notes: [-32, 21], feedback: [-16, 13], sean: [-44, 15] };
+// Physically based sky per world: Rayleigh scattering decides how blue, turbidity how hazy
+const SKYP = {
+  sean:     { clouds: 0.32, turbidity: 7, rayleigh: 2.2, mie: 0.006, g: 0.82, fog: '#c9c6cf', night: '#141220', setTint: '#e89a7a' },
+  waverate: { clouds: 0.8, turbidity: 20, rayleigh: 1.1, mie: 0.02, g: 0.85, fog: '#d8ccb4', night: '#1c160f', setTint: '#d4a24a' },
+  penny:    { clouds: 0, turbidity: 2, rayleigh: 0.04, mie: 0.003, g: 0.9, fog: '#2a261d', night: '#08080a', setTint: '#6a5520', starsInDay: true },
+  next:     { clouds: 0.3, turbidity: 3, rayleigh: 2.8, mie: 0.004, g: 0.8, fog: '#b6cbe8', night: '#0b1428', setTint: '#e6957a' },
+  upnext:   { clouds: 0.6, turbidity: 20, rayleigh: 3.5, mie: 0.02, g: 0.75, fog: '#a8a3e0', night: '#161433', setTint: '#c9a0ff' },
+  notes:    { clouds: 0.22, turbidity: 2.5, rayleigh: 1.2, mie: 0.004, g: 0.8, fog: '#dfe5ee', night: '#10151e', setTint: '#e8bfa0' },
+  life:     { clouds: 0.42, turbidity: 4, rayleigh: 1.6, mie: 0.005, g: 0.8, fog: '#c7d9e8', night: '#0d1620', setTint: '#e8956a' },
+  feedback: { clouds: 0.12, turbidity: 10, rayleigh: 0.5, mie: 0.008, g: 0.85, fog: '#8f8a84', night: '#0e0f15', setTint: '#d9a04a' },
+};
+
+function makeSurface(id, cfg) {
+  const scene = new THREE.Scene();
+  const sp = SKYP[id];
+  const U = { uSun: { value: new THREE.Vector3(0, 1, 0) }, uSunCol: { value: new THREE.Color() }, uAmb: { value: new THREE.Color() }, uFog: { value: new THREE.Color() }, uFogD: { value: cfg.fog }, uTime: { value: 0 } };
+  scene.fog = new THREE.FogExp2(0x000000, cfg.fog);
+  const water = cfg.water ? 0 : -Infinity;
+  const ground = (x, z) => Math.max(cfg.H(x, z), water);
+
+  // Sky and everything in it travel with the camera
+  const skyG = new THREE.Group(); scene.add(skyG);
+  const sky = new Sky(); sky.scale.setScalar(1500); sky.material.depthWrite = false; sky.renderOrder = -3;
+  Object.assign(sky.material.uniforms.turbidity, { value: sp.turbidity }); sky.material.uniforms.rayleigh.value = sp.rayleigh;
+  sky.material.uniforms.mieCoefficient.value = sp.mie; sky.material.uniforms.mieDirectionalG.value = sp.g;
+  sky.material.uniforms.cloudCoverage && (sky.material.uniforms.cloudCoverage.value = sp.clouds);
+  sky.material.uniforms.cloudDensity && (sky.material.uniforms.cloudDensity.value = 0.25 + sp.clouds * 0.5);
+  skyG.add(sky);
+  // Night: a dark veil over the sky after twilight, so dusk can glow and night can still be night
+  const nightDome = new THREE.Mesh(new THREE.SphereGeometry(1400, 32, 16), new THREE.MeshBasicMaterial({ color: sp.night, transparent: true, opacity: 0, side: THREE.BackSide, depthWrite: false, fog: false }));
+  nightDome.renderOrder = -2.5; skyG.add(nightDome);
+  const stars = starPoints(LOW ? 2500 : 5000, 1300, 1.2); stars.renderOrder = -2; skyG.add(stars);
+
+  // Ground: a dense mesh near the walk, fog does the rest
+  const size = 1400, seg = LOW ? 150 : 240;
+  const geo = new THREE.PlaneGeometry(size, size, seg, seg); geo.rotateX(-Math.PI / 2); geo.translate(0, 0, -160);
+  const gp = geo.attributes.position;
+  for (let i = 0; i < gp.count; i++) gp.setY(i, cfg.H(gp.getX(i), gp.getZ(i)));
+  geo.computeVertexNormals();
+  const gU = { ...U, uA: { value: col(cfg.ground[0]) }, uB: { value: col(cfg.ground[1]) }, uC: { value: col(cfg.ground[2]) }, uLo: { value: cfg.bands[0] }, uHi: { value: cfg.bands[1] },
+    uVeins: { value: cfg.veins ? 1 : 0 }, uLines: { value: cfg.lines ? 1 : 0 }, uGrain: { value: cfg.grain ?? 0.3 }, uWet: { value: cfg.water ? 1 : 0 } };
+  scene.add(new THREE.Mesh(geo, new THREE.ShaderMaterial({
+    uniforms: gU, defines: LOW ? { LOW: 1 } : {},
+    vertexShader: `varying vec3 vW; varying vec3 vN; void main(){ vec4 w = modelMatrix * vec4(position, 1.0); vW = w.xyz; vN = normal; gl_Position = projectionMatrix * viewMatrix * w; }`,
+    fragmentShader: `uniform vec3 uA, uB, uC, uSun, uSunCol, uAmb, uFog; uniform float uFogD, uLo, uHi, uVeins, uLines, uGrain, uWet;
+      varying vec3 vW; varying vec3 vN;
+      ${NOISE}
+      void main(){
+        // Fine detail normal so close ground isn't smooth plastic
+        float d0 = fbm4(vW * 0.45);
+        #ifdef LOW
+        vec3 n = normalize(vN);
+        #else
+        float e = 0.35; vec3 dn = vec3(fbm4((vW + vec3(e, 0.0, 0.0)) * 0.45) - d0, 0.0, fbm4((vW + vec3(0.0, 0.0, e)) * 0.45) - d0);
+        vec3 n = normalize(normalize(vN) - dn * 1.6);
+        #endif
+        float h = vW.y + (fbm4(vW * 0.06) - 0.5) * 3.0;
+        vec3 c = mix(uA, uB, smoothstep(uLo, uHi, h));
+        float slope = 1.0 - normalize(vN).y;
+        c = mix(c, uC, smoothstep(0.25, 0.55, slope + (d0 - 0.5) * 0.3));
+        c *= 1.0 - uGrain * 0.5 + uGrain * fbm4(vW * 1.3);
+        if (uWet > 0.5) c *= mix(0.62, 1.0, smoothstep(0.0, 0.6, vW.y));   // wet sand at the waterline
+        vec3 emis = vec3(0.0);
+        if (uVeins > 0.5) { float v = 1.0 - smoothstep(0.0, 0.02, abs(fbm4(vW * 0.045) - 0.5)); c = mix(c, vec3(0.78, 0.6, 0.18), v); emis = vec3(0.45, 0.33, 0.08) * v * 0.12; }
+        if (uLines > 0.5) { float l = smoothstep(0.95, 1.0, sin(vW.z * 0.7 + fbm4(vW * 0.04) * 4.0) * 0.5 + 0.5); c = mix(c, uC, l * 0.3); }
+        float dif = max(dot(n, uSun), 0.0);
+        vec3 lit = c * (uAmb * (0.6 + 0.4 * n.y) + uSunCol * dif) + emis;
+        float d = length(vW - cameraPosition); float f = 1.0 - exp(-pow(d * uFogD, 2.0));
+        // Aerial perspective: distance tints toward the sky's own colour
+        gl_FragColor = vec4(mix(lit, uFog, f), 1.0);
+        ${OUT}
+      }`,
+  })));
+
+  if (cfg.water) {
+    const wU = { ...U, uDeep: { value: col(cfg.water) } };
+    const wgeo = new THREE.PlaneGeometry(2600, 2600, 1, 1); wgeo.rotateX(-Math.PI / 2); wgeo.translate(0, 0, -160);
+    scene.add(new THREE.Mesh(wgeo, new THREE.ShaderMaterial({
+      uniforms: wU,
+      vertexShader: `varying vec3 vW; void main(){ vec4 w = modelMatrix * vec4(position, 1.0); vW = w.xyz; gl_Position = projectionMatrix * viewMatrix * w; }`,
+      fragmentShader: `uniform vec3 uSun, uSunCol, uAmb, uFog, uDeep; uniform float uFogD, uTime; varying vec3 vW;
+        ${NOISE}
+        float wave(vec2 p, float t){ return n3(vec3(p * 0.16, t)) + 0.5 * n3(vec3(p * 0.55 + 7.0, t * 1.6)) + 0.25 * n3(vec3(p * 1.7 + 3.0, t * 2.4)); }
+        void main(){
+          vec2 p = vW.xz; float e = 0.4; float tt = uTime * 0.35;
+          float a = wave(p, tt), b = wave(p + vec2(e, 0.0), tt), c = wave(p + vec2(0.0, e), tt);
+          float d = length(vW - cameraPosition);
+          float calm = clamp(d / 600.0, 0.0, 1.0);                       // far water looks flatter, as it does
+          vec3 n = normalize(vec3((a - b) * (1.0 - calm * 0.8), 1.0, (a - c) * (1.0 - calm * 0.8)));
+          vec3 V = normalize(cameraPosition - vW);
+          float fres = 0.02 + 0.98 * pow(1.0 - max(dot(n, V), 0.0), 5.0);
+          vec3 c0 = uDeep * (uAmb * 1.3 + uSunCol * 0.12);
+          c0 = mix(c0, uFog * 1.05, fres);
+          vec3 R = reflect(-uSun, n);
+          c0 += uSunCol * pow(max(dot(R, V), 0.0), 220.0) * 2.5;
+          float f = 1.0 - exp(-pow(d * uFogD, 2.0));
+          gl_FragColor = vec4(mix(c0, uFog, f), 1.0);
+          ${OUT}
+        }`,
+    })));
+  }
+
+  const sun = new THREE.DirectionalLight('#ffffff', 1); scene.add(sun, sun.target);
+  const hemi = new THREE.HemisphereLight('#ffffff', '#444444', 0.6); scene.add(hemi);
+  const S = { tapMeshes: [], id, cfg, sp, scene, U, sky, nightDome, stars, skyG, ground, sun, hemi, night: [], tick: [], skyPlanets: [], props: new THREE.Group() };
+  scene.add(S.props);
+  cfg.build?.(S);
+  buildSkyWorlds(S);
+
+  const pts = [], lks = [];
+  for (const s of cfg.stops) {
+    const p = new THREE.Vector3(s.cam[0], ground(s.cam[0], s.cam[2]) + s.cam[1], s.cam[2]); pts.push(p);
+    if (s.sky) lks.push(skyDir(...(SKYPOS[s.sky] || s.sky)).multiplyScalar(300).add(p));
+    else lks.push(new THREE.Vector3(s.look[0], ground(s.look[0], s.look[2]) + s.look[1], s.look[2]));
+  }
+  // Each card stands a few metres ahead of where you stop, off to one side, so it's beside what you came to see
+  S.anchors = pts.map((p, i) => {
+    const fwd = lks[i].clone().sub(p).normalize(), right = new THREE.Vector3().crossVectors(fwd, new THREE.Vector3(0, 1, 0)).normalize(), up = new THREE.Vector3().crossVectors(right, fwd);
+    return p.clone().addScaledVector(fwd, 10).addScaledVector(right, (i % 2 ? -1 : 1) * 3.3).addScaledVector(up, 0.4);
+  });
+  // Real app screens stand on the other side of the path from the card, facing you as you arrive
+  for (const [si, list] of Object.entries(cfg.screens || {})) {
+    const i = +si, p = pts[i], fwd = lks[i].clone().sub(p).setY(0).normalize(), right = new THREE.Vector3().crossVectors(fwd, new THREE.Vector3(0, 1, 0)).normalize();
+    const side = i % 2 ? -1 : 1;
+    list.forEach((name, k) => {
+      const phone = !name.startsWith('next-'), hgt = phone ? 5.6 : 3.6, wid = phone ? hgt * 0.46 : hgt * 1.9;
+      // On a phone the card fills the lower half, so screens stand in a row straight ahead, above it
+      const nar = narrow(), n = list.length;
+      const pos = nar
+        ? p.clone().addScaledVector(fwd, phone ? 11 + n * 2.6 : 11 + n * 6).addScaledVector(right, (k - (n - 1) / 2) * (wid + 0.5))
+        : p.clone().addScaledVector(fwd, (phone ? 13 : 14) + k * (phone ? 1.2 : 3)).addScaledVector(right, -side * ((phone ? 5 : 6.2) + k * (wid + 0.9)));
+      const g0 = ground(pos.x, pos.z); pos.y = Math.max(g0 + 1.4 + hgt / 2, p.y - 0.4 + hgt / 2 - 1.2) + (nar ? 1.2 : 0);
+      const stand = new THREE.Group(); stand.position.copy(pos); stand.lookAt(p.x, pos.y, p.z); S.props.add(stand);
+      const bezel = new THREE.Mesh(new THREE.BoxGeometry(wid + 0.24, hgt + 0.24, 0.12), new THREE.MeshLambertMaterial({ color: '#111114' })); bezel.position.z = -0.07; stand.add(bezel);
+      const mat = new THREE.MeshBasicMaterial({ color: '#ffffff', toneMapped: false, fog: false });
+      if (name.startsWith('placeholder')) mat.map = canvasTex(256, 512, (c, w, h) => { c.fillStyle = '#1b1d24'; c.fillRect(0, 0, w, h); c.fillStyle = '#8b90a0'; c.font = '600 22px Outfit, sans-serif'; c.textAlign = 'center'; c.fillText('[App screen]', w / 2, h / 2); });
+      else new THREE.TextureLoader().load(`img/${name}.webp`, (tx) => { tx.colorSpace = THREE.SRGBColorSpace; tx.anisotropy = 4; mat.map = tx; mat.needsUpdate = true; });
+      const face = new THREE.Mesh(new THREE.PlaneGeometry(wid, hgt), mat); face.userData.shot = name; stand.add(face); S.tapMeshes.push(face);
+      const postH = pos.y - hgt / 2 - g0;
+      if (postH > 0.2) { const post = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.09, postH, 6), new THREE.MeshLambertMaterial({ color: '#2a2a30' })); post.position.y = -hgt / 2 - postH / 2; stand.add(post); }
+    });
+  }
+  // The things to open at each stop: a marker at the real place (a pin) or beside the view
+  (STORY[id] || []).forEach((st, i) => {
+    if (!st.more && !st.pin) return;
+    const where = st.pin ? at(st.pin.at[0], ground(st.pin.at[0], st.pin.at[1]) + (st.pin.h ?? 7), st.pin.at[1]) : at(...S.anchors[i].toArray());
+    if (st.pin) { const g = glow(THEMES[id].accent, 6, 0.9); g.position.copy(where.position); g.position.y -= 1.5; S.props.add(g); }
+    addLabel({ obj: where, text: st.pin ? st.pin.label : st.more.label, scene: id, when: [i - 0.45, i + 0.45], spot: true, onClick: () => st.more && openSheet(st.more.html) });
+  });
+  S.camCurve = new THREE.CatmullRomCurve3(pts, false, 'centripetal');
+  S.lookCurve = new THREE.CatmullRomCurve3(lks, false, 'centripetal');
+  S.n = cfg.stops.length;
+  return S;
+}
+
+// The other worlds in this world's sky, as real 3D models you can select. From home they're clear; elsewhere they fade back.
+function buildSkyWorlds(S) {
+  const home = S.id === 'sean', fade = home ? 1 : 0.55;
+  const D = narrow() ? 620 : 900;
+  // Avlory's product system: a star with its planets actually orbiting
+  const sys = new THREE.Group(); sys.position.copy(skyDir(...SKYPOS.system).multiplyScalar(D)); S.skyG.add(sys);
+  sys.rotation.x = 0.5;
+  const starNode = new THREE.Group(); sys.add(starNode);
+  starNode.add(glow('#fff2ff', 60, 1), glow('#c700ff', 220, 0.4));
+  S.sysStar = starNode;
+  const SC = 26;
+  PRODUCTS.forEach((pid, i) => {
+    const w = WORLD[pid], holder = new THREE.Group(); sys.add(holder);
+    const orbit = new THREE.Mesh(new THREE.TorusGeometry(w.orbit * SC, 0.4, 4, 256), new THREE.MeshBasicMaterial({ color: '#d8c4ff', transparent: true, opacity: 0.16 * fade, depthWrite: false, fog: false }));
+    orbit.rotation.x = Math.PI / 2; sys.add(orbit);
+    if (pid === S.id) return; // you're standing on it
+    const m = mkPlanet(pid, { light: true, segments: 48, inSky: true }); m.scale.setScalar(SC * 0.9); holder.add(m);
+    if (w.ring) { const ring = ringMesh(w.r * 1.4, w.r * 2.3, 96, 0.9 * fade); ring.scale.setScalar(SC * 0.9); ring.rotation.x = Math.PI / 2.3; holder.add(ring); }
+    // Activity glow: brighter for the planets that had more work this week
+    const act = Math.log10(1 + (WORK[pid] || 0)) / Math.log10(430);
+    const g = glow(w.atmo, w.r * SC * 7, 0); holder.add(g);
+    m.material.uniforms.uFade.value = fade;
+    S.skyPlanets.push(m);
+    const a0 = i * 1.9;
+    S.tick.push((t) => {
+      const a = a0 + t * w.speed * 1.5; holder.position.set(Math.cos(a) * w.orbit * SC, 0, Math.sin(a) * w.orbit * SC);
+      m.rotation.y = t * 0.15; m.material.uniforms.uTime.value = t;
+      starNode.getWorldPosition(m.material.uniforms.uLightPos.value);
+      g.material.opacity = fade * act * (0.25 + 0.2 * Math.sin(t * (1 + act * 2)));
+    });
+    addLabel({ obj: holder, text: NAMES[pid], sub: home ? { waverate: 'Live', penny: 'Dec 2026', next: 'Q1 2027', upnext: 'Soon' }[pid] : '', go: pid, scene: S.id, offset: 0, dim: !home });
+  });
+  addLabel({ obj: starNode, text: 'Avlory', sub: home ? 'what I build' : '', go: 'sean', section: 1, scene: S.id, offset: 0, dim: !home, ...(home ? { onClick: () => scrollToSection(1) } : {}) });
+  // Me-worlds
+  for (const wid of ['notes', 'life', 'feedback', 'sean']) {
+    if (wid === S.id || (wid === 'sean' && home)) continue;
+    const w = WORLD[wid], m = mkPlanet(wid, { segments: 64, inSky: true });
+    m.scale.setScalar({ notes: 22, life: 26, feedback: 16, sean: 20 }[wid]);
+    m.position.copy(skyDir(...SKYPOS[wid]).multiplyScalar(D)); S.skyG.add(m);
+    m.material.uniforms.uFade.value = fade; S.skyPlanets.push(m);
+    S.tick.push((t) => { m.rotation.y = t * 0.02; m.material.uniforms.uTime.value = t; });
+    addLabel({ obj: m, text: wid === 'sean' ? 'Home' : NAMES[wid], go: wid, scene: S.id, offset: 0, dim: !home });
+  }
+}
+
+const lambert = (c, extra = {}) => new THREE.MeshLambertMaterial({ color: c, ...extra });
+const at = (x, y, z) => { const o = new THREE.Object3D(); o.position.set(x, y, z); return o; };
+function canvasTex(w, h, draw) { const c = document.createElement('canvas'); c.width = w; c.height = h; draw(c.getContext('2d'), w, h); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; return t; }
+
+// ---------- Home: the coast at Mission Beach ----------
+// Ocean to the west, so the sun sets over the Pacific. Hills to the east with the city on them. Belmont Park's coaster up the beach.
+const seanH = (x, z) => {
+  const shore = -14 + 4 * Math.sin(z * 0.018) + 2 * Math.sin(z * 0.051);
+  const beach = -4 + sstep(shore - 26, shore + 5, x) * 5.2;
+  const dunes = sstep(shore + 6, shore + 22, x) * (1.2 + 1.4 * fbm2(x * 0.05, z * 0.05, 3));
+  const hills = sstep(60, 220, x) * 95 * ridge2(x * 0.005 + 3, z * 0.005, 5);
+  return beach + dunes + hills + (fbm2(x * 0.2, z * 0.2, 3) - 0.5) * 0.25 * sstep(shore, shore + 12, x);
+};
+const SURF_CFG = {
+  sean: {
+    H: seanH, water: '#0c3446', fog: 0.0016, ground: ['#b9a690', '#6e6a4c', '#5a5045'], bands: [2.4, 7], grain: 0.25,
+    stops: [
+      { cam: [-48, 14, 36], look: [14, 6, -48] },
+      { cam: [-6, 3.2, -30], sky: 'system' },
+      { cam: [-10, 2.6, -68], look: [-80, 3, -95] },
+      { cam: [4, 3.4, -110], look: [165, 7, -140] },
+      { cam: [6, 3.4, -145], look: [200, 7, -205] },
+      { cam: [-4, 1.9, -176], look: [-9, 0.7, -186] },
+      { cam: [3, 3.4, -215], look: [240, 7, -265] },
+      { cam: [-2, 2.4, -250], sky: [-22, 22] },
+    ],
+    build(S) {
+      const g = S.props, G = S.ground;
+      const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), sc = new THREE.Vector3(), p = new THREE.Vector3();
+      // Palms along the beach: they read as silhouettes, which is how you see them at dusk
+      const trunkGeo = new THREE.CylinderGeometry(0.13, 0.22, 9, 6, 8); trunkGeo.translate(0, 4.5, 0);
+      { const tp = trunkGeo.attributes.position; for (let i = 0; i < tp.count; i++) { const y = tp.getY(i); tp.setX(i, tp.getX(i) + (y / 9) ** 2 * 1.0); } trunkGeo.computeVertexNormals(); }
+      const frondGeo = new THREE.PlaneGeometry(0.7, 3.6, 1, 6); frondGeo.translate(0, 1.8, 0);
+      { const fp = frondGeo.attributes.position; for (let i = 0; i < fp.count; i++) { const y = fp.getY(i); fp.setZ(i, -((y / 3.6) ** 2) * 1.7); fp.setX(i, fp.getX(i) * (1 - y / 3.8)); } frondGeo.rotateX(-Math.PI / 2 + 0.5); frondGeo.computeVertexNormals(); }
+      const spots = []; for (let z = 30; z > -260; z -= 9 + hash2(z, 1) * 10) { const shore = -14 + 4 * Math.sin(z * 0.018) + 2 * Math.sin(z * 0.051); spots.push([shore + 18 + hash2(z, 5) * 10, z]); }
+      const trunks = new THREE.InstancedMesh(trunkGeo, lambert('#5c4d3e'), spots.length);
+      const fronds = new THREE.InstancedMesh(frondGeo, lambert('#34492c', { side: THREE.DoubleSide }), spots.length * 9);
+      spots.forEach(([x, z], i) => {
+        const s = 0.85 + hash2(x, z) * 0.5, ry = hash2(z, x) * 6.28;
+        q.setFromEuler(new THREE.Euler(0, ry, 0)); p.set(x, G(x, z) - 0.2, z); sc.set(s, s, s); m4.compose(p, q, sc); trunks.setMatrixAt(i, m4);
+        const top = new THREE.Vector3(1.0 * s, 9 * s, 0).applyQuaternion(q).add(p);
+        for (let k = 0; k < 9; k++) { const fq = new THREE.Quaternion().setFromEuler(new THREE.Euler(hash2(i, k) * 0.3, ry + k * 0.7, 0)); m4.compose(top, fq, sc); fronds.setMatrixAt(i * 9 + k, m4); }
+      });
+      g.add(trunks, fronds);
+      // The city on the hills: far enough that fog turns it into what it is, a hazy spread of buildings, lit at night
+      const nB = 900, bGeo = new THREE.BoxGeometry(1, 1, 1); bGeo.translate(0, 0.5, 0);
+      const town = new THREE.InstancedMesh(bGeo, lambert('#d9d0c4'), nB); const lights = [];
+      const tones = ['#ddd3c6', '#cfc6ba', '#e6e0d6', '#bfb7ad', '#d6cbbf'].map(col); let c = 0;
+      for (let i = 0; i < nB * 3 && c < nB; i++) {
+        const x = 150 + hash2(i, 3) * 230, z = 80 - hash2(i, 4) * 460; if (fbm2(x * 0.02, z * 0.02) < 0.5) continue;
+        const y = G(x, z), w = 3 + hash2(i, 5) * 4, h = 2 + hash2(i, 6) ** 3 * 9, d = 3 + hash2(i, 7) * 4;
+        p.set(x, y - 0.5, z); q.setFromEuler(new THREE.Euler(0, hash2(i, 8) * 0.6, 0)); sc.set(w, h, d); m4.compose(p, q, sc);
+        town.setMatrixAt(c, m4); town.setColorAt(c, tones[c % tones.length]); c++;
+        for (let f = 0; f < 1 + h / 4; f++) if (hash2(i, f + 20) > 0.35) lights.push(x - w / 2 - 0.1, y + 1.2 + f * 2.6, z + (hash2(i, f) - 0.5) * d);
+      }
+      town.count = c; g.add(town);
+      const lg = new THREE.BufferGeometry(); lg.setAttribute('position', new THREE.Float32BufferAttribute(lights, 3));
+      const lm = new THREE.PointsMaterial({ color: '#ffcf8a', size: 1.6, sizeAttenuation: false, transparent: true, opacity: 0, depthWrite: false, fog: false });
+      g.add(new THREE.Points(lg, lm)); S.night.push((k) => { lm.opacity = k; });
+      // Belmont Park's Giant Dipper (1925), up the beach: a white wooden coaster, lit at night
+      const cx = 30, cz = -330, base = G(cx, cz), tpts = [];
+      for (let i = 0; i < 180; i++) { const a = (i / 180) * Math.PI * 2; tpts.push(new THREE.Vector3(cx + Math.cos(a) * 26, base + 3.5 + 12 * Math.max(0, Math.sin(a * 2 + 0.4)) ** 2.2 + 5 * Math.max(0, Math.sin(a * 5 + 1)) ** 2, cz + Math.sin(a) * 11)); }
+      const track = new THREE.CatmullRomCurve3(tpts, true), white = lambert('#e9e3d8');
+      g.add(new THREE.Mesh(new THREE.TubeGeometry(track, 400, 0.3, 5, true), white));
+      const N = 140, posts = new THREE.InstancedMesh(new THREE.BoxGeometry(0.18, 1, 0.18), white, N * 2);
+      for (let i = 0; i < N; i++) { const tp = track.getPointAt(i / N), tg = track.getTangentAt(i / N), side = new THREE.Vector3(-tg.z, 0, tg.x).normalize(), h = tp.y - base;
+        for (const sgn of [0, 1]) { p.copy(tp).addScaledVector(side, sgn ? 0.8 : -0.8); p.y = base + h / 2; sc.set(1, h, 1); q.identity(); m4.compose(p, q, sc); posts.setMatrixAt(i * 2 + sgn, m4); } }
+      g.add(posts);
+      const cl = new Float32Array(240 * 3); for (let i = 0; i < 240; i++) { const v = track.getPointAt(i / 240); cl.set([v.x, v.y + 0.4, v.z], i * 3); }
+      const cg = new THREE.BufferGeometry(); cg.setAttribute('position', new THREE.BufferAttribute(cl, 3));
+      const cm = new THREE.PointsMaterial({ color: '#fff0c8', size: 2.4, sizeAttenuation: false, transparent: true, opacity: 0, depthWrite: false, fog: false });
+      g.add(new THREE.Points(cg, cm)); S.night.push((k) => { cm.opacity = k; });
+      addLabel({ obj: at(cx, base + 24, cz), text: 'Belmont Park', cap: true, scene: 'sean', when: [-0.5, 0.6] });
+      // Vinyl night on the sand: a blanket, a portable record player and a lantern, lit after dark
+      { const vx = -9, vz = -186, vy = G(vx, vz);
+        const blanket = new THREE.Mesh(new THREE.PlaneGeometry(2.6, 1.8), lambert('#4a2c3c')); blanket.rotation.x = -Math.PI / 2; blanket.position.set(vx, vy + 0.03, vz); g.add(blanket);
+        const player = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.12, 0.4), lambert('#2a211d')); player.position.set(vx + 0.4, vy + 0.1, vz); g.add(player);
+        const disc = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.16, 0.012, 24), lambert('#0c0c0e')); disc.position.set(vx + 0.36, vy + 0.17, vz); g.add(disc);
+        S.tick.push((t) => { disc.rotation.y = t * 3.5; });
+        const lantern = glow('#ffbf73', 1.6, 0); lantern.position.set(vx - 0.7, vy + 0.4, vz + 0.3); g.add(lantern);
+        const ll = new THREE.PointLight('#ffb36b', 0, 8, 2); ll.position.copy(lantern.position); g.add(ll);
+        S.night.push((k) => { lantern.material.opacity = 0.2 + 0.6 * k; ll.intensity = 1.6 * k; }); }
+    },
+  },
+  waverate: {
+    H: (x, z) => -3 + 7 * (fbm2(x * 0.012, z * 0.012) - 0.5) * 2 + 2 * fbm2(x * 0.05, z * 0.05, 3),
+    fog: 0.003, ground: ['#6b5642', '#f1e7d4', '#a88a60'], bands: [-2, 5], grain: 0.12,
+    stops: [{ cam: [0, 8, 10], look: [6, 5, -60] }, { cam: [6, 7, -35], look: [0, 6, -95] }, { cam: [-4, 7, -70], look: [4, 6, -130] }, { cam: [0, 7, -105], look: [4, 6, -150] }, { cam: [0, 7, -145], sky: [0, 30] }],
+    screens: { 3: ['waverate-rate-dialog', 'waverate-home-analytics', 'waverate-fused-albums', 'waverate-vinyl-player'] },
+    build(S) {
+      const ring = ringMesh(420, 640, 256, 0.85, true); ring.position.set(0, 140, 0); ring.rotation.x = -Math.PI / 2 + 0.38; ring.rotation.z = 0.15; S.skyG.add(ring);
+    },
+  },
+  penny: {
+    H: (x, z) => 30 * (ridge2(x * 0.008, z * 0.008) - 0.35) + 3 * fbm2(x * 0.06, z * 0.06, 3) - sstep(30, 0, Math.abs(x)) * 8,
+    fog: 0.002, veins: true, ground: ['#1b1a17', '#4d463a', '#2a2721'], bands: [-4, 12], grain: 0.4,
+    stops: [{ cam: [0, 3, 10], look: [8, 2, -50] }, { cam: [-6, 2.8, -35], look: [6, 3, -80] }, { cam: [3, 3, -70], look: [-6, 3, -115] }, { cam: [-4, 3, -105], look: [6, 3, -150] }, { cam: [2, 3, -140], look: [-4, 3, -185] }, { cam: [4, 3.2, -175], sky: [0, 28] }],
+    screens: { 2: ['penny-home', 'penny-split'], 3: ['penny-learn'] },
+    build(S) {
+      const geo = new THREE.OctahedronGeometry(1, 0), mat = new THREE.MeshPhongMaterial({ color: '#c9a434', specular: '#fff3c4', shininess: 90, emissive: '#2a1e04', flatShading: true });
+      const inst = new THREE.InstancedMesh(geo, mat, 80), m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), p = new THREE.Vector3(), sc = new THREE.Vector3(); let c = 0;
+      for (let i = 0; i < 160 && c < 80; i++) { const z = -10 - hash2(i, 2) * 160, x = (hash2(i, 9) - 0.5) * 70; if (Math.abs(x) < 10) continue;
+        const s = 0.4 + hash2(i, 4) * 1.2; p.set(x, S.ground(x, z) + s * 0.6, z); q.setFromEuler(new THREE.Euler(hash2(i, 1) * 0.6, hash2(i, 3) * 6, hash2(i, 5) * 0.6)); sc.set(s * 0.6, s * 1.8, s * 0.6); m4.compose(p, q, sc); inst.setMatrixAt(c++, m4); }
+      inst.count = c; S.props.add(inst);
+    },
+  },
+  next: {
+    H: (x, z) => -6 + 16 * fbm2(x * 0.016 + 4, z * 0.016) * sstep(10, 30, Math.abs(x + 4 * Math.sin(z * 0.02))) - 2 + 8 * ridge2(x * 0.02, z * 0.02, 3) * sstep(20, 40, Math.abs(x)),
+    water: '#0b2a55', fog: 0.0016, ground: ['#d4c8a2', '#4b7444', '#3d4a3b'], bands: [0.8, 3], grain: 0.3,
+    stops: [{ cam: [0, 4, 12], look: [10, 3, -50] }, { cam: [-6, 3.5, -40], look: [16, 4, -90] }, { cam: [4, 3.5, -80], look: [-10, 4, -125] }, { cam: [0, 3.5, -120], look: [-8, 4, -170] }, { cam: [0, 3.5, -160], sky: [0, 32] }],
+    screens: { 3: ['next-quill', 'next-calendar', 'next-tables', 'next-connect'] },
+    build(S) {
+      // The eleven spaces as moons, low across the sky
+      SPACES.forEach(([name, color], k) => {
+        const node = mkPlanet('next', { inSky: true, segments: 24 });
+        node.material.uniforms.uA.value = col(color).multiplyScalar(0.5); node.material.uniforms.uB.value = col(color); node.material.uniforms.uKind.value = 2;
+        node.scale.setScalar(9 + (k % 3) * 3);
+        node.position.copy(skyDir(-40 + k * 8, 26 + 9 * Math.sin(k * 1.7) ** 2).multiplyScalar(narrow() ? 600 : 820)); S.skyG.add(node);
+        S.skyPlanets.push(node);
+        addLabel({ obj: node, text: name, link: `https://avlory.com/explore/${name.toLowerCase()}.html`, scene: 'next', offset: 0, when: [3.5, 9] });
+      });
+    },
+  },
+  upnext: {
+    H: (x, z) => 5 * (fbm2(x * 0.025, z * 0.025) - 0.5) * 2,
+    fog: 0.011, ground: ['#3a3760', '#8f8af5', '#5b57a0'], bands: [-2, 4], grain: 0.15,
+    stops: [{ cam: [0, 3, 10], look: [0, 3, -40] }, { cam: [4, 3, -45], look: [0, 4, -90] }, { cam: [0, 3, -85], look: [6, 4, -130] }],
+    screens: { 1: ['upnext-feed'], 2: ['upnext-messages'] },
+    build(S) {
+      const n = 500, pos = new Float32Array(n * 3);
+      for (let i = 0; i < n; i++) pos.set([(Math.random() - 0.5) * 90, Math.random() * 16, 10 - Math.random() * 110], i * 3);
+      const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+      const pts = new THREE.Points(geo, new THREE.PointsMaterial({ color: '#cfcaff', size: 0.16, transparent: true, opacity: 0.7, blending: THREE.AdditiveBlending, depthWrite: false }));
+      S.props.add(pts); S.tick.push((t) => { pts.position.y = Math.sin(t * 0.3) * 0.6; });
+    },
+  },
+  notes: {
+    H: (x, z) => 2.5 * (fbm2(x * 0.02, z * 0.02) - 0.5) * 2 + sstep(60, 220, Math.abs(x)) * 70 * ridge2(x * 0.006, z * 0.006),
+    fog: 0.0026, lines: true, ground: ['#8a95a6', '#e3e8ef', '#4a5466'], bands: [-1.5, 2], grain: 0.12,
+    stops: [{ cam: [0, 3, 12], look: [0, 3, -30] }, { cam: [-2, 2.4, -32], look: [7, 3.5, -46] }, { cam: [2, 2.4, -66], look: [-7, 3.5, -80] }, { cam: [0, 3, -110], sky: [0, 26] }],
+    build(S) {
+      const mat = new THREE.MeshPhongMaterial({ color: '#e6edf6', specular: '#ffffff', shininess: 60, map: canvasTex(128, 256, (c, w, h) => { c.fillStyle = '#eef3f9'; c.fillRect(0, 0, w, h); c.fillStyle = '#9fb3cc'; for (let y = 30; y < h; y += 14) c.fillRect(10, y, w - 20, 1.5); c.fillStyle = '#d9a0b8'; c.fillRect(22, 0, 1.5, h); }) });
+      for (const [x, z] of [[7, -46], [-7, -80]]) { const slab = new THREE.Mesh(new THREE.BoxGeometry(3.4, 6, 0.5), mat); slab.position.set(x, S.ground(x, z) + 2.6, z); slab.rotation.y = x > 0 ? -0.5 : 0.5; S.props.add(slab); }
+    },
+  },
+  life: {
+    H: (x, z) => 10 * (fbm2(x * 0.015, z * 0.015) - 0.5) * 2 + sstep(50, 200, Math.abs(x)) * 90 * ridge2(x * 0.006, z * 0.006) - sstep(14, 0, Math.abs(x - 3 * Math.sin(z * 0.03))) * 2,
+    fog: 0.0022, ground: ['#5a7442', '#8e9a6a', '#6a6150'], bands: [-4, 8], grain: 0.35,
+    stops: [{ cam: [0, 3, 12], look: [0, 6, -50] }, { cam: [-4, 3, -40], sky: [-30, 30] }, { cam: [4, 3, -80], sky: [10, 22] }, { cam: [0, 2.4, -122], look: [8, 2, -138] }],
+    build(S) {
+      const coneGeo = new THREE.ConeGeometry(1, 3, 7); coneGeo.translate(0, 2.6, 0);
+      const n = 360, cones = new THREE.InstancedMesh(coneGeo, lambert('#2c4529', { flatShading: true }), n);
+      const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), p = new THREE.Vector3(), sc = new THREE.Vector3(); let c = 0;
+      for (let i = 0; i < n * 3 && c < n; i++) { const x = (hash2(i, 1) - 0.5) * 200, z = 20 - hash2(i, 2) * 240; if (Math.abs(x) < 9 || fbm2(x * 0.03, z * 0.03) < 0.45) continue;
+        const s = 0.8 + hash2(i, 3) * 1.1; p.set(x, S.ground(x, z) - 0.3, z); sc.set(s, s * (1 + hash2(i, 9) * 0.5), s); m4.compose(p, q, sc); cones.setMatrixAt(c++, m4); }
+      cones.count = c; S.props.add(cones);
+      const tx = 8, tz = -138, ty = S.ground(tx, tz);
+      const tent = new THREE.Mesh(new THREE.ConeGeometry(1.6, 1.8, 4), lambert('#9a5a36', { flatShading: true })); tent.position.set(tx + 2.5, ty + 0.9, tz - 1); tent.rotation.y = 0.6; S.props.add(tent);
+      const fire = glow('#ffad5c', 3, 0.9); fire.position.set(tx, ty + 0.5, tz + 0.5); S.props.add(fire);
+      S.tick.push((t) => { fire.scale.setScalar(2.6 + Math.sin(t * 9) * 0.25 + Math.sin(t * 13) * 0.15); });
+      S.night.push((k) => { fire.material.opacity = 0.3 + 0.65 * k; });
+      // Its three moons: music, cooking, activities
+      [['Music', '#a68aa8', '#3a2b40', [-30, 30]], ['Cooking', '#c08a5a', '#4a2e1c', [10, 22]], ['Activities', '#a5ab88', '#2f3726', [26, 14]]].forEach(([name, a, b, pos], i) => {
+        const m = mkPlanet('feedback', { inSky: true, segments: 40 }); m.material.uniforms.uA.value = col(b); m.material.uniforms.uB.value = col(a); m.material.uniforms.uC.value = col(a);
+        m.scale.setScalar(30 - i * 4); m.position.copy(skyDir(...pos).multiplyScalar(narrow() ? 600 : 800)); S.skyG.add(m); S.skyPlanets.push(m);
+        addLabel({ obj: m, text: name, scene: 'life', offset: 0, onClick: () => scrollToSection(i + 1) });
+      });
+    },
+  },
+  feedback: {
+    H: (x, z) => 14 * (ridge2(x * 0.012, z * 0.012) - 0.4) + 2 * fbm2(x * 0.1, z * 0.1, 3),
+    fog: 0.0024, ground: ['#33363e', '#7a7d86', '#24262c'], bands: [-4, 8], grain: 0.45,
+    stops: [{ cam: [0, 3, 12], look: [0, 6, -40] }, { cam: [-3, 2.6, -34], look: [2, 9, -54] }],
+    build(S) {
+      const x = 2, z = -54, y = S.ground(x, z), mat = lambert('#8a8d96');
+      const mast = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.5, 12, 6), mat); mast.position.set(x, y + 6, z); S.props.add(mast);
+      const dish = new THREE.Mesh(new THREE.SphereGeometry(1.8, 20, 8, 0, Math.PI * 2, 0, 0.7), lambert('#c9cbd2', { side: THREE.DoubleSide })); dish.position.set(x, y + 9, z); dish.rotation.x = -1.1; S.props.add(dish);
+      const b = glow('#f2b544', 5, 1); b.position.set(x, y + 12.4, z); S.props.add(b); S.beacon = b;
+      S.tick.push((t) => { b.material.opacity = Math.max(S.flash || 0, 0.25 + 0.75 * Math.max(0, Math.sin(t * 2.2)) ** 6); if (S.flash) S.flash = Math.max(0, S.flash - 0.01); });
+    },
+  },
+};
+const LANDABLE = Object.keys(SURF_CFG);
+const surfaces = {};
+const getSurface = (id) => (surfaces[id] ??= makeSurface(id, SURF_CFG[id]));
+
+// ---------- Time of day: home follows the real time in San Diego ----------
+const todIn = document.getElementById('todIn'), todOut = document.getElementById('todOut');
+const sdNow = (() => { try { const s = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Los_Angeles', hour: 'numeric', minute: 'numeric', hourCycle: 'h23' }).formatToParts(new Date()); return +s.find((x) => x.type === 'hour').value + +s.find((x) => x.type === 'minute').value / 60; } catch { return 17; } })();
+const HOURS = { sean: Math.round(sdNow * 4) / 4, waverate: 16.75, penny: 10.5, next: 11.5, upnext: 15, notes: 10, life: 14, feedback: 17.25 };
+let hour = HOURS.sean;
+const sunDir = (h, out) => { const a = ((h - 6) / 12) * Math.PI; return out.set(Math.cos(a), Math.sin(a) * 0.9, 0.38).normalize(); };
+const fmtHour = (h) => { const hh = Math.floor(h) % 24, mm = Math.round((h - Math.floor(h)) * 60); return `${((hh + 11) % 12) + 1}:${String(mm).padStart(2, '0')} ${hh < 12 ? 'am' : 'pm'}`; };
+function updateTodText() {
+  todOut.textContent = surfWorld === 'sean' ? `${fmtHour(hour)} in San Diego` : `${fmtHour(hour)} on ${NAMES[surfWorld]}`;
+}
+todIn.addEventListener('input', () => { hour = HOURS[surfWorld] = +todIn.value; updateTodText(); });
+
+const cA = new THREE.Color(), warmSun = col('#ffb46e'), whiteSun = col('#fff4e6'), moonCol = col('#7d90c2');
+function lightSurface(S) {
+  const U = S.U, sun = sunDir(hour, tmp3), sp = S.sp;
+  const dayK = sstep(-0.12, 0.2, sun.y), nightK = 1 - sstep(-0.1, 0.06, sun.y);
+  S.sky.material.uniforms.sunPosition.value.set(sun.x, Math.max(sun.y, 0.012), sun.z);
+  if (S.sky.material.uniforms.showSunDisc) S.sky.material.uniforms.showSunDisc.value = sun.y > -0.01 ? 1 : 0;
+  S.nightDome.material.opacity = sstep(0.0, -0.22, sun.y) * 0.96;
+  if (S.sky.material.uniforms.time) S.sky.material.uniforms.time.value = S.U.uTime.value;
+  S.stars.material.opacity = Math.max(sp.starsInDay ? 0.7 : 0, nightK);
+  if (sun.y > -0.04) U.uSun.value.copy(sun); else U.uSun.value.set(-sun.x, Math.abs(sun.y) * 0.8 + 0.3, -sun.z).normalize();
+  const setK = Math.exp(-(((sun.y - 0.03) / 0.18) ** 2));
+  U.uSunCol.value.copy(warmSun).lerp(whiteSun, sstep(0.05, 0.5, sun.y)).multiplyScalar(3.2 * sstep(-0.04, 0.12, sun.y));
+  if (sun.y <= -0.04) U.uSunCol.value.copy(moonCol).multiplyScalar(0.35);
+  U.uFog.value.copy(col(sp.night)).lerp(col(sp.fog), dayK).lerp(col(sp.setTint), setK * 0.45);
+  U.uAmb.value.copy(U.uFog.value).multiplyScalar(0.5 + 0.2 * dayK).addScalar(0.01);
+  S.scene.fog.color.copy(U.uFog.value);
+  S.sun.position.copy(U.uSun.value).multiplyScalar(100); S.sun.color.copy(U.uSunCol.value).multiplyScalar(0.7);
+  S.hemi.color.copy(U.uFog.value); S.hemi.groundColor.copy(col(S.cfg.ground[0])).multiplyScalar(0.35); S.hemi.intensity = 0.3 + 1.2 * dayK;
+  renderer.toneMappingExposure = 0.75 - 0.2 * dayK + 0.25 * nightK;
+  for (const m of S.skyPlanets) { m.material.uniforms.uSunDir.value.copy(sun); m.material.uniforms.uDay.value = dayK; }
+  for (const f of S.night) f(nightK);
+}
+
+// ================= Navigation =================
+let mode = 'surface', surfWorld = null, flight = null, seq = 0;
+let landK = 0, landStart = 0, liftK = 0, liftStart = 0, liftFrom = new THREE.Vector3(), liftLook = new THREE.Vector3();
+let pathT = 0, pathTarget = 0;
+let syaw = 0, spitch = 0, syawT = 0, spitchT = 0;
+const camLook = new THREE.Vector3();
+
+const crumbs = document.getElementById('crumbs'), track = document.getElementById('track');
+const progressEl = document.getElementById('progress'), onward = document.getElementById('onward');
+const subEl = document.getElementById('sub'), subText = document.getElementById('subText'), subMore = document.getElementById('subMore');
+const sheet = document.getElementById('sheet'), sheetBody = document.getElementById('sheetBody');
+const veil = document.getElementById('veil'), todBox = document.getElementById('tod'), dock = document.getElementById('dock');
+const DOCK = [['sean', 'Home'], ['work', 'Work'], ['notes', 'Notes'], ['life', 'Life'], ['feedback', 'Feedback']];
+dock.innerHTML = DOCK.map(([id, t]) => `<button type="button" data-go="${id}">${t}</button>`).join('');
+// Scroll past a world's last stop and you fly on to the next one: the whole site is one journey
+const NEXT = { sean: 'waverate', waverate: 'penny', penny: 'next', next: 'upnext', upnext: 'notes', notes: 'life', life: 'feedback', feedback: 'sean' };
+const stepH = () => Math.round(innerHeight * (narrow() ? 0.9 : 1.0));
+let traveling = false, lastI = -1, subI = -1;
+function markDock() {
+  const i = Math.round(pathT);
+  const key = mode === 'system' || PRODUCTS.includes(surfWorld) ? 'work' : surfWorld;
+  dock.querySelectorAll('button').forEach((b) => b.setAttribute('aria-current', b.dataset.go === key));
+  if (i !== lastI) { lastI = i; progressEl.querySelectorAll('button').forEach((b, k) => b.setAttribute('aria-current', k === i)); }
+}
+function setTheme(name) { const th = THEMES[name] || THEMES.sean, s = document.documentElement.style; s.setProperty('--bg', th.bg); s.setProperty('--surface', th.surface); s.setProperty('--text', th.text); s.setProperty('--mute', th.mute); s.setProperty('--accent', th.accent); s.setProperty('--accent-ink', th.ink); }
+function setCrumbs(id) {
+  const trail = id === 'sean' ? [['sean', 'Home']] : id === 'work' ? [['sean', 'Home'], ['work', 'Avlory']] : PRODUCTS.includes(id) ? [['sean', 'Home'], ['work', 'Avlory'], [id, NAMES[id]]] : [['sean', 'Home'], [id, NAMES[id]]];
+  crumbs.innerHTML = trail.map(([g, t], i) => i === trail.length - 1 ? `<span class="here" aria-current="page">${t}</span>` : `<button type="button" data-go="${g}">${t}</button><span aria-hidden="true">/</span>`).join(' ');
+}
+function setContent(id) {
+  const n = STORY[id].length;
+  progressEl.innerHTML = STORY[id].map((st, i) => `<button type="button" aria-label="Stop ${i + 1} of ${n}: ${st.sub.replace(/"/g, '&quot;')}" data-stop="${i}"></button>`).join('');
+  track.style.height = `${n * stepH() + innerHeight}px`;
+  onward.querySelector('span').innerHTML = `Keep scrolling to fly to <b>${NAMES[NEXT[id]] === 'Home' ? 'home' : NAMES[NEXT[id]]}</b>`;
+  lastI = -1; subI = -1;
+}
+progressEl.addEventListener('click', (e) => { const b = e.target.closest('[data-stop]'); if (b) scrollToSection(+b.dataset.stop); });
+// Subtitles: the line for wherever you are, with its "more" button
+function showSub(text, more) {
+  subText.textContent = text;
+  if (more) { subMore.hidden = false; subMore.textContent = more.label; subMore.onclick = () => openSheet(more.html); } else subMore.hidden = true;
+}
+// The sheet: details open beside the world on desktop, from the bottom on a phone
+let sheetReturn = null;
+function openSheet(html) {
+  sheetReturn = document.activeElement;
+  sheetBody.innerHTML = html;
+  const sl = sheetBody.querySelector('[data-spaces]');
+  if (sl) sl.innerHTML = SPACES.map(([nm]) => `<li><a href="https://avlory.com/explore/${nm.toLowerCase()}.html" target="_blank" rel="noopener"><span class="t">${nm}</span><span class="d">On avlory.com</span></a></li>`).join('');
+  const f = sheetBody.querySelector('[data-fb]');
+  if (f) f.addEventListener('submit', (e) => { e.preventDefault(); f.querySelector('[data-fbnote]').textContent = 'Sent. Watch the beacon. (This prototype keeps nothing.)'; if (surfaces.feedback) surfaces.feedback.flash = 1; });
+  sheet.classList.add('open'); sheetBody.scrollTop = 0;
+  setTimeout(() => document.getElementById('sheetX').focus(), 50);
+}
+function closeSheet() { if (!sheet.classList.contains('open')) return; sheet.classList.remove('open'); sheetReturn?.focus?.(); }
+document.getElementById('sheetX').addEventListener('click', closeSheet);
+addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSheet(); });
+document.getElementById('btnAll').addEventListener('click', () => {
+  const id = mode === 'system' ? null : surfWorld; if (!id) return;
+  openSheet(`<p class="k">${NAMES[id]}</p><h3 id="sheetTitle">Everything on this world</h3>` + STORY[id].map((st) => `<p class="lede">${st.sub}</p>${st.more ? st.more.html.replace(/ id="sheetTitle"/g, '') : ''}`).join('<hr style="border:0;border-top:1px solid var(--line);width:100%">'));
+});
+function scrollTopAll() { window.scrollTo({ top: 0, behavior: 'instant' }); }
+function scrollToSection(i, instant) { window.scrollTo({ top: i * stepH(), behavior: reduce || instant ? 'instant' : 'smooth' }); }
+function veilTo(color, on) { veil.style.background = color; veil.classList.toggle('on', on); }
+document.getElementById('btnRead').addEventListener('click', (e) => { const on = document.body.classList.toggle('reading'); e.currentTarget.setAttribute('aria-pressed', on); });
+const later = (ms, fn) => { const my = seq; setTimeout(() => { if (my === seq) fn(); }, reduce ? 0 : ms); };
+// Avlory's system, seen from space: the four products orbiting their star
+let sysYaw = 0, sysYawT = 0;
+function systemPose(outPos, outLook) { outLook.copy(avG.position); outPos.set(0.15, 0.5, 1).normalize().applyAxisAngle(tmp3.set(0, 1, 0), sysYaw).multiplyScalar(30).add(outLook); }
+PRODUCTS.forEach((id) => addLabel({ obj: SPOS[id], text: NAMES[id], sub: { waverate: 'On iPhone', penny: 'Dec 2026', next: 'Early 2027', upnext: 'Soon' }[id], go: id, scene: 'system', offset: WORLD[id].r + 0.7 }));
+function leaveSurface(then) {
+  const from = surfWorld;
+  liftK = 0.0001; liftStart = performance.now(); liftFrom.copy(camera.position); camera.getWorldDirection(liftLook);
+  labelsHidden = true; closeSheet();
+  later(1300, () => {
+    veilTo('#020205', true);
+    later(520, () => {
+      mode = 'space'; liftK = 0;
+      const p = new THREE.Vector3(), l = new THREE.Vector3(); orbitPose(from, p, l);
+      camera.position.copy(p); camLook.copy(l); camera.lookAt(l);
+      renderer.toneMappingExposure = 1; veilTo('#020205', false);
+      then();
+    });
+  });
+}
+function focusSystem() {
+  if (mode === 'system') return;
+  seq++; traveling = true;
+  const fly = () => { mode = 'space'; flight = { from: camera.position.clone(), fromLook: camLook.clone(), sys: true, t: 0, dur: reduce ? 0.01 : 2.6, onDone: enterSystem }; };
+  if (mode === 'surface' && surfWorld && !reduce) leaveSurface(fly); else fly();
+}
+function enterSystem() {
+  mode = 'system'; surfWorld = null; traveling = false; labelsHidden = false; flight = null;
+  todBox.hidden = true; setTheme('avlory'); setCrumbs('work');
+  progressEl.innerHTML = ''; track.style.height = `${innerHeight}px`; scrollTopAll();
+  showSub('Avlory: four products on one account. Tap a planet to land on it.', { label: 'About Avlory', html: STORY.sean[1].more.html });
+  subEl.style.opacity = '1'; subEl.style.pointerEvents = 'auto'; markDock();
+}
+
+// Travel: lift off this world, cross space, and come down on the next one
+function go(id, section = 0) {
+  if (id === 'work') return focusSystem();
+  if (!LANDABLE.includes(id)) return;
+  closeSheet();
+  if (mode === 'surface' && surfWorld === id) { scrollToSection(section); return; }
+  seq++; traveling = true;
+  const from = surfWorld;
+  const flyTo = (src) => { mode = 'space'; const l = new THREE.Vector3(), endPos = new THREE.Vector3(); orbitPose(id, endPos, l, WORLD[id].r * 2.2);
+    flight = { from: camera.position.clone(), fromLook: camLook.clone(), id, t: 0, dur: Math.min(3.4, 1.8 + camera.position.distanceTo(endPos) / 50), onDone: () => descend(id, section, src) }; };
+  if (mode === 'system') { flyTo('system'); return; }
+  if (!from || reduce) { descend(id, section, from); return; }
+  leaveSurface(() => flyTo(from));
+}
+function descend(id, section, from) {
+  veilTo(WORLD[id].veil, true);
+  later(from ? 520 : 0, () => {
+    const S = getSurface(id);
+    mode = 'surface'; surfWorld = id; flight = null; labelsHidden = false;
+    syaw = syawT = spitch = spitchT = 0;
+    todBox.hidden = false; closeSheet();
+    setTheme(id); setCrumbs(id); setContent(id); scrollTopAll();
+    pathT = pathTarget = section; landK = reduce ? 0 : 1; landStart = performance.now();
+    hour = HOURS[id]; todIn.value = hour; updateTodText(); lightSurface(S);
+    veilTo(WORLD[id].veil, false);
+    markDock();
+    later(300, () => { traveling = false; });
+    // Build the next world while the visitor reads, so arriving there doesn't stutter
+    const warm = () => { const nx = getSurface(NEXT[id]); renderer.compile(nx.scene, camera); };
+    (window.requestIdleCallback || ((f) => setTimeout(f, 1500)))(warm, { timeout: 4000 });
+    if (section) later(500, () => scrollToSection(section, true));
+  });
+}
+document.addEventListener('click', (e) => { const b = e.target.closest('[data-go]'); if (b) { closeSheet(); go(b.dataset.go, +(b.dataset.sec || 0)); } });
+
+function readProgress() {
+  if (mode !== 'surface' || traveling || !surfWorld) return;
+  const n = surfaces[surfWorld].n;
+  pathTarget = clamp(scrollY / stepH(), 0, n);
+  markDock();
+  if (pathTarget >= n - 1 + 0.92) go(NEXT[surfWorld]);
+}
+addEventListener('scroll', readProgress, { passive: true });
+addEventListener('resize', () => { if (surfWorld) track.style.height = `${surfaces[surfWorld].n * stepH() + innerHeight}px`; });
+
+// Drag to look around; tap a world in the sky to go there
+const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+let drag = null;
+stage.addEventListener('pointerdown', (e) => { if (e.target.closest('button, a, input, .tod')) return; stage.setPointerCapture(e.pointerId); drag = { x: e.clientX, y: e.clientY, sx: e.clientX, sy: e.clientY }; });
+stage.addEventListener('pointermove', (e) => { if (!drag) return; if (mode === 'system') { sysYawT -= (e.clientX - drag.x) * 0.004; drag.x = e.clientX; return; } if (mode !== 'surface') return; syawT += (e.clientX - drag.x) * 0.004; spitchT = clamp(spitchT + (e.clientY - drag.y) * 0.003, -0.9, 1.2); drag.x = e.clientX; drag.y = e.clientY; });
+stage.addEventListener('pointerup', (e) => {
+  if (drag && (mode === 'surface' || mode === 'system') && Math.hypot(e.clientX - drag.sx, e.clientY - drag.sy) < 6) {
+    const r = stage.getBoundingClientRect(); ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+    // An app screen in the world opens large
+    if (mode === 'surface') { ray.setFromCamera(ndc, camera); const hit = ray.intersectObjects(surfaces[surfWorld].tapMeshes, false)[0];
+      if (hit && !hit.object.userData.shot.startsWith('placeholder')) { const nm = hit.object.userData.shot; openSheet(`<p class="k">${NAMES[surfWorld]}</p><h3 id="sheetTitle">${{ 'waverate-rate-dialog': 'Rating an album', 'waverate-home-analytics': 'Your listening, charted', 'waverate-fused-albums': 'Fused Catalogue with a friend', 'waverate-vinyl-player': 'The turntable', 'next-quill': 'Quill: a page that travels', 'next-calendar': 'Calendar: finding a time', 'next-tables': 'Tables: type it how you say it', 'next-connect': 'Connect: encrypted calls', 'penny-home': 'Safe to spend (preview)', 'penny-split': 'Splits with roommates (preview)', 'penny-learn': 'Learning credit scores (preview)', 'upnext-feed': 'For you (preview)', 'upnext-messages': 'Encrypted messages (preview)' }[nm] || 'Screen'}</h3><img class="shot" src="img/${nm}.webp" alt="">${/^(penny|upnext)/.test(nm) ? '<p class="body ph">A design preview drawn from the app’s real colours and screens, not a screenshot.</p>' : ''}`); drag = null; return; } }
+    // A finger is wide: take the closest visible world within 56px instead of needing an exact hit
+    let best = null, bd = 56;
+    for (const l of labels) { if (!l.shown || l.cap) continue; const d = Math.hypot(l.ax - (e.clientX - r.left), l.ay - (e.clientY - r.top)); if (d < bd) { bd = d; best = l; } }
+    best?.el.click();
+  }
+  drag = null;
+});
+
+// First visit: a short flight in from deep space, then down onto the coast
+const btnSkip = document.getElementById('btnSkip'), arrivalNote = document.getElementById('arrivalNote');
+function arrival() {
+  let seen = false; try { seen = localStorage.getItem('sdw-arrived') === '1'; } catch {}
+  if (seen || reduce) { descend('sean', 0, null); return; }
+  try { localStorage.setItem('sdw-arrived', '1'); } catch {}
+  mode = 'space'; labelsHidden = true; btnSkip.hidden = false; arrivalNote.hidden = false; arrivalNote.style.opacity = '0';
+  camera.position.set(-260, 110, 460); camLook.set(30, 0, -40);
+  const endPos = new THREE.Vector3(), l = new THREE.Vector3(); orbitPose('sean', endPos, l, 4.4);
+  flight = { from: camera.position.clone(), fromLook: camLook.clone(), id: 'sean', t: 0, dur: 4.6, arrival: true, onDone: () => { endArrival(); descend('sean', 0, 'space'); } };
+  later(900, () => { arrivalNote.style.opacity = '1'; }); later(3300, () => { arrivalNote.style.opacity = '0'; });
+}
+function endArrival() { btnSkip.hidden = true; arrivalNote.hidden = true; }
+btnSkip.addEventListener('click', () => { endArrival(); flight = null; seq++; descend('sean', 0, 'space'); });
+let labelsHidden = false;
+
+function resize() {
+  const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.fov = w / h < 0.9 ? 62 : 46;
+  // On a phone the card covers the lower half, so the view is shifted to put the scene above it
+  if (narrow()) camera.setViewOffset(w, h, 0, h * 0.2, w, h); else camera.clearViewOffset();
+  camera.updateProjectionMatrix();
+}
+new ResizeObserver(resize).observe(stage); resize();
+setTheme('sean');
+arrival();
+
+// ================= Frame loop =================
+let last = performance.now(), t = 0;
+const look = new THREE.Vector3(), dir = new THREE.Vector3();
+let ftAvg = 16, ftN = 0;
+function govern(ms) {
+  ftAvg += (ms - ftAvg) * 0.05; if (++ftN < 90) return; ftN = 0;
+  const next = ftAvg > 24 ? Math.max(0.75, dpr - 0.15) : ftAvg < 13 ? Math.min(DPR_MAX, dpr + 0.1) : dpr;
+  if (next !== dpr) { dpr = next; renderer.setPixelRatio(dpr); resize(); }
+}
+function frame(now) {
+  const real = Math.max(0, (now - last) / 1000), dt = Math.min(real, 0.05); last = now; t += reduce ? 0 : dt;
+  if (real < 0.25) govern(real * 1000);
+  const k = (rate) => (reduce ? 1 : 1 - Math.exp(-real * rate));
+  if (mode === 'space') {
+    for (const u of spaceUpdaters) u(t);
+    if (flight) {
+      flight.t = Math.min(1, flight.t + real / flight.dur);
+      const e = ease(flight.t), u = 1 - e;
+      if (flight.sys) systemPose(tmp, tmp2); else orbitPose(flight.id, tmp, tmp2, WORLD[flight.id].r * 2.2);
+      const mid = tmp3.copy(flight.from).lerp(tmp, 0.5); mid.y += flight.from.distanceTo(tmp) * (flight.arrival ? 0.08 : 0.2);
+      camera.position.set(0, 0, 0).addScaledVector(flight.from, u * u).addScaledVector(mid, 2 * u * e).addScaledVector(tmp, e * e);
+      camLook.copy(flight.fromLook).lerp(tmp2, ease(Math.min(1, flight.t * 1.3)));
+      camera.lookAt(camLook);
+      if (flight.t >= 1) { const done = flight.onDone; flight = null; done && done(); }
+    }
+    renderer.toneMappingExposure = 1;
+    renderer.render(spaceScene, camera);
+  } else if (mode === 'system') {
+    for (const u of spaceUpdaters) u(t);
+    sysYaw += (sysYawT - sysYaw) * k(6); sysYawT += reduce ? 0 : dt * 0.02;
+    systemPose(tmp, tmp2); camera.position.lerp(tmp, k(4)); camLook.lerp(tmp2, k(4)); camera.lookAt(camLook);
+    renderer.toneMappingExposure = 1;
+    renderer.render(spaceScene, camera);
+  } else if (surfWorld) {
+    const S = surfaces[surfWorld];
+    S.U.uTime.value = t; for (const f of S.tick) f(t);
+    lightSurface(S);
+    if (liftK > 0) {
+      // Taking off: straight up, tilting to the sky
+      const q = ease(Math.min(1, (now - liftStart) / 1600));
+      camera.position.copy(liftFrom); camera.position.y += q * q * 260;
+      dir.copy(liftLook).lerp(tmp.set(0, 1, -0.2), q).normalize(); camera.lookAt(tmp2.copy(camera.position).add(dir));
+    } else {
+      pathT += (pathTarget - pathT) * k(3);
+      const u = clamp(pathT / (S.n - 1), 0, 1), over = Math.max(0, pathT - (S.n - 1));
+      S.camCurve.getPoint(u, tmp); S.lookCurve.getPoint(u, look);
+      tmp.y = Math.max(tmp.y, S.ground(tmp.x, tmp.z) + 1.2) + Math.sin(t * 0.7) * 0.04;
+      // Scrolling past the last place starts lifting you off, before the flight takes over
+      tmp.y += over * over * 40; look.y += over * 60;
+      if (landK > 0) { landK = Math.max(0, 1 - (now - landStart) / 2800); const q = ease(landK); tmp.y += q * 120; tmp.z += q * 70; }
+      syaw += (syawT - syaw) * k(10); spitch += (spitchT - spitch) * k(10);
+      dir.copy(look).sub(tmp); sph.setFromVector3(dir); sph.theta -= syaw; sph.phi = clamp(sph.phi - spitch, 0.08, Math.PI - 0.2);
+      camera.position.copy(tmp); camera.lookAt(dir.setFromSpherical(sph).add(tmp));
+    }
+    S.skyG.position.copy(camera.position); S.skyG.updateMatrixWorld(true);
+    renderer.render(S.scene, camera);
+  }
+  // Subtitle: the line for the nearest stop, fading between stops
+  if (mode === 'surface' && surfWorld) {
+    const S = surfaces[surfWorld], i = clamp(Math.round(pathT), 0, S.n - 1), d = Math.abs(pathT - i), over = Math.max(0, pathT - (S.n - 1));
+    if (i !== subI) { subI = i; const st = STORY[surfWorld][i]; showSub(st.sub, st.more); }
+    subEl.style.opacity = (landK > 0.2 || liftK > 0 || over > 0.06) ? '0' : String(1 - sstep(0.22, 0.48, d));
+    subEl.style.pointerEvents = d < 0.3 ? 'auto' : 'none';
+    onward.style.opacity = over > 0.06 && !traveling ? '1' : '0';
+    onward.querySelector('i').style.transform = `scaleX(${clamp(over / 0.92, 0, 1)})`;
+  } else if (mode !== 'system') { subEl.style.opacity = '0'; subEl.style.pointerEvents = 'none'; onward.style.opacity = '0'; }
+
+  // Labels follow their objects; only real buttons take clicks
+  const w = stage.clientWidth, h = stage.clientHeight, placed = [];
+  for (const l of labels) {
+    const key = mode === 'system' ? 'system' : mode === 'surface' ? surfWorld : null;
+    let show = key && l.scene === key && !labelsHidden && landK < 0.05 && liftK === 0 && !flight;
+    if (show && l.when) show = pathT > l.when[0] && pathT < l.when[1];
+    if (show) {
+      l.obj.getWorldPosition(tmp); tmp.y += l.offset; tmp.project(camera);
+      show = tmp.z < 1 && Math.abs(tmp.x) < 0.95 && Math.abs(tmp.y) < 0.92;
+      if (show) {
+        l.ax = ((tmp.x + 1) / 2) * w; l.ay = ((1 - tmp.y) / 2) * h;
+        if (!l.w) { l.w = l.el.offsetWidth || 90; l.h = l.el.offsetHeight || 32; }
+        let x = l.ax, y = l.ay + (l.cap ? 0 : 26);
+        // Nudge down until it no longer overlaps a label already placed
+        for (let guard = 0; guard < 8; guard++) { const hit = placed.find((q) => Math.abs(q.x - x) < (q.w + l.w) / 2 + 4 && Math.abs(q.y - y) < (q.h + l.h) / 2 + 4); if (!hit) break; y = hit.y + (hit.h + l.h) / 2 + 6; }
+        placed.push({ x, y, w: l.w, h: l.h });
+        l.el.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+      }
+    }
+    l.shown = show;
+    l.el.style.opacity = show ? '1' : '0';
+    l.el.style.pointerEvents = show && !l.cap ? 'auto' : 'none';
+    if (!l.cap) l.el.tabIndex = show ? 0 : -1;
+  }
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
