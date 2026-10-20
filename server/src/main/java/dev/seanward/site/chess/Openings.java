@@ -13,8 +13,8 @@ public final class Openings {
     private static final List<Raw> RAW = List.of(
             new Raw("catalan", "The Catalan", "white", "My favourite as white. This is the Open Catalan, where black takes on c4.",
                     "d4 Nf6 c4 e6 g3 d5 Bg2 Be7 Nf3 O-O O-O dxc4 Qc2 a6 Qxc4 b5 Qc2 Bb7 Bd2"),
-            new Raw("sicilian", "The Sicilian", "black", "What I play as black against e4. This is the Najdorf.",
-                    "e4 c5 Nf3 d6 d4 cxd4 Nxd4 Nf6 Nc3 a6"),
+            new Raw("sicilian", "The Sicilian", "black", "What I play as black against e4. It depends on what white plays; often it's the Accelerated Dragon, with the bishop fianchettoed on g7.",
+                    "e4 c5 Nf3 Nc6 d4 cxd4 Nxd4 g6 Nc3 Bg7 Be3 Nf6 Bc4 O-O Bb3 d6"),
             new Raw("vs-d4", "Against d4", "black", "Against d4 I usually play d5, e6 and Nf6.",
                     "d4 d5 c4 e6 Nc3 Nf6 Bg5 Be7 e3 O-O Nf3"));
 
