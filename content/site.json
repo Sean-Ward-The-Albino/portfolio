@@ -11,85 +11,398 @@
       "title": "Home",
       "kicker": "San Diego",
       "stops": [
-        { "id": "arrive", "sub": "I'm Sean. I build software done right.",
-          "detail": { "kicker": "Founder and CEO of Avlory", "title": "Sean D. Ward", "body": ["I build software done right: apps that work properly and work together.", "Self-taught since I was ten. This is where I live, and the worlds in the sky are the rest of me. Walk around, tap things, take your time."] } },
-        { "id": "loretto", "sub": "2am food means Loretto's. Get the horchata.",
-          "detail": { "kicker": "San Diego", "title": "Loretto's", "body": ["My 2am taco shop. The horchata is fire."], "photos": ["Loretto's"] } },
-        { "id": "cafe", "sub": "Most of my work gets done at Living Room Cafe.",
-          "detail": { "kicker": "San Diego", "title": "Living Room Cafe", "body": ["Where a lot of Avlory gets built."], "photos": ["Your usual table"] } },
-        { "id": "vinyl", "sub": "Some nights: a power bank, a record player and friends. Tap the record player.", "action": "vinyl",
-          "detail": { "kicker": "After dark", "title": "Vinyl nights", "body": ["Sometimes I take a power bank and a record player out at night and we listen to records with friends."], "photos": ["A vinyl night"] } },
-        { "id": "sand", "sub": "Leave your mark in the sand. Only you will see it.", "action": "sand" },
-        { "id": "coaster", "sub": "Belmont Park's Giant Dipper, running since 1925. Want a ride?", "action": "coaster" },
-        { "id": "balboa", "sub": "Balboa Park: the San Diego Chess Club, and a big part of growing up.",
-          "detail": { "kicker": "Balboa Park", "title": "Where I learned to love the game", "body": ["Balboa Park is home to the San Diego Chess Club, and it was a great spot growing up."], "photos": ["Balboa Park"] } },
-        { "id": "beacon", "sub": "Tell me anything. The beacon sends it straight to me.", "action": "feedback" },
-        { "id": "sky", "sub": "Up there: my story, my craft, my life, and a planet we all share.", "action": "worlds" }
+        {
+          "id": "arrive",
+          "sub": "I'm Sean. I build software done right.",
+          "detail": {
+            "kicker": "Founder and CEO of Avlory",
+            "title": "Sean D. Ward",
+            "body": [
+              "I build software done right: apps that work properly and work together.",
+              "Self-taught since I was ten. This is where I live, and the worlds in the sky are the rest of me. Walk around, tap things, take your time."
+            ]
+          }
+        },
+        {
+          "id": "loretto",
+          "sub": "2am food means Loretto's. Get the horchata.",
+          "detail": {
+            "kicker": "San Diego",
+            "title": "Loretto's",
+            "body": [
+              "My 2am taco shop. The horchata is fire."
+            ],
+            "photos": [
+              "Loretto's"
+            ]
+          }
+        },
+        {
+          "id": "cafe",
+          "sub": "Most of my work gets done at Living Room Cafe.",
+          "detail": {
+            "kicker": "San Diego",
+            "title": "Living Room Cafe",
+            "body": [
+              "Where a lot of Avlory gets built."
+            ],
+            "photos": [
+              "Your usual table"
+            ]
+          }
+        },
+        {
+          "id": "vinyl",
+          "sub": "Some nights: a power bank, a record player and friends. Tap the record player.",
+          "action": "vinyl",
+          "detail": {
+            "kicker": "After dark",
+            "title": "Vinyl nights",
+            "body": [
+              "Sometimes I take a power bank and a record player out at night and we listen to records with friends."
+            ],
+            "photos": [
+              "A vinyl night"
+            ]
+          }
+        },
+        {
+          "id": "sand",
+          "sub": "Leave your mark in the sand. Only you will see it.",
+          "action": "sand"
+        },
+        {
+          "id": "coaster",
+          "sub": "Belmont Park's Giant Dipper, running since 1925. Want a ride?",
+          "action": "coaster"
+        },
+        {
+          "id": "balboa",
+          "sub": "Balboa Park: the San Diego Chess Club, and a big part of growing up.",
+          "detail": {
+            "kicker": "Balboa Park",
+            "title": "Where I learned to love the game",
+            "body": [
+              "Balboa Park is home to the San Diego Chess Club, and it was a great spot growing up."
+            ],
+            "photos": [
+              "Balboa Park"
+            ]
+          }
+        },
+        {
+          "id": "beacon",
+          "sub": "Tell me anything. The beacon sends it straight to me.",
+          "action": "feedback"
+        },
+        {
+          "id": "sky",
+          "sub": "Up there: my story, my craft, my life, and a planet we all share.",
+          "action": "worlds"
+        }
       ]
     },
     "story": {
       "title": "Story",
       "kicker": "The road so far",
       "stops": [
-        { "id": "start", "sub": "This is the road so far. Walk it with me." },
-        { "id": "ten", "sub": "I taught myself to code when I was ten.",
-          "detail": { "kicker": "Age 10", "title": "Where it started", "body": ["[What got you started, and the first thing you made.]"] } },
-        { "id": "teaching", "sub": "In high school I was the TA for AP Computer Science A. Then the teacher went on leave, and I taught the class.",
-          "detail": { "kicker": "High school", "title": "Teaching AP CSA", "body": ["I was the TA. When the teacher had to go on leave, I had to step up and teach the class.", "[What teaching it taught you.]"] } },
-        { "id": "waverate", "sub": "Waverate started as a Valentine's Day gift.",
-          "detail": { "kicker": "The first product", "title": "A better way to rate music", "body": ["My girlfriend and I used to rate music in my notes app. I wanted a better way, and a fire Valentine's Day gift.", "Everything out there was either too basic or trying to do too much. So I built Waverate."] } },
-        { "id": "avlory", "sub": "Then it became Avlory.",
-          "detail": { "kicker": "[Year]", "title": "Avlory", "body": ["[When Waverate turned into a company, and why.]"] } },
-        { "id": "now", "sub": "Now: four products, one account, and a lot of late nights at Living Room Cafe." },
-        { "id": "next", "sub": "[What's next for you, in one line.]" }
+        {
+          "id": "start",
+          "sub": "This is the road so far. Walk it with me."
+        },
+        {
+          "id": "ten",
+          "sub": "I wanted to be an astrophysicist. I learned computers to get there, and fell in love with them instead.",
+          "detail": {
+            "kicker": "Age 10",
+            "title": "Where it started",
+            "body": [
+              "At ten I wanted to get into astrophysics, and I figured learning computers would help.",
+              "I did a robotics lab at my elementary school and went to the library for books on it. Modded Minecraft was a big inspiration too. Somewhere in there, I fell in love with it."
+            ]
+          }
+        },
+        {
+          "id": "teaching",
+          "sub": "In high school I was the TA for AP Computer Science A. Then the teacher went on leave, and I taught the class.",
+          "detail": {
+            "kicker": "High school",
+            "title": "Teaching AP CSA",
+            "body": [
+              "I was the TA. When the teacher had to go on leave, I had to step up and teach the class.",
+              "[What teaching it taught you.]"
+            ]
+          }
+        },
+        {
+          "id": "waverate",
+          "sub": "Waverate started as a Valentine's Day gift.",
+          "detail": {
+            "kicker": "The first product",
+            "title": "A better way to rate music",
+            "body": [
+              "My girlfriend and I used to rate music in my notes app. I wanted a better way, and a fire Valentine's Day gift.",
+              "Everything out there was either too basic or trying to do too much. So I built Waverate."
+            ]
+          }
+        },
+        {
+          "id": "avlory",
+          "sub": "In 2026, it all became Avlory.",
+          "detail": {
+            "kicker": "2026",
+            "title": "Avlory",
+            "body": [
+              "Waverate is one part of Avlory. PennySphere was actually meant to come first, but I hit some roadblocks along the way.",
+              "Now they live together: four products, one account."
+            ]
+          }
+        },
+        {
+          "id": "now",
+          "sub": "Now: four products, one account, and a lot of late nights at Living Room Cafe."
+        },
+        {
+          "id": "next",
+          "sub": "Avlory will always be about empowerment: products that work for you, not against you.",
+          "detail": {
+            "kicker": "What's next",
+            "title": "Work for you, not against you",
+            "body": [
+              "Whatever the product is, the goal stays the same: it should work for you, not against you, and help you reach your goals."
+            ]
+          }
+        }
       ]
     },
     "craft": {
       "title": "Craft",
       "kicker": "How I build",
       "stops": [
-        { "id": "intro", "sub": "How I build: software done right.",
-          "detail": { "kicker": "Craft", "title": "Software done right", "body": ["Apps that work properly and work together. Most software doesn't, so that's the bar."] } },
-        { "id": "ownership", "sub": "Empowerment through control and ownership. Your data stays yours.",
-          "detail": { "kicker": "What I believe", "title": "Control and ownership", "body": ["Everything I make is private by default. Messages are end-to-end encrypted, your work lives on your device, and your money is encrypted so even we can't read it."] } },
-        { "id": "ecosystem", "sub": "I love ecosystems: everything links, and stays personal to you.",
-          "detail": { "kicker": "Avlory ID", "title": "One account for everything", "body": ["I like ecosystems: platforms where everything can link and still be personal and private to you.", "Avlory ID is the sign-in I built so one account works across every product."] } },
-        { "id": "waverate", "sub": "Waverate: rate music from 0.00 to 10.00. Try it on any album.", "action": "rate",
-          "detail": { "kicker": "On iPhone · Android in beta", "title": "Waverate", "body": ["It started in my notes app, rating albums with my girlfriend. Other apps were too basic or tried to do too much."], "shots": ["waverate-rate-dialog", "waverate-home-analytics", "waverate-fused-albums", "waverate-vinyl-player"], "links": [{ "label": "Waverate on the App Store", "url": "https://apps.apple.com/us/app/waverate/id6760079525" }] } },
-        { "id": "penny", "sub": "PennySphere: know what you can safely spend. Try the numbers.", "action": "budget",
-          "detail": { "kicker": "Coming December 2026", "title": "PennySphere", "body": ["Budget apps failed me. I didn't want a company reading my finances, and I just wanted to know what was left.", "I also wanted it to work for my friends with roommates, and to help people who have no idea what a credit score is learn, and take control of the thing people say controls them."], "shots": ["penny-home", "penny-split", "penny-learn"], "preview": true } },
-        { "id": "next", "sub": "Avlory Next: your docs, calendar, calls and more, linked and yours.",
-          "detail": { "kicker": "Coming early 2027", "title": "Avlory Next", "body": ["Eleven spaces that link together and stay personal and private to you. It starts with you, then schools and businesses."], "shots": ["next-quill", "next-calendar", "next-tables", "next-connect"], "links": [{ "label": "Explore the spaces on avlory.com", "url": "https://avlory.com/explore.html" }] } },
-        { "id": "upnext", "sub": "UpNext: turning social media from an attention liability into an asset.",
-          "detail": { "kicker": "Coming soon", "title": "UpNext", "body": ["Messages are end-to-end encrypted, like the rest of Avlory. More at launch."], "shots": ["upnext-feed", "upnext-messages"], "preview": true } },
-        { "id": "takes", "sub": "Takes I'd defend.",
-          "detail": { "kicker": "Notes", "title": "Takes I'd defend", "body": ["[Take one.]", "[Take two.]", "[Take three.]"] } }
+        {
+          "id": "intro",
+          "sub": "How I build: software done right.",
+          "detail": {
+            "kicker": "Craft",
+            "title": "Software done right",
+            "body": [
+              "Build software from the user's side and you'll build the best software.",
+              "People expect it to be beautiful, easy to use, consistent and reliable, fast, and safe enough that they never have to think about it. That's the bar."
+            ]
+          }
+        },
+        {
+          "id": "ownership",
+          "sub": "Empowerment through control and ownership. Your data stays yours.",
+          "detail": {
+            "kicker": "What I believe",
+            "title": "Control and ownership",
+            "body": [
+              "Everything I make is private by default. Messages are end-to-end encrypted, your work lives on your device, and your money is encrypted so even we can't read it."
+            ]
+          }
+        },
+        {
+          "id": "ecosystem",
+          "sub": "I love ecosystems: everything links, and stays personal to you.",
+          "detail": {
+            "kicker": "Avlory ID",
+            "title": "One account for everything",
+            "body": [
+              "I like ecosystems: platforms where everything can link and still be personal and private to you.",
+              "Avlory ID is the sign-in I built so one account works across every product."
+            ]
+          }
+        },
+        {
+          "id": "waverate",
+          "sub": "Waverate: rate music from 0.00 to 10.00. Try it on any album.",
+          "action": "rate",
+          "detail": {
+            "kicker": "On iPhone · Android in beta",
+            "title": "Waverate",
+            "body": [
+              "It started in my notes app, rating albums with my girlfriend. Other apps were too basic or tried to do too much."
+            ],
+            "shots": [
+              "waverate-rate-dialog",
+              "waverate-home-analytics",
+              "waverate-fused-albums",
+              "waverate-vinyl-player"
+            ],
+            "links": [
+              {
+                "label": "Waverate on the App Store",
+                "url": "https://apps.apple.com/us/app/waverate/id6760079525"
+              }
+            ]
+          }
+        },
+        {
+          "id": "penny",
+          "sub": "PennySphere: know what you can safely spend. Try the numbers.",
+          "action": "budget",
+          "detail": {
+            "kicker": "Coming December 2026",
+            "title": "PennySphere",
+            "body": [
+              "Budget apps failed me. I didn't want a company reading my finances, and I just wanted to know what was left.",
+              "I also wanted it to work for my friends with roommates, and to help people who have no idea what a credit score is learn, and take control of the thing people say controls them."
+            ],
+            "shots": [
+              "penny-home",
+              "penny-split",
+              "penny-learn"
+            ],
+            "preview": true
+          }
+        },
+        {
+          "id": "next",
+          "sub": "Avlory Next: your docs, calendar, calls and more, linked and yours.",
+          "detail": {
+            "kicker": "Coming early 2027",
+            "title": "Avlory Next",
+            "body": [
+              "Eleven spaces that link together and stay personal and private to you. It starts with you, then schools and businesses."
+            ],
+            "shots": [
+              "next-quill",
+              "next-calendar",
+              "next-tables",
+              "next-connect"
+            ],
+            "links": [
+              {
+                "label": "Explore the spaces on avlory.com",
+                "url": "https://avlory.com/explore.html"
+              }
+            ]
+          }
+        },
+        {
+          "id": "upnext",
+          "sub": "UpNext: turning social media from an attention liability into an asset.",
+          "detail": {
+            "kicker": "Coming soon",
+            "title": "UpNext",
+            "body": [
+              "Messages are end-to-end encrypted, like the rest of Avlory. More at launch."
+            ],
+            "shots": [
+              "upnext-feed",
+              "upnext-messages"
+            ],
+            "preview": true
+          }
+        },
+        {
+          "id": "takes",
+          "sub": "Takes I'd defend.",
+          "detail": {
+            "kicker": "Notes",
+            "title": "Takes I'd defend",
+            "body": [
+              "Privacy is a right, and so is your data. End of discussion.",
+              "If you build software from the user's perspective, you'll build the best software.",
+              "Machine learning and LLMs should have stayed in the lab until quantum computing was further along and widely adopted. ML should have been working toward that, and toward medical research.",
+              "Of the new era of rappers, J.I.D is the closest to what hip-hop truly is. He has the best pen game, and his age doesn't stop him from being up and coming."
+            ]
+          }
+        }
       ]
     },
     "life": {
       "title": "Life",
       "kicker": "The rest of me",
       "stops": [
-        { "id": "intro", "sub": "The rest of me. Pull up a seat by the fire." },
-        { "id": "music", "sub": "I write and produce rap.",
-          "detail": { "kicker": "Music", "title": "What I make", "body": ["[A line about your music. Tracks you upload in the admin panel play here.]"] } },
-        { "id": "records", "sub": "Records I love. Flip through the crate.",
-          "detail": { "kicker": "Vinyl", "title": "Records I love", "body": ["[Album, artist: why it matters to you.]", "[Album, artist: why.]", "[Album, artist: why.]"] } },
-        { "id": "cooking", "sub": "[What you cook, in one line.]",
-          "detail": { "kicker": "Cooking", "title": "[Your go-to dish]", "body": ["[How you make it, or who you make it for.]"], "photos": ["Something you cooked"] } },
-        { "id": "outdoors", "sub": "Hiking, camping and road trips.",
-          "detail": { "kicker": "Outdoors", "title": "[A favourite spot]", "body": ["[Where, and why you keep going back.]"], "photos": ["Outdoors"] } },
-        { "id": "chess", "sub": "Your move. White to play and mate in one.", "action": "chess" },
-        { "id": "stories", "sub": "Story time.",
-          "detail": { "kicker": "Around the fire", "title": "[A story title]", "body": ["[A story you like telling.]"] } }
+        {
+          "id": "intro",
+          "sub": "The rest of me. Pull up a seat by the fire."
+        },
+        {
+          "id": "music",
+          "sub": "I write and produce rap.",
+          "detail": {
+            "kicker": "Music",
+            "title": "What I make",
+            "body": [
+              "[A line about your music. Tracks you upload in the admin panel play here.]"
+            ]
+          }
+        },
+        {
+          "id": "records",
+          "sub": "Records I love. Flip through the crate.",
+          "detail": {
+            "kicker": "Vinyl",
+            "title": "Records I love",
+            "body": [
+              "[Album, artist: why it matters to you.]",
+              "[Album, artist: why.]",
+              "[Album, artist: why.]"
+            ]
+          }
+        },
+        {
+          "id": "cooking",
+          "sub": "[What you cook, in one line.]",
+          "detail": {
+            "kicker": "Cooking",
+            "title": "[Your go-to dish]",
+            "body": [
+              "[How you make it, or who you make it for.]"
+            ],
+            "photos": [
+              "Something you cooked"
+            ]
+          }
+        },
+        {
+          "id": "outdoors",
+          "sub": "Hiking, camping and road trips.",
+          "detail": {
+            "kicker": "Outdoors",
+            "title": "[A favourite spot]",
+            "body": [
+              "[Where, and why you keep going back.]"
+            ],
+            "photos": [
+              "Outdoors"
+            ]
+          }
+        },
+        {
+          "id": "chess",
+          "sub": "Your move. White to play and mate in one.",
+          "action": "chess"
+        },
+        {
+          "id": "stories",
+          "sub": "Story time.",
+          "detail": {
+            "kicker": "Around the fire",
+            "title": "[A story title]",
+            "body": [
+              "[A story you like telling.]"
+            ]
+          }
+        }
       ]
     },
     "game": {
       "title": "Game",
       "kicker": "A planet we all share",
       "stops": [
-        { "id": "intro", "sub": "The Game planet: the one place everyone shares. Spin it around." },
-        { "id": "lantern", "sub": "Leave a lantern with a note. Everyone who visits will see it.", "action": "lantern" }
+        {
+          "id": "intro",
+          "sub": "The Game planet: the one place everyone shares. Spin it around."
+        },
+        {
+          "id": "lantern",
+          "sub": "Leave a lantern with a note. Everyone who visits will see it.",
+          "action": "lantern"
+        }
       ]
     }
   }
