@@ -333,42 +333,38 @@
         },
         {
           "id": "records",
-          "sub": "Records I love. Flip through the crate.",
-          "detail": {
-            "kicker": "Vinyl",
-            "title": "Records I love",
-            "body": [
-              "[Album, artist: why it matters to you.]",
-              "[Album, artist: why.]",
-              "[Album, artist: why.]"
-            ]
-          }
+          "sub": "My top-rated records on Waverate. Flip through the crate.",
+          "action": "records"
         },
         {
           "id": "cooking",
-          "sub": "[What you cook, in one line.]",
+          "sub": "I cook a lot, and make a lot of coffee and other drinks.",
           "detail": {
             "kicker": "Cooking",
-            "title": "[Your go-to dish]",
+            "title": "What I make",
             "body": [
-              "[How you make it, or who you make it for.]"
+              "[Photos coming, with the story behind each.]"
             ],
             "photos": [
-              "Something you cooked"
+              "Something I cooked",
+              "Coffee or a drink I made"
             ]
           }
         },
         {
           "id": "outdoors",
-          "sub": "Hiking, camping and road trips.",
+          "sub": "I've hiked everywhere in San Diego, and I've been to more states than I haven't.",
           "detail": {
             "kicker": "Outdoors",
-            "title": "[A favourite spot]",
+            "title": "Out there",
             "body": [
-              "[Where, and why you keep going back.]"
+              "I've hiked just about everywhere in San Diego, and I camped a lot in Boy Scouts.",
+              "Recently: a road trip to San Francisco for UpNext, and Sedona with my girlfriend in September.",
+              "Outside California, the state I visit most is New York. I have family there."
             ],
             "photos": [
-              "Outdoors"
+              "Sedona",
+              "The road to San Francisco"
             ]
           }
         },

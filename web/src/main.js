@@ -68,7 +68,7 @@ function goStop(id) { const i = stops.findIndex((s) => s.id === id); if (i >= 0)
 
 // ---------- The subtitle line ----------
 const ACTION_LABEL = { vinyl: () => audio.playing() ? 'Stop the record' : 'Play the record', sand: () => 'Write in the sand', coaster: () => 'Ride it', feedback: () => 'Send a message',
-  worlds: () => 'Pick a world', rate: () => 'Rate an album', budget: () => 'Try the numbers', chess: () => 'Solve it', lantern: () => 'Leave a lantern' };
+  worlds: () => 'Pick a world', rate: () => 'Rate an album', budget: () => 'Try the numbers', chess: () => 'Solve it', lantern: () => 'Leave a lantern', records: () => 'Flip through' };
 function showStop(i) {
   const s = stops[i]; if (!s) return;
   const sub = $('sub');
@@ -162,7 +162,7 @@ function more(stopId) {
 
 // ---------- Things you can do ----------
 function act(name) {
-  ({ vinyl, sand, coaster, feedback, worlds: pickWorld, rate, budget, chess, lantern: lanternHelp }[name] || (() => {}))();
+  ({ vinyl, sand, coaster, feedback, worlds: pickWorld, rate, budget, chess, lantern: lanternHelp, records }[name] || (() => {}))();
 }
 
 function vinyl() {
@@ -239,6 +239,18 @@ async function rateOne(a) {
     try { const st = await api.rate(a.id, score); $('scoreNote').textContent = `Saved. Visitors average ${st.average.toFixed(2)} from ${st.count} rating${st.count === 1 ? '' : 's'}.`; }
     catch { $('scoreNote').textContent = 'Saved in your browser. The visitor average needs the server.'; }
   });
+}
+
+// The crate by the fire: Sean's highest-rated records on Waverate, pulled live by the server
+async function records() {
+  openSheet('<p class="k">Life · vinyl</p><h2 id="sheetTitle">Records I love</h2><div id="crate" class="albums" aria-live="polite"><p class="note">Pulling from Waverate…</p></div>');
+  try {
+    const res = await api.ratings();
+    const list = (res?.ratings || []).slice().sort((a, b) => b.value - a.value);
+    $('crate').innerHTML = list.length
+      ? list.map((r) => `<div class="album">${r.artwork ? `<img src="${esc(r.artwork)}" alt="">` : '<img alt="">'}<div><b>${esc(r.album || r.title)}</b><span>${esc(r.artist)} · ${r.value.toFixed(2)} on Waverate</span></div></div>`).join('') + '<p class="note">Live from my Waverate ratings.</p>'
+      : '<p class="note">The crate fills from my Waverate ratings once the site is connected to Waverate.</p>';
+  } catch { $('crate').innerHTML = '<p class="note">The crate fills from my Waverate ratings once the server is running.</p>'; }
 }
 
 // PennySphere's idea in miniature: what's safe to spend, with roommates splitting the rent

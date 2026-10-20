@@ -60,8 +60,8 @@ export function buildLife() {
   crate.add(box(0.9, 0.55, 0.55, '#9a6a42'));
   const sleeves = ['#d24a8a', '#2f6fdf', '#e8b64a', '#3cc9aa', '#f06a4a', '#9b93ff'];
   sleeves.forEach((c, k) => { const s = box(0.04, 0.5, 0.5, c, -0.36 + k * 0.14, 0.18, 0); s.rotation.z = (k - 2.5) * 0.04; crate.add(s); });
-  tappable(crate, { stop: 'records' }); taps.push(crate);
-  tags.push({ obj: crate, label: 'Flip through the records', offset: 1, onStop: 'records', stops: ['records'] });
+  tappable(crate, { action: 'records' }); taps.push(crate);
+  tags.push({ obj: crate, label: 'Flip through the records', offset: 1, action: 'records', stops: ['records'] });
 
   // Music: a small speaker and guitar case on the log
   const speaker = box(0.5, 0.7, 0.4, '#1d1d22', cx - 2.6, ground(cx - 2.6, cz - 1.4), cz - 1.4); scene.add(speaker);
