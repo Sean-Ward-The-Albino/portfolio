@@ -3,6 +3,7 @@ import { Engine, isPhone, coarse, reduceMotion } from './engine.js';
 import { api, local } from './api.js';
 import * as audio from './audio.js';
 import { buildHome } from './worlds/home.js';
+import { buildSpace } from './travel.js';
 import fallback from '../../content/site.json';
 
 // ---------- Setup ----------
@@ -39,20 +40,46 @@ const THEME = {
   home: ['#140c12', '#21141d', '#f08fc4', '#1b0f15'], story: ['#1a100c', '#2a1a14', '#f2b57a', '#2a1406'],
   craft: ['#0e0c1c', '#1a1730', '#d6a6ff', '#1a0a2a'], life: ['#0b1411', '#14221d', '#7fd8b4', '#06231a'], game: ['#0c0b20', '#181636', '#a9a4ff', '#121040'],
 };
+// Each world's planet, as it looks from space (the same colours as in Home's sky)
+const PLANET = { home: { color: '#f4a6b8', dark: '#4a2436' }, story: { color: '#f2b57a', dark: '#5a3424' }, craft: { color: '#e6a6ff', dark: '#3a2052', ring: true },
+  life: { color: '#9fd3b8', dark: '#244a3e' }, game: { color: '#a9a4ff', dark: '#2a2660' } };
+let space = null;
 function theme(id) { const [bg, surface, accent, ink] = THEME[id]; const s = document.documentElement.style; s.setProperty('--bg', bg); s.setProperty('--surface', surface); s.setProperty('--accent', accent); s.setProperty('--accent-ink', ink); }
 
 async function enter(id, stopId = null, { instant = false } = {}) {
   if (!BUILDERS[id]) id = 'home';
   if (id === worldId) { if (stopId) goStop(stopId); return; }
+  if (travelling) return;
+  travelling = true;
+  try { await arrive(id, stopId, instant); } finally { travelling = false; }
+}
+let travelling = false;
+async function arrive(id, stopId, instant) {
   closeSheet(); audio.stop(); deck?.pause(); setWalk(false);
   if (id !== 'game') { leavePresence(); live?.close(); live = null; }
   const data = content.worlds[id];
   const veil = $('veil');
-  if (!instant && !reduceMotion) { $('veilText').textContent = data.title; veil.classList.add('on'); await wait(520); }
-  const build = await BUILDERS[id]();
-  world = build({ hour });
-  // Compile the world's shaders before it shows, so the first frames don't stutter
-  await engine.renderer.compileAsync?.(world.scene, engine.camera).catch(() => {});
+  // Load and compile the next world while the visitor is travelling to it
+  const ready = BUILDERS[id]().then(async (build) => {
+    const w = build({ hour });
+    // Compile the world's shaders before it shows, so the first frames don't stutter
+    await engine.renderer.compileAsync?.(w.scene, engine.camera).catch(() => {});
+    return w;
+  });
+  if (!instant && !reduceMotion && worldId) {
+    // Lift off, cross space to the next planet, then come down onto it
+    space ||= buildSpace(ORDER.map((w) => ({ id: w, ...PLANET[w] })));
+    $('veilText').textContent = data.title;
+    const dim = setTimeout(() => { veil.className = 'veil on fast'; }, 320);
+    await engine.lift(0.58); clearTimeout(dim);
+    veil.className = 'veil on fast'; await wait(40);
+    veil.className = 'veil name';
+    const flight = engine.cross(space, worldId, id);
+    await Promise.all([flight, ready]);
+    veil.className = 'veil on fast';
+    await wait(260);
+  } else if (!instant && !reduceMotion) { $('veilText').textContent = data.title; veil.classList.add('on'); await wait(520); }
+  world = await ready;
   worldId = id;
   stops = data.stops;
   theme(id);
@@ -68,7 +95,7 @@ async function enter(id, stopId = null, { instant = false } = {}) {
   if (id === 'home') { const s = local.get('sand'); if (s) world.writeSand?.(s); }
   if (id === 'game') loadGame();
   await wait(60);
-  veil.classList.remove('on');
+  veil.className = 'veil';
   local.set('seen:' + id, true);
   // While the visitor looks around, fetch the next world's code so travelling there is instant
   const nextId = ORDER[(ORDER.indexOf(id) + 1) % ORDER.length];

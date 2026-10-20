@@ -22,7 +22,7 @@ button { font: inherit; color: inherit; }
 .top > * { pointer-events: auto; }
 .brand { display: flex; align-items: center; gap: 9px; min-height: 40px; padding: 0 14px 0 10px; border-radius: 100px; border: 1px solid var(--line); background: var(--glass); font-weight: 700; font-size: 15px; cursor: pointer; }
 .where { margin: 0; align-self: center; font-size: 13px; color: #e8e2ee; background: var(--glass); border: 1px solid var(--line); border-radius: 100px; padding: 6px 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 40vw; }
-.tod { margin-left: auto; background: var(--glass); border: 1px solid var(--line); border-radius: 14px; padding: 8px 12px 10px; display: grid; gap: 4px; width: 210px; }
+.tod { transition: opacity 220ms ease; margin-left: auto; background: var(--glass); border: 1px solid var(--line); border-radius: 14px; padding: 8px 12px 10px; display: grid; gap: 4px; width: 210px; }
 .tod label { font-size: 11px; font-weight: 600; color: #bdb6c8; }
 .tod input { width: 100%; accent-color: var(--accent); }
 .tod output { font-size: 13px; font-weight: 600; }
@@ -110,6 +110,11 @@ input[type=range].rate { width: 100%; accent-color: #d4af37; height: 32px; }
 
 .veil { position: fixed; inset: 0; z-index: 30; display: grid; place-items: center; pointer-events: none; opacity: 0; transition: opacity 500ms ease; background: radial-gradient(circle at 50% 50%, #1c1430, #050408 70%); }
 .veil.on { opacity: 1; }
+.veil.fast { transition-duration: 260ms; }
+/* Crossing space: the world's name rides low over the flight */
+.veil.name { opacity: 1; background: none; place-items: end center; padding-bottom: 22vh; transition-duration: 300ms; }
+.veil.name p { text-shadow: 0 2px 20px rgb(0 0 0 / 0.6); }
+.traveling .tag, .traveling .sub, .traveling .dots, .traveling .hint, .traveling .tod { opacity: 0; pointer-events: none; }
 .veil p { font-size: clamp(26px, 5vw, 46px); font-weight: 800; letter-spacing: -0.04em; margin: 0; }
 .boot { position: fixed; inset: 0; z-index: 40; display: grid; place-content: center; justify-items: center; gap: 10px; background: #0b0910; transition: opacity 600ms ease; }
 .boot.gone { opacity: 0; pointer-events: none; }

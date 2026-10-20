@@ -36,6 +36,7 @@ export class Engine {
     this.look = new THREE.Vector3();
     this.yaw = 0; this.pitch = 0; this.yawT = 0; this.pitchT = 0;
     this.move = null;        // an in-progress flight between stops
+    this.trip = null;        // travel between worlds (lift off, then space)
     this.keys = new Set();
     this.stick = { x: 0, y: 0 };
     this.orbit = { theta: 0.6, phi: 1.1, dist: 14, thetaT: 0.6, phiT: 1.1, distT: 14 };
@@ -66,6 +67,8 @@ export class Engine {
 
   // ---------- Worlds ----------
   setWorld(world, order, startIndex = 0) {
+    this.trip = null;
+    document.body.classList.remove('traveling');
     for (const tag of this.tags) tag.el.remove();
     this.tags = [];
     if (this.world && this.world !== world) this.world.dispose?.();
@@ -151,6 +154,51 @@ export class Engine {
     this.rideState = null; this.mode = 'tour';
     this.flyTo(this.index, 1.2);
     end?.();
+  }
+
+  // ---------- Travel between worlds ----------
+  // Lift off: the camera rises out of the current world.
+  lift(dur) {
+    document.body.classList.add('traveling');
+    return new Promise((done) => { this.trip = { phase: 'lift', t: 0, dur, done, from: this.camera.position.clone(), look: this.look.clone() }; });
+  }
+
+  // Cross space from one world's planet to the next. Resolves when the flight arrives; the camera keeps
+  // drifting closer until setWorld() lands it, in case the next world is still loading.
+  cross(space, fromId, toId) {
+    const a = space.planets[fromId] || Object.values(space.planets)[0], b = space.planets[toId];
+    const pa = a.obj.position, pb = b.obj.position, r = b.r;
+    const dir = pb.clone().sub(pa).normalize(), up = new THREE.Vector3(0, 1, 0);
+    // Start just above the planet we're leaving, so it falls away beneath us
+    const start = pa.clone().addScaledVector(dir, -a.r * 0.35).addScaledVector(up, a.r * 1.25);
+    const end = pb.clone().addScaledVector(dir, -r * 2.6).addScaledVector(up, r * 0.35);
+    const mid = start.clone().lerp(end, 0.5).addScaledVector(up, 40);
+    const near = pb.clone().addScaledVector(dir, -r * 1.7).addScaledVector(up, r * 0.2);
+    // Light every planet from over the traveller's shoulder, so the side we see is lit
+    const sun = dir.clone().negate().addScaledVector(up, 0.6).add(new THREE.Vector3().crossVectors(dir, up).multiplyScalar(0.5)).normalize();
+    for (const k in space.planets) space.planets[k].obj.userData.ball.material.uniforms.uSun.value.copy(sun);
+    const dur = clamp(1.3 + start.distanceTo(end) / 700, 1.4, 2.2);
+    return new Promise((done) => { this.trip = { phase: 'space', space, t: 0, dur, done, curve: new THREE.QuadraticBezierCurve3(start, mid, end), near, end, startLook: start.clone().addScaledVector(dir, 200).addScaledVector(up, -90), target: pb.clone() }; });
+  }
+
+  runTrip(dt) {
+    const tr = this.trip, cam = this.camera;
+    tr.t += dt;
+    const k = Math.min(1, tr.t / tr.dur);
+    if (tr.phase === 'lift') {
+      const e = k * k;
+      cam.position.copy(tr.from); cam.position.y += e * 70;
+      cam.lookAt(this.tmp.copy(tr.look).setY(tr.look.y + e * 120));
+      this.world.update?.(this.t, dt, this);
+      this.renderer.render(this.world.scene, cam);
+    } else {
+      if (k < 1) tr.curve.getPoint(ease(k), cam.position);
+      else cam.position.lerpVectors(tr.end, tr.near, 1 - Math.exp(-(tr.t - tr.dur) * 0.9));
+      cam.lookAt(this.tmp.lerpVectors(tr.startLook, tr.target, ease(Math.min(1, k * 1.4))));
+      tr.space.update(this.t);
+      this.renderer.render(tr.space.scene, cam);
+    }
+    if (k >= 1 && tr.done) { tr.done(); tr.done = null; }
   }
 
   // ---------- Tags: real buttons pinned to things in the world ----------
@@ -286,6 +334,7 @@ export class Engine {
     if (real > 0 && real < 0.1) this.govern(real * 1000);
     const dt = real;
     this.t += reduceMotion ? 0 : dt;
+    if (this.trip) { this.runTrip(dt); return; }
     const cam = this.camera, w = this.world;
 
     if (this.mode === 'tour') {
