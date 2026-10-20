@@ -114,22 +114,36 @@ export function cookSteak({ openSheet, hint }) {
   const cv = $('steakCv'), g = cv.getContext('2d');
   let cut = CUTS.strip, temp = 40, crust = 0, rendered = false, basted = false, rested = 0, timer = null;
 
-  // A cross-section: crust on the outside, then a grey band, then the pink centre
+  // Before it's cut you see the steak from above; once it's done, a slice through it. A reverse sear cooks gently
+  // and evenly, so a medium rare steak is pink almost edge to edge under a thin crust.
+  const rrect = (x, y, w, h, r) => { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); };
   const drawSteak = (done = false) => {
     g.clearRect(0, 0, 320, 200);
-    const cx = 160, cy = 100;
-    g.fillStyle = crust > 0.1 ? `rgb(${120 - crust * 60}, ${70 - crust * 40}, ${40 - crust * 20})` : '#b9606a';
-    g.beginPath(); g.ellipse(cx, cy, 140, 70, 0, 0, Math.PI * 2); g.fill();
-    if (done) {
-      const band = clamp((temp - 125) / 25, 0.05, 0.9);
-      g.fillStyle = '#9a7a6a'; g.beginPath(); g.ellipse(cx, cy, 132, 62, 0, 0, Math.PI * 2); g.fill();
-      const pink = temp < 122 ? '#c4384a' : temp < 138 ? '#d4606a' : temp < 146 ? '#c98a84' : '#a08070';
-      g.fillStyle = pink; g.beginPath(); g.ellipse(cx, cy, 132 * (1 - band), 62 * (1 - band * 0.8), 0, 0, Math.PI * 2); g.fill();
-    } else {
-      g.fillStyle = 'rgba(255,255,255,0.12)'; g.beginPath(); g.ellipse(cx - 30, cy - 20, 60, 18, -0.2, 0, Math.PI * 2); g.fill();
+    if (!done) {
+      // From above: raw red with marbling, browning as it sears, fat cap along the top edge
+      const raw = [178, 58, 66], seared = [92, 48, 30];
+      const c = raw.map((v, i) => Math.round(v + (seared[i] - v) * crust));
+      g.fillStyle = `rgb(${c})`;
+      g.beginPath(); g.ellipse(160, 108, 128, 72, 0, 0, Math.PI * 2); g.fill();
+      g.strokeStyle = `rgba(255, 235, 225, ${0.35 * (1 - crust)})`; g.lineWidth = 2;
+      for (const [x, y, l, a] of [[110, 90, 50, 0.4], [170, 120, 60, -0.3], [140, 140, 40, 0.2], [200, 95, 35, 0.6]]) { g.beginPath(); g.moveTo(x, y); g.quadraticCurveTo(x + l / 2, y + l * a, x + l, y - 6); g.stroke(); }
+      g.strokeStyle = rendered ? '#c8964f' : '#f1e4d4'; g.lineWidth = 14; g.lineCap = 'round';
+      g.beginPath(); g.ellipse(160, 108, 128, 72, 0, Math.PI * 1.08, Math.PI * 1.92); g.stroke();
+      return;
     }
-    // The fat cap
-    g.strokeStyle = rendered ? '#c89a5a' : '#f2e6d8'; g.lineWidth = 12; g.beginPath(); g.ellipse(cx, cy, 140, 70, 0, -2.6, -0.6); g.stroke();
+    // The slice: a 1-inch steak seen from the side
+    const x = 20, y = 64, w = 280, h = 72;
+    const shade = temp < 120 ? '#b8283a' : temp < 128 ? '#c8384a' : temp <= 137 ? '#d9576a' : temp <= 145 ? '#dc8e90' : '#9c7664';
+    const grey = temp <= 137 ? 1.5 : temp <= 145 ? 9 : 26;          // the cooked band under the crust
+    const crustW = 2 + crust * 2.5;
+    g.fillStyle = '#4a2a18'; rrect(x, y, w, h, 10); g.fill();                        // crust
+    g.fillStyle = '#a8806e'; rrect(x + crustW, y + crustW, w - crustW * 2, h - crustW * 2, 8); g.fill();   // grey band
+    const inset = crustW + grey;
+    g.fillStyle = shade; rrect(x + inset, y + inset, w - inset * 2, h - inset * 2, Math.max(2, 8 - grey / 2)); g.fill();
+    // A little gloss in the centre, and the rendered fat cap at one end
+    const sheen = g.createLinearGradient(0, y, 0, y + h); sheen.addColorStop(0, 'rgba(255,255,255,0.10)'); sheen.addColorStop(0.5, 'rgba(255,255,255,0)'); g.fillStyle = sheen; rrect(x + inset, y + inset, w - inset * 2, h - inset * 2, 6); g.fill();
+    g.fillStyle = rendered ? '#d9b07a' : '#efe2d0'; rrect(x + w - 26, y + 2, 24, h - 4, 8); g.fill();
+    g.fillStyle = 'rgba(74,42,24,0.9)'; g.fillRect(x + w - 26, y + 2, 3, h - 4);
   };
 
   const step = (n, text, ui) => { $('sN').textContent = n; $('sT').textContent = text; $('sUI').innerHTML = ui; };
