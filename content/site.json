@@ -303,10 +303,10 @@
             "kicker": "Notes",
             "title": "Takes I'd defend",
             "body": [
-              "Privacy is a right, and so is your data. End of discussion.",
-              "If you build software from the user's perspective, you'll build the best software.",
-              "Machine learning and LLMs should have stayed in the lab until quantum computing was further along and widely adopted. ML should have been working toward that, and toward medical research.",
-              "Of the new era of rappers, J.I.D is the closest to what hip-hop truly is. He has the best pen game, and his age doesn't stop him from being up and coming."
+              "Privacy is a right. Your data should be yours to control.",
+              "Always build from the user's side: beautiful, easy, consistent, fast, and safe enough that they never think about it. The one exception is when you're making something nobody has seen yet. When you innovate, you decide what users want.",
+              "LLMs should have stayed in the lab. I think quantum computing could take neural networks much further, and that's what the effort should have gone toward, along with medical research. Instead, technology that sat underfunded for years got its money only once it turned into a consumer product. Now data centers get built in communities that bear the cost and see little of the benefit.",
+              "Out of the new era, J.I.D is the closest to the spirit of hip-hop: the best pen in the game, and four albums in, he's still getting better."
             ]
           }
         }
@@ -371,7 +371,16 @@
         {
           "id": "chess",
           "sub": "Your move. White to play and mate in one.",
-          "action": "chess"
+          "action": "chess",
+          "detail": {
+            "kicker": "Quick note",
+            "title": "My openings",
+            "body": [
+              "As white: the Catalan.",
+              "As black against e4: the Sicilian.",
+              "As black against d4: d5, e6 and Nf6."
+            ]
+          }
         },
         {
           "id": "stories",
