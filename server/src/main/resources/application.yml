@@ -21,6 +21,10 @@ spring:
   web:
     resources:
       add-mappings: false
+  servlet:
+    multipart:
+      max-file-size: 40MB
+      max-request-size: 45MB
   mvc:
     async:
       # The Game planet's live updates are long-lived; this is the most any one may last.
@@ -31,6 +35,11 @@ site:
   data-dir: ${SITE_DATA_DIR:data}
   # Starting content. When this file exists it's read at startup, so edits to it show after a restart.
   content-file: ${SITE_CONTENT_FILE:../content/site.json}
+  media:
+    # A Cloud Storage bucket for uploaded photos and tracks. Empty: they're saved under data-dir/media.
+    bucket: ${MEDIA_BUCKET:}
+    # Optional: a CDN or custom domain in front of the bucket.
+    public-base: ${MEDIA_PUBLIC_BASE:}
   admin:
     # Set this in production. Locally, leave it empty and a token is printed to the log at startup.
     token: ${ADMIN_TOKEN:}

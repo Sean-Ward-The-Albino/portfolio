@@ -15,6 +15,12 @@ export const api = {
   ratings: () => call('/api/now/ratings'),
   marks: () => call('/api/game/marks'),
   addMark: (m) => call('/api/game/marks', { method: 'POST', body: JSON.stringify(m) }),
+  chessPlay: (start, moves) => call('/api/chess/play', { method: 'POST', body: JSON.stringify({ start, moves }) }),
+  puzzles: () => call('/api/chess/puzzles'),
+  tryPuzzle: (id, move) => call(`/api/chess/puzzles/${id}/try`, { method: 'POST', body: JSON.stringify({ move }) }),
+  openings: () => call('/api/chess/openings'),
+  count: (name) => call(`/api/counts/${name}`, { method: 'POST' }),
+  counts: () => call('/api/counts'),
 };
 
 // What a visitor does stays in their browser: sand writing, their own ratings, where they've been.

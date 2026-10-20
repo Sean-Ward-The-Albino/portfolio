@@ -104,7 +104,7 @@ input[type=range].rate { width: 100%; accent-color: #d4af37; height: 32px; }
 .board button.l { background: #efe3cf; } .board button.d { background: #a9805e; }
 .board button.sel { box-shadow: inset 0 0 0 4px #e8b100; }
 .board button.ok { box-shadow: inset 0 0 0 4px #31c48d; }
-.board .w { color: #fff; text-shadow: 0 0 2px #000, 0 0 2px #000; }
+.board .w { color: #fbf8f2; text-shadow: 0 0 1px #1a1a1a, 0 0 1px #1a1a1a, 0 1px 2px rgb(0 0 0 / 0.6); }
 
 .veil { position: fixed; inset: 0; z-index: 30; display: grid; place-items: center; pointer-events: none; opacity: 0; transition: opacity 500ms ease; background: radial-gradient(circle at 50% 50%, #1c1430, #050408 70%); }
 .veil.on { opacity: 1; }
@@ -152,3 +152,45 @@ body.reading { --mute: #e6e0ec; }
 .recipe { border-top: 1px solid var(--line); padding-top: 14px; display: grid; gap: 10px; }
 .recipe h3 { margin: 0; font-size: 20px; font-weight: 750; letter-spacing: -0.02em; color: var(--accent); }
 .recipe ol { margin: 0; padding-left: 22px; display: grid; gap: 8px; font-family: var(--body); font-size: 17px; line-height: 1.55; }
+
+.seg { display: flex; gap: 4px; padding: 4px; border-radius: 100px; background: var(--surface); border: 1px solid var(--line); }
+.seg button { flex: 1; min-height: 38px; border: 0; border-radius: 100px; background: transparent; color: var(--mute); font-weight: 600; font-size: 14px; cursor: pointer; }
+.seg button[aria-selected="true"] { background: var(--text); color: var(--bg); }
+.chessmsg { font-family: var(--display) !important; font-size: 16px !important; min-height: 26px; }
+.board button.dot::after { content: ''; width: 26%; height: 26%; border-radius: 50%; background: rgb(0 0 0 / 0.28); position: absolute; }
+.board button { position: relative; }
+.board button.cap { box-shadow: inset 0 0 0 4px rgb(0 0 0 / 0.3); }
+.board button.last { background-image: linear-gradient(rgb(232 177 0 / 0.35), rgb(232 177 0 / 0.35)); }
+.board .b { color: #1c1a1e; text-shadow: 0 0 1px rgb(255 255 255 / 0.35); }
+.board span { font-variant-emoji: text; }
+.chessbar { display: flex; flex-wrap: wrap; gap: 8px; }
+.promo { display: flex; align-items: center; gap: 8px; padding: 10px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); }
+.promo button { width: 52px; height: 52px; border-radius: 10px; border: 1px solid var(--line); background: #efe3cf; font-size: 34px; cursor: pointer; }
+
+/* Kitchen: the latte glass and the steak */
+.latte { display: grid; grid-template-columns: 110px 1fr; gap: 18px; align-items: start; }
+.glass { position: relative; height: 190px; border: 3px solid rgb(255 255 255 / 0.55); border-top: 0; border-radius: 0 0 18px 18px; display: flex; flex-direction: column-reverse; overflow: hidden; background: rgb(255 255 255 / 0.04); }
+.layer { display: block; height: 0; transition: height 700ms cubic-bezier(.2,.8,.2,1), background-color 400ms ease; }
+.salt { position: absolute; left: 10%; right: 10%; bottom: 18%; height: 6px; opacity: 0; background-image: radial-gradient(#fff 1px, transparent 1.5px); background-size: 9px 6px; transition: opacity 400ms ease; }
+.salt.on { opacity: 0.9; }
+.steps { display: grid; gap: 10px; }
+.stepn { font-family: var(--display) !important; font-size: 12px !important; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.06em; }
+.stepui { display: grid; gap: 8px; }
+.ghostbtn { background: transparent !important; color: var(--text) !important; border: 1px solid var(--line) !important; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { min-height: 40px; padding: 0 14px; border-radius: 100px; border: 1px solid var(--line); background: transparent; color: var(--text); font-weight: 600; cursor: pointer; }
+.chip.on { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
+.btn.hold { position: relative; overflow: hidden; touch-action: none; user-select: none; -webkit-user-select: none; }
+.btn.hold span { position: relative; z-index: 1; }
+.btn.hold .fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: rgb(0 0 0 / 0.22); }
+.btn.hold.holding { transform: scale(0.98); }
+.meter { height: 8px; border-radius: 8px; background: var(--surface); overflow: hidden; }
+.meter i { display: block; height: 100%; width: 0; background: var(--accent); transition: width 150ms ease; }
+.steakcv { width: 100%; max-width: 320px; height: auto; display: block; margin: 0 auto; }
+.clock { font-family: var(--display) !important; font-size: 34px !important; font-weight: 800; font-variant-numeric: tabular-nums; }
+.feel { font-style: italic; min-height: 28px; }
+@media (max-width: 760px) { .latte { grid-template-columns: 80px 1fr; } .glass { height: 150px; } }
+
+.pic { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 14px; display: block; }
+.tracks { display: grid; gap: 10px; }
+.tracks audio { width: 100%; }

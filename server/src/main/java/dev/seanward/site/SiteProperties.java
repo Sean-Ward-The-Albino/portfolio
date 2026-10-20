@@ -4,7 +4,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /** Settings from application.yml; secrets come from environment variables, never from files in the repo. */
 @ConfigurationProperties("site")
-public record SiteProperties(String dataDir, String contentFile, Admin admin, Waverate waverate, Turnstile turnstile) {
+public record SiteProperties(String dataDir, String contentFile, Admin admin, Waverate waverate, Turnstile turnstile, Media media) {
+
+    /** Uploads go to this Cloud Storage bucket when set; otherwise to {@code dataDir/media}. */
+    public record Media(String bucket, String publicBase) {}
 
     /** The admin panel's token. When blank, a random one is made at startup and printed to the log. */
     public record Admin(String token) {}

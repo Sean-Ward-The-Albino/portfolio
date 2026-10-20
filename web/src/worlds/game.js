@@ -72,9 +72,25 @@ export function buildGame() {
   world.nearest = (point) => { let best = null, bd = 0.6; for (const g of lanterns.values()) { const d = g.getWorldPosition(new THREE.Vector3()).distanceTo(point); if (d < bd) { bd = d; best = g.userData.mark; } } return best; };
 
   world.toPlanet = (point) => planet.worldToLocal(point.clone());
+
+  // Other visitors on the planet right now: fireflies drifting to where each one is hovering
+  const others = new Map();
+  world.setOthers = (spots, you) => {
+    const keep = new Set();
+    for (const s of spots) {
+      if (s.id === you) continue;
+      keep.add(s.id);
+      let f = others.get(s.id);
+      if (!f) { f = glow(s.c, 1.1, 0.95); f.userData.at = latLon(s.lat, s.lon, R * 1.18); f.position.copy(f.userData.at); planet.add(f); others.set(s.id, f); }
+      f.userData.at = latLon(s.lat, s.lon, R * 1.18);
+    }
+    for (const [id, f] of others) if (!keep.has(id)) { planet.remove(f); others.delete(id); }
+  };
+  world.lookingAt = (camera) => toLatLon(planet.worldToLocal(camera.position.clone()));
   world.stops = {};
   world.update = (t) => {
     planet.rotation.y = t * 0.02;
+    for (const f of others.values()) { f.position.lerp(f.userData.at, 0.08); f.material.opacity = 0.7 + 0.3 * Math.sin(t * 3 + f.id); }
     const now = performance.now();
     for (const g of lanterns.values()) { const b = g.userData.born; if (b) { const k = Math.min(1, (now - b) / 1500); g.userData.glow.scale.setScalar(2.4 - k * 1.5); if (k >= 1) g.userData.born = 0; } }
   };

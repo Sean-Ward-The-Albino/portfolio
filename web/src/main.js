@@ -3,15 +3,19 @@ import { Engine, isPhone, coarse, reduceMotion } from './engine.js';
 import { api, local } from './api.js';
 import * as audio from './audio.js';
 import { buildHome } from './worlds/home.js';
-import { buildStory } from './worlds/story.js';
-import { buildCraft } from './worlds/craft.js';
-import { buildLife } from './worlds/life.js';
-import { buildGame, toLatLon } from './worlds/game.js';
 import fallback from '../../content/site.json';
 
 // ---------- Setup ----------
 const $ = (id) => document.getElementById(id);
-const BUILDERS = { home: buildHome, story: buildStory, craft: buildCraft, life: buildLife, game: buildGame };
+// Home is in the first download; every other world loads the first time someone goes there
+const BUILDERS = {
+  home: async () => buildHome,
+  story: () => import('./worlds/story.js').then((m) => m.buildStory),
+  craft: () => import('./worlds/craft.js').then((m) => m.buildCraft),
+  life: () => import('./worlds/life.js').then((m) => m.buildLife),
+  game: () => import('./worlds/game.js').then((m) => { toLatLon = m.toLatLon; return m.buildGame; }),
+};
+let toLatLon = null;
 const ORDER = ['home', 'story', 'craft', 'life', 'game'];
 let content = fallback;
 let worldId = null, world = null, stops = [];
@@ -40,11 +44,15 @@ function theme(id) { const [bg, surface, accent, ink] = THEME[id]; const s = doc
 async function enter(id, stopId = null, { instant = false } = {}) {
   if (!BUILDERS[id]) id = 'home';
   if (id === worldId) { if (stopId) goStop(stopId); return; }
-  closeSheet(); audio.stop(); setWalk(false);
+  closeSheet(); audio.stop(); deck?.pause(); setWalk(false);
+  if (id !== 'game') { leavePresence(); live?.close(); live = null; }
   const data = content.worlds[id];
   const veil = $('veil');
   if (!instant && !reduceMotion) { $('veilText').textContent = data.title; veil.classList.add('on'); await wait(520); }
-  world = BUILDERS[id]({ hour });
+  const build = await BUILDERS[id]();
+  world = build({ hour });
+  // Compile the world's shaders before it shows, so the first frames don't stutter
+  await engine.renderer.compileAsync?.(world.scene, engine.camera).catch(() => {});
   worldId = id;
   stops = data.stops;
   theme(id);
@@ -62,13 +70,16 @@ async function enter(id, stopId = null, { instant = false } = {}) {
   await wait(60);
   veil.classList.remove('on');
   local.set('seen:' + id, true);
+  // While the visitor looks around, fetch the next world's code so travelling there is instant
+  const nextId = ORDER[(ORDER.indexOf(id) + 1) % ORDER.length];
+  (window.requestIdleCallback || ((f) => setTimeout(f, 1200)))(() => BUILDERS[nextId]().catch(() => {}));
 }
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 function goStop(id) { const i = stops.findIndex((s) => s.id === id); if (i >= 0) engine.go(i); }
 
 // ---------- The subtitle line ----------
-const ACTION_LABEL = { vinyl: () => audio.playing() ? 'Stop the record' : 'Play the record', sand: () => 'Write in the sand', coaster: () => 'Ride it', feedback: () => 'Send a message',
-  worlds: () => 'Pick a world', rate: () => 'Rate an album', budget: () => 'Try the numbers', chess: () => 'Solve it', lantern: () => 'Leave a lantern', records: () => 'Flip through' };
+const ACTION_LABEL = { vinyl: () => (audio.playing() || (deck && !deck.paused)) ? 'Stop the record' : 'Play the record', sand: () => 'Write in the sand', coaster: () => 'Ride it', feedback: () => 'Send a message',
+  worlds: () => 'Pick a world', rate: () => 'Rate an album', budget: () => 'Try the numbers', chess: () => 'Solve it', lantern: () => 'Leave a lantern', records: () => 'Flip through', latte: () => 'Make it', steak: () => 'Cook it' };
 function showStop(i) {
   const s = stops[i]; if (!s) return;
   const sub = $('sub');
@@ -156,7 +167,10 @@ function more(stopId) {
     html += `<div class="shots">${d.shots.map((n) => `<figure class="shot ${n.startsWith('next-') ? 'wide' : ''}"><img src="/img/${esc(n)}.webp" alt="${esc(d.title)} screen" loading="lazy"></figure>`).join('')}</div>`;
     if (d.preview) html += '<p class="note">Design previews from the app’s real colours and screens, not screenshots.</p>';
   }
-  if (d.photos?.length) html += `<div class="photos">${d.photos.map((p) => `<div class="photo">[Photo: ${esc(p)}]</div>`).join('')}</div>`;
+  if (d.photos?.length) html += `<div class="photos">${d.photos.map((p) => p.src
+    ? `<img class="pic" src="${esc(p.small || p.src)}" srcset="${esc(p.small || p.src)} 720w, ${esc(p.src)} 1800w" sizes="(max-width: 760px) 50vw, 220px" alt="${esc(p.label)}" loading="lazy">`
+    : `<div class="photo">[Photo: ${esc(typeof p === 'string' ? p : p.label)}]</div>`).join('')}</div>`;
+  if (stopId === 'music' && content.music?.tracks?.length) html += `<div class="tracks">${content.music.tracks.map((t) => `<div><p class="note">${esc(t.title)}</p><audio controls preload="none" src="${esc(t.src)}"></audio></div>`).join('')}</div>`;
   if (d.links?.length) html += `<div class="links">${d.links.map((l) => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)} <span aria-hidden="true">↗</span></a>`).join('')}</div>`;
   if (s.action) html += `<button class="btn" type="button" data-sheetact="${esc(s.action)}">${esc(ACTION_LABEL[s.action]?.() || 'Open')}</button>`;
   openSheet(html);
@@ -165,12 +179,20 @@ function more(stopId) {
 
 // ---------- Things you can do ----------
 function act(name) {
-  ({ vinyl, sand, coaster, feedback, worlds: pickWorld, rate, budget, chess, lantern: lanternHelp, records }[name] || (() => {}))();
+  ({ vinyl, sand, coaster, feedback, worlds: pickWorld, rate, budget, chess, lantern: lanternHelp, records, latte, steak }[name] || (() => {}))();
 }
 
+// The record player: Sean's own tracks once they're uploaded, a loop made in the browser until then
+let deck = null, trackNo = 0;
 function vinyl() {
-  if (audio.playing()) { audio.stop(); if (world.vinyl) world.vinyl.playing = false; hint('Record stopped.'); }
-  else { audio.play(); if (world.vinyl) world.vinyl.playing = true; hint('Playing. A loop made in your browser until my tracks are up.'); }
+  const tracks = content.music?.tracks || [];
+  const playing = audio.playing() || (deck && !deck.paused);
+  if (playing) { audio.stop(); deck?.pause(); if (world.vinyl) world.vinyl.playing = false; hint('Record stopped.'); }
+  else if (tracks.length) {
+    deck ||= new Audio(); const t = tracks[trackNo % tracks.length];
+    deck.src = t.src; deck.play().catch(() => {}); deck.onended = () => { trackNo++; vinyl(); };
+    if (world.vinyl) world.vinyl.playing = true; hint(`Playing “${t.title}”.`);
+  } else { audio.play(); if (world.vinyl) world.vinyl.playing = true; hint('Playing. A loop made in your browser until my tracks are up.'); }
   showStop(engine.index);
 }
 
@@ -274,29 +296,15 @@ function budget() {
   $('bForm').addEventListener('input', calc); calc();
 }
 
-// Chess: white to play and mate in one
-function chess() {
-  // Back-rank mate: Ra8#
-  const start = { a1: '♖', g1: '♔', f2: '♙', g2: '♙', h2: '♙', g8: '♚', f7: '♟', g7: '♟', h7: '♟' };
-  let pos = { ...start }, sel = null, done = false;
-  const files = 'abcdefgh';
-  const draw = (msg = 'White to play. Mate in one.') => {
-    let cells = '';
-    for (let r = 8; r >= 1; r--) for (let f = 0; f < 8; f++) {
-      const sq = files[f] + r, pc = pos[sq] || '', white = '♖♔♙'.includes(pc) && pc;
-      cells += `<button type="button" class="${(f + r) % 2 ? 'l' : 'd'} ${sel === sq ? 'sel' : ''} ${done && sq === 'a8' ? 'ok' : ''}" data-sq="${sq}" aria-label="${sq}${pc ? ' ' + ({ '♖': 'white rook', '♔': 'white king', '♙': 'white pawn', '♚': 'black king', '♟': 'black pawn' }[pc]) : ''}"><span class="${white ? 'w' : ''}">${pc}</span></button>`;
-    }
-    openSheet(`<p class="k">Life · chess</p><h2 id="sheetTitle">Your move</h2><p id="chessMsg" role="status">${msg}</p><div class="board" id="board">${cells}</div><button class="btn" type="button" id="chessReset">Start over</button>`);
-    $('board').addEventListener('click', (e) => {
-      const b = e.target.closest('[data-sq]'); if (!b || done) return; const sq = b.dataset.sq;
-      if (!sel) { if ('♖♔♙'.includes(pos[sq] || '_')) { sel = sq; draw('Now pick where it goes.'); } return; }
-      if (sel === sq) { sel = null; draw(); return; }
-      if (sel === 'a1' && sq === 'a8') { pos.a8 = '♖'; delete pos.a1; sel = null; done = true; draw('Checkmate. The king’s own pawns trap him: a back-rank mate.'); local.set('chess', true); return; }
-      sel = null; draw('Not mate. Look at the black king’s escape squares.');
-    });
-    $('chessReset').addEventListener('click', () => { pos = { ...start }; sel = null; done = false; draw(); });
-  };
-  draw();
+// Sean's recipes, made step by step. Loaded only when someone opens them.
+const sheetHost = (html) => { openSheet(html); return $('sheetBody'); };
+async function latte() { const { brewLatte } = await import('./kitchen.js'); brewLatte({ openSheet: sheetHost, hint, world }); }
+async function steak() { const { cookSteak } = await import('./kitchen.js'); const stop = cookSteak({ openSheet: sheetHost, hint }); sheetClosed = stop; }
+
+// Chess by the full rules, worked out on the Java server. Loaded only when someone opens it.
+async function chess() {
+  const { openChess } = await import('./chess.js');
+  openChess({ openSheet: (html) => { openSheet(html); return $('sheetBody'); }, hint });
 }
 
 // ---------- The Game planet ----------
@@ -308,12 +316,35 @@ async function loadGame() {
     hint(`${marks.length} lantern${marks.length === 1 ? '' : 's'} on the planet. ${Math.max(1, here)} here now. Tap the planet to leave yours.`, 6000);
   } catch { hint('The shared planet needs the server. Start it with ./dev.sh.', 6000); }
   live?.close();
+  joinPresence();
   if ('EventSource' in window) {
     live = new EventSource('/api/game/live');
     live.addEventListener('mark', (e) => { if (worldId === 'game') world.addLantern?.(JSON.parse(e.data), true); });
     live.addEventListener('removed', (e) => { if (worldId === 'game') world.removeLantern?.(JSON.parse(e.data)); });
   }
 }
+// Live presence: who else is on the planet, over the Java server's WebSocket
+let presence = null, presenceTimer = null;
+function joinPresence() {
+  leavePresence();
+  try { presence = new WebSocket(`${location.protocol === 'https:' ? 'wss' : 'ws'}://${location.host}/api/game/presence`); } catch { return; }
+  let you = null, lastSent = '';
+  presence.onmessage = (e) => {
+    const m = JSON.parse(e.data);
+    if (m.t === 'hello') you = m.you;
+    if (m.t === 'here' && worldId === 'game') {
+      world.setOthers?.(m.spots, you);
+      const n = m.n - 1; $('where').textContent = n > 0 ? `Game · ${n} other${n === 1 ? '' : 's'} here now` : 'Game · just you right now';
+    }
+  };
+  presenceTimer = setInterval(() => {
+    if (presence?.readyState !== 1 || worldId !== 'game' || !world.lookingAt) return;
+    const at = world.lookingAt(engine.camera), msg = JSON.stringify(at);
+    if (msg !== lastSent) { presence.send(msg); lastSent = msg; }
+  }, 300);
+}
+function leavePresence() { clearInterval(presenceTimer); presence?.close(); presence = null; }
+
 function lanternHelp() { hint('Tap a spot on the planet to place your lantern.'); }
 function lanternAt(point) {
   const near = world.nearest?.(point);
@@ -361,6 +392,8 @@ $('todIn').addEventListener('input', () => { hour = +$('todIn').value; $('todOut
 
 // ---------- Start ----------
 addEventListener('hashchange', () => enter(location.hash.slice(1) || 'home'));
+// Return visits load instantly: the service worker keeps the site's files (never the API's answers)
+if (import.meta.env.PROD && 'serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
 (async () => {
   try { const c = await api.content(); if (c?.worlds) content = c; } catch { /* use the copy built in */ }
   await enter(location.hash.slice(1) || 'home', null, { instant: true });

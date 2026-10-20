@@ -93,4 +93,40 @@ class ApiTest {
                 .andExpect(header().string("Content-Security-Policy", containsString("script-src 'self'")))
                 .andExpect(header().string("X-Frame-Options", "DENY"));
     }
+    @Test
+    void chessFollowsTheRulesOnTheServer() throws Exception {
+        mvc.perform(post("/api/chess/play").contentType(MediaType.APPLICATION_JSON).content("{\"moves\":[\"e2e4\",\"e7e5\",\"d1h5\",\"b8c6\",\"f1c4\",\"g8f6\",\"h5f7\"]}"))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.status").value("checkmate")).andExpect(jsonPath("$.san[6]").value("Qxf7#"));
+        mvc.perform(post("/api/chess/play").contentType(MediaType.APPLICATION_JSON).content("{\"moves\":[\"e2e5\"]}"))
+                .andExpect(status().isUnprocessableContent());
+        mvc.perform(post("/api/chess/puzzles/0/try").contentType(MediaType.APPLICATION_JSON).content("{\"move\":\"a1a8\"}"))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.solved").value(true)).andExpect(jsonPath("$.san").value("Ra8#"));
+        mvc.perform(get("/api/chess/openings")).andExpect(jsonPath("$.openings[0].id").value("catalan"));
+    }
+
+    @Test
+    void countsOnlyKnownNames() throws Exception {
+        mvc.perform(post("/api/counts/latte")).andExpect(status().isOk()).andExpect(jsonPath("$.count").value(1));
+        mvc.perform(post("/api/counts/anything")).andExpect(status().isNotFound());
+        mvc.perform(get("/api/counts")).andExpect(jsonPath("$.latte").value(1));
+    }
+    @Test
+    void uploadsAreCheckedByTheirBytes() throws Exception {
+        byte[] png = {(byte) 0x89, 'P', 'N', 'G', 13, 10, 26, 10, 0, 0, 0, 13};
+        var res = mvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart("/api/admin/media/photo")
+                        .file(new org.springframework.mock.web.MockMultipartFile("large", "a.png", "image/png", png))
+                        .header("Authorization", "Bearer test-token"))
+                .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString();
+        String src = res.replaceAll(".*\"src\":\"([^\"]+)\".*", "$1");
+        mvc.perform(get(src)).andExpect(status().isOk()).andExpect(header().string("Content-Type", "image/png"));
+        mvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart("/api/admin/media/photo")
+                        .file(new org.springframework.mock.web.MockMultipartFile("large", "evil.png", "image/png", "<script>".getBytes()))
+                        .header("Authorization", "Bearer test-token"))
+                .andExpect(status().isUnprocessableContent());
+        mvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart("/api/admin/media/track")
+                        .file(new org.springframework.mock.web.MockMultipartFile("file", "a.mp3", "audio/mpeg", new byte[]{'I', 'D', '3', 4, 0, 0}))
+                        .header("Authorization", "Bearer wrong"))
+                .andExpect(status().isUnauthorized());
+        mvc.perform(get("/media/../site-data.json")).andExpect(status().isNotFound());
+    }
 }

@@ -74,7 +74,8 @@ export function buildLife() {
   const handle = box(0.08, 0.05, 0.6, '#1e1e22', 0, 0, 0.7); pan.add(handle);
   const steam = glow('#ffffff', 0.9, 0.2); steam.position.y = 0.6; pan.add(steam);
   tick.push((t) => { steam.position.y = 0.6 + (t * 0.5) % 1; steam.material.opacity = 0.25 * (1 - ((t * 0.5) % 1)); });
-  tappable(pan, { stop: 'cooking' }); taps.push(pan);
+  tappable(pan, { action: 'steak' }); taps.push(pan);
+  tags.push({ obj: pan, label: 'Cook the steak', offset: 0.8, action: 'steak', stops: ['cooking'] });
 
   // Coffee: a Greca (moka pot) and a glass on a flat rock by the fire
   const rock = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.65, 0.35, 7), lambert('#7a7470')); const rx = cx + 1.4, rz = cz - 1.2; rock.position.set(rx, ground(rx, rz) + 0.17, rz); scene.add(rock);
@@ -86,7 +87,11 @@ export function buildLife() {
   moka.add(box(0.03, 0.14, 0.05, '#2a2a2e', 0.15, 0.22, 0));
   const glass = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.06, 0.16, 12), new THREE.MeshLambertMaterial({ color: '#c8a27a', transparent: true, opacity: 0.85 })); glass.position.set(rx + 0.22, ground(rx, rz) + 0.43, rz + 0.1); scene.add(glass);
   const foam = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, 0.03, 12), lambert('#f6efe4')); foam.position.set(rx + 0.22, ground(rx, rz) + 0.52, rz + 0.1); scene.add(foam);
-  tappable(moka, { stop: 'coffee' }); taps.push(moka);
+  tappable(moka, { action: 'latte' }); taps.push(moka);
+  tags.push({ obj: moka, label: 'Make my Spanish latte', offset: 0.9, action: 'latte', stops: ['coffee'] });
+  // Steam rises while someone is brewing
+  const mokaSteam = glow('#ffffff', 0.5, 0); mokaSteam.position.set(rx - 0.15, ground(rx, rz) + 0.95, rz); scene.add(mokaSteam);
+  tick.push((t) => { const k = world.brewing ? 1 : 0.15; mokaSteam.position.y = ground(rx, rz) + 0.85 + ((t * 0.6) % 0.6); mokaSteam.material.opacity = k * 0.5 * (1 - ((t * 0.6) % 0.6) / 0.6); mokaSteam.scale.setScalar(0.4 + k * 0.5); });
 
   // Martial arts: a practice mat in the clearing, a belt rolled on it
   const mx = cx - 8, mz = cz + 3;

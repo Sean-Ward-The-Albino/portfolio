@@ -23,3 +23,10 @@ button.danger { background: #3a1a22; color: #ffb3c0; }
 .item p { margin: 0; white-space: pre-wrap; } .item small { color: var(--mute); }
 .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .hint { color: var(--mute); font-size: 13px; margin: 0; }
+
+.slots { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-start; }
+.slot { width: 150px; display: grid; gap: 6px; }
+.slot img, .slot span { width: 150px; height: 112px; border-radius: 10px; object-fit: cover; background: #0e0c12; border: 1px dashed var(--line); display: grid; place-items: center; color: var(--mute); font-size: 12px; text-align: center; }
+.up { display: inline-flex; align-items: center; justify-content: center; min-height: 36px; border-radius: 100px; background: var(--accent); color: #1b0f15; font-weight: 600; cursor: pointer; font-size: 13px; }
+audio { width: 100%; margin-top: 6px; }
+#trackForm { align-items: end; }

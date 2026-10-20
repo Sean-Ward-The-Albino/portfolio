@@ -30,6 +30,11 @@ public interface SiteStore {
 
     boolean deleteMark(String id);
 
+    /** Adds one to a named count (lattes brewed, puzzles solved...) and returns the new total. */
+    long increment(String name);
+
+    Map<String, Long> counts();
+
     record Feedback(String id, String message, String name, Instant at) {}
 
     record AlbumStats(String albumId, long count, double average) {}

@@ -29,9 +29,9 @@ public class FileSiteStore implements SiteStore {
     static final int MAX_FEEDBACK = 5000;
 
     /** What's on disk. */
-    record Data(Map<String, Object> content, List<Feedback> feedback, Map<String, double[]> albums, List<Mark> marks) {
+    record Data(Map<String, Object> content, List<Feedback> feedback, Map<String, double[]> albums, List<Mark> marks, Map<String, Long> counts) {
         static Data empty() {
-            return new Data(null, new ArrayList<>(), new LinkedHashMap<>(), new ArrayList<>());
+            return new Data(null, new ArrayList<>(), new LinkedHashMap<>(), new ArrayList<>(), new LinkedHashMap<>());
         }
     }
 
@@ -52,7 +52,8 @@ public class FileSiteStore implements SiteStore {
             return new Data(d.content(),
                     d.feedback() == null ? new ArrayList<>() : new ArrayList<>(d.feedback()),
                     d.albums() == null ? new LinkedHashMap<>() : new LinkedHashMap<>(d.albums()),
-                    d.marks() == null ? new ArrayList<>() : new ArrayList<>(d.marks()));
+                    d.marks() == null ? new ArrayList<>() : new ArrayList<>(d.marks()),
+                    d.counts() == null ? new LinkedHashMap<>() : new LinkedHashMap<>(d.counts()));
         } catch (RuntimeException e) {
             log.warn("Couldn't read {}; starting empty and keeping the old file as .bad", file);
             try {
@@ -86,7 +87,7 @@ public class FileSiteStore implements SiteStore {
 
     @Override
     public synchronized void saveContent(Map<String, Object> content) {
-        data = new Data(content, data.feedback(), data.albums(), data.marks());
+        data = new Data(content, data.feedback(), data.albums(), data.marks(), data.counts());
         save();
     }
 
@@ -138,6 +139,18 @@ public class FileSiteStore implements SiteStore {
         data.marks().add(mark);
         while (data.marks().size() > MAX_MARKS) data.marks().removeFirst();
         save();
+    }
+
+    @Override
+    public synchronized long increment(String name) {
+        long n = data.counts().merge(name, 1L, Long::sum);
+        save();
+        return n;
+    }
+
+    @Override
+    public synchronized Map<String, Long> counts() {
+        return Map.copyOf(data.counts());
     }
 
     @Override

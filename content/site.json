@@ -369,7 +369,8 @@
             "photos": [
               "Something I cooked"
             ]
-          }
+          },
+          "action": "steak"
         },
         {
           "id": "coffee",
@@ -408,7 +409,8 @@
             "photos": [
               "Coffee I made"
             ]
-          }
+          },
+          "action": "latte"
         },
         {
           "id": "outdoors",
