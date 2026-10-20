@@ -148,3 +148,7 @@ body.reading { --mute: #e6e0ec; }
 .swatches .sw { display: block; width: 34px; height: 34px; border-radius: 50%; border: 2px solid transparent; }
 .swatches input:checked + .sw { border-color: #fff; box-shadow: 0 0 0 2px rgb(0 0 0 / 0.5); }
 .swatches input:focus-visible + .sw { outline: 3px solid #fff; outline-offset: 2px; }
+
+.recipe { border-top: 1px solid var(--line); padding-top: 14px; display: grid; gap: 10px; }
+.recipe h3 { margin: 0; font-size: 20px; font-weight: 750; letter-spacing: -0.02em; color: var(--accent); }
+.recipe ol { margin: 0; padding-left: 22px; display: grid; gap: 8px; font-family: var(--body); font-size: 17px; line-height: 1.55; }

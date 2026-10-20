@@ -149,6 +149,9 @@ function more(stopId) {
   const d = s.detail;
   let html = `<p class="k">${rich(d.kicker)}</p><h2 id="sheetTitle">${rich(d.title)}</h2>`;
   html += (d.body || []).map((p, k) => `<p class="${k === 0 ? 'lede' : ''}">${rich(p)}</p>`).join('');
+  for (const r of d.recipes || []) {
+    html += `<section class="recipe"><h3>${rich(r.title)}</h3>${r.intro ? `<p>${rich(r.intro)}</p>` : ''}${r.steps?.length ? `<ol>${r.steps.map((x) => `<li>${rich(x)}</li>`).join('')}</ol>` : ''}</section>`;
+  }
   if (d.shots?.length) {
     html += `<div class="shots">${d.shots.map((n) => `<figure class="shot ${n.startsWith('next-') ? 'wide' : ''}"><img src="/img/${esc(n)}.webp" alt="${esc(d.title)} screen" loading="lazy"></figure>`).join('')}</div>`;
     if (d.preview) html += '<p class="note">Design previews from the app’s real colours and screens, not screenshots.</p>';

@@ -76,6 +76,26 @@ export function buildLife() {
   tick.push((t) => { steam.position.y = 0.6 + (t * 0.5) % 1; steam.material.opacity = 0.25 * (1 - ((t * 0.5) % 1)); });
   tappable(pan, { stop: 'cooking' }); taps.push(pan);
 
+  // Coffee: a Greca (moka pot) and a glass on a flat rock by the fire
+  const rock = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.65, 0.35, 7), lambert('#7a7470')); const rx = cx + 1.4, rz = cz - 1.2; rock.position.set(rx, ground(rx, rz) + 0.17, rz); scene.add(rock);
+  const moka = new THREE.Group(); moka.position.set(rx - 0.15, ground(rx, rz) + 0.35, rz); scene.add(moka);
+  const steel = new THREE.MeshLambertMaterial({ color: '#c9ccd2', flatShading: true });
+  moka.add(new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.13, 0.2, 8), steel).translateY(0.1));
+  moka.add(new THREE.Mesh(new THREE.CylinderGeometry(0.13, 0.09, 0.22, 8), steel).translateY(0.31));
+  moka.add(new THREE.Mesh(new THREE.ConeGeometry(0.1, 0.07, 8), lambert('#2a2a2e')).translateY(0.45));
+  moka.add(box(0.03, 0.14, 0.05, '#2a2a2e', 0.15, 0.22, 0));
+  const glass = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.06, 0.16, 12), new THREE.MeshLambertMaterial({ color: '#c8a27a', transparent: true, opacity: 0.85 })); glass.position.set(rx + 0.22, ground(rx, rz) + 0.43, rz + 0.1); scene.add(glass);
+  const foam = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, 0.03, 12), lambert('#f6efe4')); foam.position.set(rx + 0.22, ground(rx, rz) + 0.52, rz + 0.1); scene.add(foam);
+  tappable(moka, { stop: 'coffee' }); taps.push(moka);
+
+  // Martial arts: a practice mat in the clearing, a belt rolled on it
+  const mx = cx - 8, mz = cz + 3;
+  const mat = new THREE.Mesh(new THREE.BoxGeometry(4, 0.06, 3), lambert('#5a7fb0')); mat.position.set(mx, ground(mx, mz) + 0.03, mz); scene.add(mat);
+  const belt = new THREE.Mesh(new THREE.TorusGeometry(0.18, 0.05, 6, 16), lambert('#1a1a1e')); belt.rotation.x = Math.PI / 2; belt.position.set(mx + 1, ground(mx, mz) + 0.1, mz - 0.6); scene.add(belt);
+  const matLight = new THREE.PointLight('#ffd9a0', 3, 9, 2); matLight.position.set(mx + 1.5, ground(mx, mz) + 2.4, mz + 1.5); scene.add(matLight);
+  const matLamp = glow('#ffd9a0', 1.2, 0.8); matLamp.position.copy(matLight.position); scene.add(matLamp);
+  tappable(mat, { stop: 'martial' }); taps.push(mat);
+
   // Outdoors: a canoe pulled up on the shore
   const canoeGeo = new THREE.SphereGeometry(1, 16, 6, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2); canoeGeo.scale(0.55, 0.45, 2.6);
   const canoe = new THREE.Mesh(canoeGeo, lambert('#b8452c', { side: THREE.DoubleSide })); canoe.rotation.z = Math.PI; const kx = -2, kz = -44; canoe.position.set(kx, ground(kx, kz) + 0.4, kz); canoe.rotation.y = 0.7; scene.add(canoe);
@@ -102,7 +122,9 @@ export function buildLife() {
     music: { cam: V(cx - 0.6, cy + 1.6, cz + 2.4), look: V(cx - 2.6, cy + 0.4, cz - 1.4) },
     records: { cam: V(cx + 0.4, cy + 1.7, cz + 4.6), look: V(cx - 1.6, cy + 0.3, cz + 2.2) },
     cooking: { cam: V(cx + 1.8, cy + 1.6, cz + 2.6), look: V(cx + 0.2, cy + 0.6, cz + 0.1) },
+    coffee: { cam: V(cx + 2.6, cy + 1.3, cz + 0.6), look: V(cx + 1.4, cy + 0.4, cz - 1.2) },
     outdoors: { cam: V(cx + 6, cy + 3, cz - 6), look: V(-40, 8, -110) },
+    martial: { cam: V(cx - 3.5, cy + 3, cz + 7.5), look: V(cx - 8, cy, cz + 2.6) },
     chess: { cam: V(sx + 1.2, cy + 1.8, sz + 1.6), look: V(sx, cy + 0.7, sz) },
     stories: { cam: V(cx + 3.5, cy + 1.4, cz + 3.5), look: V(cx, cy + 0.8, cz) },
   };

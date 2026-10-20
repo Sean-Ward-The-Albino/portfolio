@@ -325,9 +325,11 @@
           "sub": "I write and produce rap.",
           "detail": {
             "kicker": "Music",
-            "title": "What I make",
+            "title": "What I make, what I play",
             "body": [
-              "[A line about your music. Tracks you upload in the admin panel play here.]"
+              "I write and produce rap. [Tracks coming.]",
+              "good kid, m.A.A.d city was the first album I listened to all the way through. \"Sing About Me, I'm Dying of Thirst\" was the first song that made me cry.",
+              "Right now: a lot of Paramore. I can't get Hayley Williams' \"Simmer\" out of my head."
             ]
           }
         },
@@ -338,16 +340,69 @@
         },
         {
           "id": "cooking",
-          "sub": "I cook a lot, and make a lot of coffee and other drinks.",
+          "sub": "I cook a lot. My favourite food overall is sushi.",
           "detail": {
             "kicker": "Cooking",
-            "title": "What I make",
+            "title": "What I eat, what I make",
             "body": [
-              "[Photos coming, with the story behind each.]"
+              "My favourite food overall is sushi.",
+              "I'm a sucker for carne asada fries, or chilaquiles in the morning, with horchata or Jamaica.",
+              "Comfort food: a chicken quesadilla with guacamole, or buffalo chicken sliders.",
+              "When the budget allows, I make my own steak."
+            ],
+            "recipes": [
+              {
+                "title": "Reverse-sear steak with chimichurri",
+                "intro": "New York strip is my favourite cut, though I love filet and ribeye too. The goal is always medium rare, and usually I get there. Sometimes it's medium raw, and once or twice I forgot it in the oven and got some extra-flavourful bark.",
+                "steps": [
+                  "Brine it, or marinate it and pat it dry.",
+                  "Cook it low in the oven until it's nearly done.",
+                  "Finish with a hard sear.",
+                  "Top it with homemade chimichurri."
+                ]
+              }
             ],
             "photos": [
-              "Something I cooked",
-              "Coffee or a drink I made"
+              "Something I cooked"
+            ]
+          }
+        },
+        {
+          "id": "coffee",
+          "sub": "Coffee revelation: Starbucks tastes terrible. I like light roast.",
+          "detail": {
+            "kicker": "Coffee",
+            "title": "Bougie about coffee",
+            "body": [
+              "I had a coffee revelation that Starbucks tasted terrible, and that I would become the most bougie coffee bitch.",
+              "I like light roast. I make cold brew when I get the chance, and use it for an iced Spanish latte or whatever I feel like. I make my own caramel syrup too."
+            ],
+            "recipes": [
+              {
+                "title": "Spanish latte in a Greca",
+                "intro": "When I have time to brew something nice.",
+                "steps": [
+                  "Put a little sweetened condensed milk in a glass and sprinkle salt on top. Let it sit.",
+                  "Fill the Greca (moka pot) with espresso, ground on the finer side.",
+                  "Where the coffee comes out at the top of the pot, add cinnamon, a dash of brown sugar and a pinch of nutmeg.",
+                  "Brew it slowly, then pour it over the condensed milk and froth until it's all mixed in.",
+                  "In another cup, froth milk with a bit of vanilla for the foam. I skip the vanilla when I don't want it too sweet.",
+                  "Put the foam on top."
+                ]
+              },
+              {
+                "title": "Busy-day iced coffee",
+                "intro": "When I'm busy, which has been a lot lately: instant coffee. I look for good brands, like one at the Spanish market near me.",
+                "steps": [
+                  "Mix equal parts instant coffee and brown sugar with hot (not boiling) water and a pinch of salt.",
+                  "Froth it until it foams.",
+                  "Pour iced milk with vanilla or caramel syrup already mixed in.",
+                  "Put the coffee foam on top and mix it in."
+                ]
+              }
+            ],
+            "photos": [
+              "Coffee I made"
             ]
           }
         },
@@ -369,16 +424,26 @@
           }
         },
         {
+          "id": "martial",
+          "sub": "I did jujutsu for over a decade, along with other martial arts.",
+          "detail": {
+            "kicker": "Martial arts",
+            "title": "Over a decade of jujutsu",
+            "body": [
+              "I did jujutsu for over a decade, along with various other martial arts. They were super fun."
+            ]
+          }
+        },
+        {
           "id": "chess",
           "sub": "Your move. White to play and mate in one.",
           "action": "chess",
           "detail": {
-            "kicker": "Quick note",
-            "title": "My openings",
+            "kicker": "Chess",
+            "title": "How I play",
             "body": [
-              "As white: the Catalan.",
-              "As black against e4: the Sicilian.",
-              "As black against d4: d5, e6 and Nf6."
+              "Bullet is my favourite, because I usually don't have time for long games. I like rapid more than blitz, and classical is fun every once in a while.",
+              "Openings: as white, the Catalan. As black against e4, the Sicilian. Against d4, I usually play d5, e6 and Nf6."
             ]
           }
         },
